@@ -26,10 +26,7 @@ def conversion(old):
 
 variabletexts=["Distance","Walk","Easy to find?","Public access?","Special access","Wave quality","Experience","Frequency","Type","Direction","Bottom","Power","Normal length","Good day length","Good swell direction","Good wind direction","Swell size","Best tide position","Best tide movement","Week crowd","Week-end crowd"]
 variables={}
-for variabletext in variabletexts:
-	if variabletext+"</span>" in str(p):
-		variables[variabletext]=find_between(str(p).replace(',',';'),"</span>","</p>")
-print variables
+
 		
 #Get variables based on a surf spot page
 def getspotdetails(spoturl):
@@ -54,6 +51,11 @@ def getspotdetails(spoturl):
 			Longitude=Longitude.replace("</p>","")
 			Longitude=Longitude.replace(" ","")
 			Longitude=str(conversion(Longitude)*-1)
+		for variabletext in variabletexts:
+			if variabletext+"</span>" in str(p):
+				variables[variabletext]=find_between(str(p).replace(',',';'),"</span>","</p>")
+		#print variables
+		"""
 		if "Distance</span>" in str(p):
 			Distance=find_between(str(p).replace(',',';'),"</span>","</p>")
 		if "Walk</span>" in str(p):
@@ -89,12 +91,17 @@ def getspotdetails(spoturl):
 		if "Swell size</span>" in str(p):
 			Swellsize=find_between(str(p).replace(',',';'),"</span>","</p>")
 
-#variables={}	
-#for variabletext in variabletexts:
-	#if "Swell size</span>" in str(p):
-		#variables[variabletext]Swellsize=find_between(str(p).replace(',',';'),"</span>","</p>")
-	
+"""	
 
+	for variable in variables:
+		try:
+			fout.write(variable.value+",")
+		except:
+			fout.write(",")
+		#print variable.key
+		#print variable.value
+"""	
+	
 	#print "Latitude: "+Latitude
 	try:
 		fout.write(Latitude+",")
@@ -187,6 +194,7 @@ def getspotdetails(spoturl):
 		fout.write(Swellsize)
 	except:
 		fout.write(",")
+"""
 
 #Get all country links and execute spot detail search
 url = urllib2.urlopen("http://www.wannasurf.com/spot/index.html")
@@ -204,7 +212,10 @@ for link in alllinks:
 
 countries=0
 fout=open("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel.csv", "w")
-fout.write("Spot,Country,Latitude,Longitude,Distance,Walk,Easytofind,Publicaccess,Specialaccess,Wavequality,Experience,Frequency,Type,Direction,Bottom,Power,Normallength,Gooddaylength\n")
+
+for variabletext in variabletexts: 
+	fout.write(variabletext+",")
+fout.write("\n")
 
 for countrylink in countrylinks:
 	#print countrylink
