@@ -92,12 +92,16 @@ def getspotdetails(spoturl):
 			Swellsize=find_between(str(p).replace(',',';'),"</span>","</p>")
 
 """	
-	print type(variables)
-	print len(variables)
-	for variable in variables:
-		print variable.value
+	#print type(variables)
+	#print len(variables)
+	#print variables
+	#print variables.keys
+	#print type(variables.keys)
+	for key in variables:
+		#print key
+		#print variables[key]
 		try:
-			fout.write(variable.value+",")
+			fout.write(variables[key]+",")
 		except:
 			fout.write(",")
 			print "Couldn't write variable"
