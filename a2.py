@@ -92,12 +92,15 @@ def getspotdetails(spoturl):
 			Swellsize=find_between(str(p).replace(',',';'),"</span>","</p>")
 
 """	
-
+	print type(variables)
+	print len(variables)
 	for variable in variables:
+		print variable.value
 		try:
 			fout.write(variable.value+",")
 		except:
 			fout.write(",")
+			print "Couldn't write variable"
 		#print variable.key
 		#print variable.value
 """	
@@ -213,6 +216,8 @@ for link in alllinks:
 countries=0
 fout=open("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel.csv", "w")
 
+#print len(variabletexts)
+#print variabletexts
 for variabletext in variabletexts: 
 	fout.write(variabletext+",")
 fout.write("\n")
