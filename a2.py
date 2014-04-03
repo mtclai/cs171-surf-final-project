@@ -26,7 +26,6 @@ def conversion(old):
 
 variabletexts=["Distance","Walk","Easy to find?","Public access?","Special access","Wave quality","Experience","Frequency","Type","Direction","Bottom","Power","Normal length","Good day length","Good swell direction","Good wind direction","Swell size","Best tide position","Best tide movement","Week crowd","Week-end crowd"]
 variables={}
-
 		
 #Get variables based on a surf spot page
 def getspotdetails(spoturl):
@@ -54,49 +53,16 @@ def getspotdetails(spoturl):
 		for variabletext in variabletexts:
 			if variabletext+"</span>" in str(p):
 				variables[variabletext]=find_between(str(p).replace(',',';'),"</span>","</p>")
-		#print variables
-		"""
-		if "Distance</span>" in str(p):
-			Distance=find_between(str(p).replace(',',';'),"</span>","</p>")
-		if "Walk</span>" in str(p):
-			Walk=find_between(str(p),"</span>","</p>")
-		if "Easy to find?</span>" in str(p):
-			Easytofind=find_between(str(p),"</span>","</p>")
-		if "Public access?</span>" in str(p):
-			Publicaccess=find_between(str(p),"</span>","</p>")
-		if "Special access</span>" in str(p):
-			Specialaccess=find_between(str(p),"</span>","</p>")
-		if "Wave quality</span>" in str(p):
-			Wavequality=find_between(str(p),"</span>","</p>")
-		if "Experience</span>" in str(p):
-			Experience=find_between(str(p),"</span>","</p>")
-		if "Frequency</span>" in str(p):
-			Frequency=find_between(str(p),"</span>","</p>")
-		if "Type</span>" in str(p):
-			Type=find_between(str(p),"</span>","</p>")
-		if "Direction</span>" in str(p):
-			Direction=find_between(str(p),"</span>","</p>")
-		if "Bottom</span>" in str(p):
-			Bottom=find_between(str(p).replace(',',';'),"</span>","</p>")
-		if "Power</span>" in str(p):
-			Power=find_between(str(p).replace(',',';'),"</span>","</p>")
-		if "Normal length</span>" in str(p):
-			Normallength=find_between(str(p),"</span>","</p>")
-		if "Good day length</span>" in str(p):
-			Gooddaylength=find_between(str(p),"</span>","</p>")
-		if "Good swell direction</span>" in str(p):
-			Goodswelldirection=find_between(str(p).replace(',',';'),"</span>","</p>")
-		if "Good wind direction</span>" in str(p):
-			Goodwinddirection=find_between(str(p).replace(',',';'),"</span>","</p>")
-		if "Swell size</span>" in str(p):
-			Swellsize=find_between(str(p).replace(',',';'),"</span>","</p>")
 
-"""	
-	#print type(variables)
-	#print len(variables)
-	#print variables
-	#print variables.keys
-	#print type(variables.keys)
+	try:
+		fout.write(Latitude+",")
+	except:
+		fout.write(",")
+	#print "Longitude: "+Longitude
+	try:
+		fout.write(Longitude+",")
+	except:
+		fout.write(",")
 	for key in variables:
 		#print key
 		#print variables[key]
@@ -107,101 +73,7 @@ def getspotdetails(spoturl):
 			print "Couldn't write variable"
 		#print variable.key
 		#print variable.value
-"""	
-	
-	#print "Latitude: "+Latitude
-	try:
-		fout.write(Latitude+",")
-	except:
-		fout.write(",")
-	#print "Longitude: "+Longitude
-	try:
-		fout.write(Longitude+",")
-	except:
-		fout.write(",")
-	#print "Distance: "+Distance
-	try:
-		fout.write(Distance+",")
-	except:
-		fout.write(",")
-	#print "Walk: "+Walk
-	try:
-		fout.write(Walk+",")
-	except:
-		fout.write(",")
-	#print "Easytofind: "+Easytofind
-	try:
-		fout.write(Easytofind+",")
-	except:
-		fout.write(",")
-	#print "Publicaccess: "+Publicaccess
-	try:
-		fout.write(Publicaccess+",")
-	except:
-		fout.write(",")
-	#print "Specialaccess: "+Specialaccess
-	try:
-		fout.write(Specialaccess+",")
-	except:
-		fout.write(",")
-	#print "Wavequality: "+Wavequality
-	try:
-		fout.write(Wavequality+",")
-	except:
-		fout.write(",")
-	#print "Experience: "+Experience
-	try:
-		fout.write(Experience+",")
-	except:
-		fout.write(",")
-	#print "Frequency: "+Frequency
-	try:
-		fout.write(Frequency+",")
-	except:
-		fout.write(",")
-	#print "Type: "+Type
-	try:
-		fout.write(Type+",")
-	except:
-		fout.write(",")
-	#print "Direction: "+Direction
-	try:
-		fout.write(Direction+",")
-	except:
-		fout.write(",")
-	#print "Bottom: "+Bottom
-	try:
-		fout.write(Bottom+",")
-	except:
-		fout.write(",")
-	#print "Power: "+Power
-	try:
-		fout.write(Power+",")
-	except:
-		fout.write(",")
-	#print "Normallength: "+Normallength
-	try:
-		fout.write(Normallength+",")
-	except:
-		fout.write(",")
-	#print "Gooddaylength: "+Gooddaylength
-	try:
-		fout.write(Gooddaylength)
-	except:
-		fout.write(",")
-	try:
-		fout.write(Goodswelldirection)
-	except:
-		fout.write(",")
-	try:
-		fout.write(Goodwinddirection)
-	except:
-		fout.write(",")
-	try:
-		fout.write(Swellsize)
-	except:
-		fout.write(",")
-"""
+
 
 #Get all country links and execute spot detail search
 url = urllib2.urlopen("http://www.wannasurf.com/spot/index.html")
@@ -222,6 +94,7 @@ fout=open("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visu
 
 #print len(variabletexts)
 #print variabletexts
+fout.write("Spot,Country,Latitude,Longitude,")
 for variabletext in variabletexts: 
 	fout.write(variabletext+",")
 fout.write("\n")
