@@ -53,36 +53,59 @@ var g = svg.append("g");
 var latitude = 42.360024;
 var longitude = -71.060168;
 
-var projection = d3.geo.albersUsa().translate([width / 2, height / 2]);//.precision(.1);
+var projection = d3.geo.albers().translate([width / 2, height / 2]);//.precision(.1);
 var path = d3.geo.path().projection(projection);
 var screencoord = projection([longitude, latitude]);
 
 var dataSet = {};
 
 function loadStations() {
-    d3.csv("../data/Site_table_dummy2.csv",function(error,data){
+    d3.csv("../data/Site_table_dummy3.csv",function(error,data){
+
+    // define dataset with everything there, and then the numbers ones as objects with keyvalue pairs just like in the last pset
+    // dataSet = 
+
+
+
+    // condition for contains "AirTemp", then iterate through and push each to the object.
+
+    data.forEach(function(d) {
+
+        d.AirTemp = {};
+        d.BestSurfing = {};
+        d.TypicalSwell = {};
+        d.WaterTemp = {};
+
+        for (property in d){
+          var value = d[property];
+          if (property.slice(0, 7) == "AirTemp" && typeof value != 'object'){
+            if (typeof d.AirTemp[property.slice(8)] === "undefined") {
+                d.AirTemp[property.slice(8)] = 0;
+            }
+            d.AirTemp[property.slice(8)] += +value;
+          }
+          else if (property.slice(0, 11) == "BestSurfing" && typeof value != 'object'){
+            if (typeof d.BestSurfing[property.slice(12)] === "undefined") {
+                d.BestSurfing[property.slice(12)] = 0;
+            }
+            d.BestSurfing[property.slice(12)] += +value;
+          }
+          else if (property.slice(0, 12) == "TypicalSwell" && typeof value != 'object'){
+            if (typeof d.TypicalSwell[property.slice(13)] === "undefined") {
+                d.TypicalSwell[property.slice(13)] = 0;
+            }
+            d.TypicalSwell[property.slice(13)] += +value;
+          }
+          else if (property.slice(0, 9) == "WaterTemp" && typeof value != 'object'){
+            if (typeof d.WaterTemp[property.slice(10)] === "undefined") {
+                d.WaterTemp[property.slice(10)] = 0;
+            }
+            d.WaterTemp[property.slice(10)] += +value;
+          }
+        }
+    })
 
     console.log(data);
-
-
-// get map working
-
-    var usMap = topojson.feature(data,data.objects.states).features // converts topoJSON to GeoJSON
-
-    svg.selectAll(".country").data(usMap).enter().append("path").attr("d", path); 
-    
-    g.append("g")
-      .attr("id", "states")
-    .selectAll("path")
-      .data(usMap)
-    .enter().append("path")
-      .attr("d", path)
-      .on("click", clicked);
-
-    g.append("path")
-      .datum(topojson.mesh(data, data.objects.states, function(a, b) { return a !== b; }))
-      .attr("id", "state-borders")
-      .attr("d", path);
 
     // data.forEach(function(d, i) {
     //     d.lat = +d["NSRDB_LAT (dd)"];
@@ -177,117 +200,125 @@ function loadStations() {
     //             .style("opacity", 0); 
     //     });
 
+    // just an experiment with the fist object in the array
+    createDetailVis(data[0]);
     });
 }
 
 loadStations();
 
-d3.json("../data/world_data.json", function(error, data) {
+// d3.json("../data/world_data.json", function(error, collection) {
+//     d3.select("svg").selectAll("path")
+//         .data(collection.features)
+//       .enter().append("path")
+//         .attr("d", d3.geo.path().projection(
+//           d3.geo.albers()
+//             .parallels([10, 80])
+//             .origin([0,40])
+//             .translate([500,250])
+//             .scale(100)
+//         ));
 
-    var worldMap = topojson.feature(data,data.objects.states).features // converts topoJSON to GeoJSON
+//     console.log(collection);
 
-    svg.selectAll(".country").data(worldMap).enter().append("path").attr("d", path); 
+//     d3.json("../data/us_named.json", function(error, usdata) {
+//       console.log(usdata);
+//     })
+
+    // var worldMap = topojson.feature(data,data.features).features // converts topoJSON to GeoJSON
     
-    g.append("g")
-      .attr("id", "states")
-    .selectAll("path")
-      .data(worldMap)
-    .enter().append("path")
-      .attr("d", path)
-      .on("click", clicked);
+    // g.append("g")
+    //   .attr("id", "states")
+    // .selectAll("path")
+    //   .data(worldMap)
+    // .enter().append("path")
+    //   .attr("d", path)
+    //   .on("click", clicked);
 
-    g.append("path")
-      .datum(topojson.mesh(data, data.objects.states, function(a, b) { return a !== b; }))
-      .attr("id", "state-borders")
-      .attr("d", path);
+    // g.append("path")
+    //   .datum(topojson.mesh(data, data.features, function(a, b) { return a !== b; }))
+    //   .attr("id", "state-borders")
+    //   .attr("d", path);
 
-    loadStats();
-});
+//     loadStations();
+// });
 
+var createDetailVis = function(this_data, name){
 
+    updateDetailVis(this_data, name);
 
-// // ALL THESE FUNCTIONS are just a RECOMMENDATION !!!!
-// var createDetailVis = function(this_data, name){
+        var cleanData = [];
 
-//     updateDetailVis(this_data, name);
+        // make new array of objects to contain the hourly object data
+        for (key in this_data) {
+            d = {};
+            d.date = key);
+            d.value = this_data[key];
+            cleanData.push(d);
+        }
 
-//         var cleanData = [];
+        cleanData.sort(function(a,b){
+            return d3.ascending(a.date, b.date);
+        });
 
-//         var timeParser = d3.time.format("%b %-d, %Y %X %p")
-//         var hourParser = d3.time.format("%-H:%M:%S %p")
+        var x = d3.scale.ordinal()
+            .rangeRoundBands([0, bbDetailVis.w], .1);
 
-//         parse_date = d3.time.format('%-H:%M:%S %p')
+        var y = d3.scale.linear()
+            .range([bbDetailVis.h, 0]);
 
-//         // make new array of objects to contain the hourly object data
-//         for (key in this_data) {
-//             d = {};
-//             d.date = parse_date.parse(key);
-//             d.value = this_data[key];
-//             cleanData.push(d);
-//         }
+        // tough part is this domain is not a date. Should we convert it to a date object?
+        x.domain(cleanData.map(function(d) { 
+                return +d.date.getHours(); 
+        }));
 
-//         cleanData.sort(function(a,b){
-//             return d3.ascending(a.date, b.date);
-//         });
+        y.domain([0, d3.max(cleanData, function(d) { 
+                return d.value; 
+        })]);
 
-//         var x = d3.scale.ordinal()
-//             .rangeRoundBands([0, bbDetailVis.w], .1);
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
 
-//         var y = d3.scale.linear()
-//             .range([bbDetailVis.h, 0]);
-
-//         x.domain(cleanData.map(function(d) { 
-//                 return +d.date.getHours(); 
-//         }));
-
-//         y.domain([0, d3.max(cleanData, function(d) { 
-//                 return d.value; 
-//         })]);
-
-//         var xAxis = d3.svg.axis()
-//             .scale(x)
-//             .orient("bottom");
-
-//         var yAxis = d3.svg.axis()
-//             .scale(y)
-//             .orient("right");
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("right");
             
-//         detailVis.append("text")
-//         .attr("class", "label")
-//         .attr("x", 0)
-//         .attr("y", 10)
-//         .text(name);
+        detailVis.append("text")
+        .attr("class", "label")
+        .attr("x", 0)
+        .attr("y", 10)
+        .text(name);
 
-//         detailVis.append("g")
-//           .attr("class", "x axis")
-//           .attr("transform", "translate(0," + bbDetailVis.h + ")")
-//           .call(xAxis);
+        detailVis.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + bbDetailVis.h + ")")
+          .call(xAxis);
 
-//         detailVis.append("g")
-//           .attr("class", "y axis")
-//           .attr("transform", "translate(" + bbDetailVis.w + ", 0)")
-//           .call(yAxis)
+        detailVis.append("g")
+          .attr("class", "y axis")
+          .attr("transform", "translate(" + bbDetailVis.w + ", 0)")
+          .call(yAxis)
 
-//         detailVis.selectAll(".bar")
-//             .data(cleanData)
-//         .enter().append("rect")
-//           .attr("class", "bar")
-//           .attr("x", function(d) { 
-//             return x(+d.date.getHours()); })
-//           .attr("width", x.rangeBand())
-//           .attr("y", function(d) { 
-//             return y(d.value); })
-//           .attr("height", function(d) { return bbDetailVis.h - y(d.value); });
+        detailVis.selectAll(".bar")
+            .data(cleanData)
+        .enter().append("rect")
+          .attr("class", "bar")
+          .attr("x", function(d) { 
+            return x(+d.date.getHours()); })
+          .attr("width", x.rangeBand())
+          .attr("y", function(d) { 
+            return y(d.value); })
+          .attr("height", function(d) { return bbDetailVis.h - y(d.value); });
 
-// }
+}
 
 
-// var updateDetailVis = function(data, name){
-//     detailVis.selectAll(".axis").data(data).exit().remove();
-//     detailVis.selectAll(".bar").data(data).exit().remove();
-//     detailVis.selectAll(".label").data(data).exit().remove();
-  
-// }
+var updateDetailVis = function(data, name){
+    detailVis.selectAll(".axis").data(data).exit().remove();
+    detailVis.selectAll(".bar").data(data).exit().remove();
+    detailVis.selectAll(".label").data(data).exit().remove();
+}
 
 // zoom function taken from click-to-zoom example: http://bl.ocks.org/mbostock/2206590
 function clicked(d) {

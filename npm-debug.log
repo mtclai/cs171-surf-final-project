@@ -1,0 +1,433 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', '-g', 'topojson' ]
+2 info using npm@1.4.3
+3 info using node@v0.10.26
+4 verbose cache add [ 'topojson', null ]
+5 verbose cache add name=undefined spec="topojson" args=["topojson",null]
+6 verbose parsed url { protocol: null,
+6 verbose parsed url   slashes: null,
+6 verbose parsed url   auth: null,
+6 verbose parsed url   host: null,
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: null,
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: 'topojson',
+6 verbose parsed url   path: 'topojson',
+6 verbose parsed url   href: 'topojson' }
+7 silly lockFile 947c2103-topojson topojson
+8 verbose lock topojson /Users/MichaelLai/.npm/947c2103-topojson.lock
+9 silly lockFile 947c2103-topojson topojson
+10 silly lockFile 947c2103-topojson topojson
+11 verbose addNamed [ 'topojson', '' ]
+12 verbose addNamed [ null, '*' ]
+13 silly lockFile 7edf76d6-topojson topojson@
+14 verbose lock topojson@ /Users/MichaelLai/.npm/7edf76d6-topojson.lock
+15 silly addNameRange { name: 'topojson', range: '*', hasData: false }
+16 verbose url raw topojson
+17 verbose url resolving [ 'https://registry.npmjs.org/', './topojson' ]
+18 verbose url resolved https://registry.npmjs.org/topojson
+19 info trying registry request attempt 1 at 11:31:11
+20 http GET https://registry.npmjs.org/topojson
+21 http 200 https://registry.npmjs.org/topojson
+22 silly registry.get cb [ 200,
+22 silly registry.get   { date: 'Thu, 03 Apr 2014 15:31:11 GMT',
+22 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B)',
+22 silly registry.get     etag: '"6NOIX0UHMX5OI8MRASCHPNZNL"',
+22 silly registry.get     'content-type': 'application/json',
+22 silly registry.get     via: '1.1 varnish',
+22 silly registry.get     'cache-control': 'max-age=1',
+22 silly registry.get     'content-length': '65323',
+22 silly registry.get     'accept-ranges': 'bytes',
+22 silly registry.get     age: '3852',
+22 silly registry.get     'x-served-by': 'cache-v43-ASH, cache-at50-ATL',
+22 silly registry.get     'x-cache': 'MISS, MISS',
+22 silly registry.get     'x-cache-hits': '0, 0',
+22 silly registry.get     'x-timer': 'S1396539071.393457413,VS0,VS7,VE13,VE21',
+22 silly registry.get     vary: 'Accept',
+22 silly registry.get     'keep-alive': 'timeout=10, max=50',
+22 silly registry.get     connection: 'Keep-Alive' } ]
+23 silly addNameRange number 2 { name: 'topojson', range: '*', hasData: true }
+24 silly addNameRange versions [ 'topojson',
+24 silly addNameRange   [ '0.0.1',
+24 silly addNameRange     '0.0.2',
+24 silly addNameRange     '0.0.4',
+24 silly addNameRange     '0.0.5',
+24 silly addNameRange     '0.0.6',
+24 silly addNameRange     '0.0.7',
+24 silly addNameRange     '0.0.8',
+24 silly addNameRange     '0.0.9',
+24 silly addNameRange     '0.0.10',
+24 silly addNameRange     '0.0.11',
+24 silly addNameRange     '0.0.12',
+24 silly addNameRange     '0.0.13',
+24 silly addNameRange     '0.0.14',
+24 silly addNameRange     '0.0.15',
+24 silly addNameRange     '0.0.16',
+24 silly addNameRange     '0.0.17',
+24 silly addNameRange     '0.0.18',
+24 silly addNameRange     '0.0.19',
+24 silly addNameRange     '0.0.20',
+24 silly addNameRange     '0.0.21',
+24 silly addNameRange     '0.0.23',
+24 silly addNameRange     '0.0.24',
+24 silly addNameRange     '0.0.25',
+24 silly addNameRange     '0.0.26',
+24 silly addNameRange     '0.0.27',
+24 silly addNameRange     '0.0.28',
+24 silly addNameRange     '0.0.29',
+24 silly addNameRange     '0.0.30',
+24 silly addNameRange     '0.0.31',
+24 silly addNameRange     '0.0.32',
+24 silly addNameRange     '0.0.33',
+24 silly addNameRange     '0.0.34',
+24 silly addNameRange     '0.0.35',
+24 silly addNameRange     '0.0.36',
+24 silly addNameRange     '0.0.37',
+24 silly addNameRange     '0.0.38',
+24 silly addNameRange     '0.0.39',
+24 silly addNameRange     '1.0.0',
+24 silly addNameRange     '1.1.0',
+24 silly addNameRange     '1.1.1',
+24 silly addNameRange     '1.1.2',
+24 silly addNameRange     '1.1.3',
+24 silly addNameRange     '1.1.4',
+24 silly addNameRange     '1.1.5',
+24 silly addNameRange     '1.1.6',
+24 silly addNameRange     '1.2.0',
+24 silly addNameRange     '1.2.1',
+24 silly addNameRange     '1.2.2',
+24 silly addNameRange     '1.2.3',
+24 silly addNameRange     '1.3.0',
+24 silly addNameRange     '1.4.0',
+24 silly addNameRange     '1.4.1',
+24 silly addNameRange     '1.4.2',
+24 silly addNameRange     '1.4.3',
+24 silly addNameRange     '1.4.4',
+24 silly addNameRange     '1.4.5',
+24 silly addNameRange     '1.4.6',
+24 silly addNameRange     '1.4.7',
+24 silly addNameRange     '1.4.8',
+24 silly addNameRange     '1.4.9',
+24 silly addNameRange     '1.5.0',
+24 silly addNameRange     '1.5.1',
+24 silly addNameRange     '1.5.2',
+24 silly addNameRange     '1.5.3',
+24 silly addNameRange     '1.5.4',
+24 silly addNameRange     '1.6.0',
+24 silly addNameRange     '1.6.1',
+24 silly addNameRange     '1.6.2' ] ]
+25 verbose addNamed [ 'topojson', '1.6.2' ]
+26 verbose addNamed [ '1.6.2', '1.6.2' ]
+27 silly lockFile 2cf7838f-topojson-1-6-2 topojson@1.6.2
+28 verbose lock topojson@1.6.2 /Users/MichaelLai/.npm/2cf7838f-topojson-1-6-2.lock
+29 silly lockFile 0f003dd5--org-topojson-topojson-1-6-2-tgz https://registry.npmjs.org/topojson/-/topojson-1.6.2.tgz
+30 verbose lock https://registry.npmjs.org/topojson/-/topojson-1.6.2.tgz /Users/MichaelLai/.npm/0f003dd5--org-topojson-topojson-1-6-2-tgz.lock
+31 verbose addRemoteTarball [ 'https://registry.npmjs.org/topojson/-/topojson-1.6.2.tgz',
+31 verbose addRemoteTarball   '5db39bb066e7784a17c697b3e62861e3292318c7' ]
+32 info retry fetch attempt 1 at 11:31:11
+33 verbose fetch to= /var/folders/qx/3f81sdvs1bngrv776jdb8pg40000gq/T/npm-42812-DzwYKh3g/1396539071788-0.5722394313197583/tmp.tgz
+34 http GET https://registry.npmjs.org/topojson/-/topojson-1.6.2.tgz
+35 http 200 https://registry.npmjs.org/topojson/-/topojson-1.6.2.tgz
+36 verbose tar unpack /var/folders/qx/3f81sdvs1bngrv776jdb8pg40000gq/T/npm-42812-DzwYKh3g/1396539071788-0.5722394313197583/tmp.tgz
+37 silly lockFile 430c0517-71788-0-5722394313197583-package tar:///var/folders/qx/3f81sdvs1bngrv776jdb8pg40000gq/T/npm-42812-DzwYKh3g/1396539071788-0.5722394313197583/package
+38 verbose lock tar:///var/folders/qx/3f81sdvs1bngrv776jdb8pg40000gq/T/npm-42812-DzwYKh3g/1396539071788-0.5722394313197583/package /Users/MichaelLai/.npm/430c0517-71788-0-5722394313197583-package.lock
+39 silly lockFile 63bec635-71788-0-5722394313197583-tmp-tgz tar:///var/folders/qx/3f81sdvs1bngrv776jdb8pg40000gq/T/npm-42812-DzwYKh3g/1396539071788-0.5722394313197583/tmp.tgz
+40 verbose lock tar:///var/folders/qx/3f81sdvs1bngrv776jdb8pg40000gq/T/npm-42812-DzwYKh3g/1396539071788-0.5722394313197583/tmp.tgz /Users/MichaelLai/.npm/63bec635-71788-0-5722394313197583-tmp-tgz.lock
+41 silly gunzTarPerm modes [ '755', '644' ]
+42 silly gunzTarPerm extractEntry package.json
+43 silly gunzTarPerm extractEntry .npmignore
+44 silly gunzTarPerm extractEntry README.md
+45 silly gunzTarPerm extractEntry LICENSE
+46 silly gunzTarPerm extractEntry topojson.js
+47 silly gunzTarPerm extractEntry index.js
+48 silly gunzTarPerm extractEntry topojson.min.js
+49 silly gunzTarPerm extractEntry bower.json
+50 silly gunzTarPerm extractEntry lib/topojson/bind.js
+51 silly gunzTarPerm extractEntry lib/topojson/delta.js
+52 silly gunzTarPerm extractEntry lib/topojson/filter.js
+53 silly gunzTarPerm extractEntry lib/topojson/geomify.js
+54 silly gunzTarPerm extractEntry lib/topojson/post-quantize.js
+55 silly gunzTarPerm extractEntry lib/topojson/coordinate-systems.js
+56 silly gunzTarPerm extractEntry lib/topojson/prune.js
+57 silly gunzTarPerm extractEntry lib/topojson/quantize.js
+58 silly gunzTarPerm extractEntry lib/topojson/scale.js
+59 silly gunzTarPerm extractEntry lib/topojson/simplify.js
+60 silly gunzTarPerm extractEntry lib/topojson/spherical.js
+61 silly gunzTarPerm extractEntry lib/topojson/compute-id.js
+62 silly gunzTarPerm extractEntry lib/topojson/stitch.js
+63 silly gunzTarPerm extractEntry lib/topojson/clockwise.js
+64 silly gunzTarPerm extractEntry lib/topojson/transform-properties.js
+65 silly gunzTarPerm extractEntry lib/topojson/cartesian.js
+66 silly gunzTarPerm extractEntry lib/topojson/topology.js
+67 silly gunzTarPerm extractEntry lib/topojson/bounds.js
+68 silly gunzTarPerm extractEntry lib/topojson/type.js
+69 silly gunzTarPerm extractEntry lib/topojson/pre-quantize.js
+70 silly gunzTarPerm extractEntry lib/topojson/topology/README.md
+71 silly gunzTarPerm extractEntry lib/topojson/topology/cut.js
+72 silly gunzTarPerm extractEntry lib/topojson/topology/dedup.js
+73 silly gunzTarPerm extractEntry lib/topojson/topology/extract.js
+74 silly gunzTarPerm extractEntry lib/topojson/topology/hashmap.js
+75 silly gunzTarPerm extractEntry lib/topojson/topology/hashset.js
+76 silly gunzTarPerm extractEntry lib/topojson/topology/index.js
+77 silly gunzTarPerm extractEntry lib/topojson/topology/join.js
+78 silly gunzTarPerm extractEntry lib/topojson/topology/point-equal.js
+79 silly gunzTarPerm extractEntry lib/topojson/topology/point-hash.js
+80 silly gunzTarPerm extractEntry bin/bower
+81 silly gunzTarPerm extractEntry bin/geojson
+82 silly gunzTarPerm extractEntry bin/package
+83 silly gunzTarPerm extractEntry bin/topojson
+84 silly gunzTarPerm extractEntry bin/topojson-group
+85 silly gunzTarPerm extractEntry bin/topojson-merge
+86 silly gunzTarPerm extractEntry test/assert.js
+87 silly gunzTarPerm extractEntry test/feature-test.js
+88 silly gunzTarPerm extractEntry test/filter-test.js
+89 silly gunzTarPerm extractEntry test/topology-test.js
+90 silly gunzTarPerm extractEntry test/geojson-command-test.js
+91 silly gunzTarPerm extractEntry test/delta-test.js
+92 silly gunzTarPerm extractEntry test/bind-test.js
+93 silly gunzTarPerm extractEntry test/mesh-test.js
+94 silly gunzTarPerm extractEntry test/neighbors-test.js
+95 silly gunzTarPerm extractEntry test/prequantize-test.js
+96 silly gunzTarPerm extractEntry test/prune-test.js
+97 silly gunzTarPerm extractEntry test/compute-id-test.js
+98 silly gunzTarPerm extractEntry test/scale-test.js
+99 silly gunzTarPerm extractEntry test/clockwise-test.js
+100 silly gunzTarPerm extractEntry test/simplify-test.js
+101 silly gunzTarPerm extractEntry test/cartesian-ringArea-test.js
+102 silly gunzTarPerm extractEntry test/spherical-ringArea-test.js
+103 silly gunzTarPerm extractEntry test/bounds-test.js
+104 silly gunzTarPerm extractEntry test/topojson-command-test.js
+105 silly gunzTarPerm extractEntry test/geomify-test.js
+106 silly gunzTarPerm extractEntry test/transform-properties-test.js
+107 silly gunzTarPerm extractEntry test/merge-test.js
+108 silly gunzTarPerm extractEntry test/topojson/empty-allowed.json
+109 silly gunzTarPerm extractEntry test/topojson/empty.json
+110 silly gunzTarPerm extractEntry test/topojson/polygon-counterclockwise.json
+111 silly gunzTarPerm extractEntry test/topojson/polygon-mercator.json
+112 silly gunzTarPerm extractEntry test/topojson/polygon-no-quantization.json
+113 silly gunzTarPerm extractEntry test/topojson/polygon.json
+114 silly gunzTarPerm extractEntry test/topology/cut-test.js
+115 silly gunzTarPerm extractEntry test/topology/dedup-test.js
+116 silly gunzTarPerm extractEntry test/topology/extract-test.js
+117 silly gunzTarPerm extractEntry test/topology/hashmap-test.js
+118 silly gunzTarPerm extractEntry test/topology/hashset-test.js
+119 silly gunzTarPerm extractEntry test/topology/index-test.js
+120 silly gunzTarPerm extractEntry test/topology/join-test.js
+121 silly gunzTarPerm extractEntry test/geojson/empty-multilinestring.json
+122 silly gunzTarPerm extractEntry test/geojson/empty-multipoint.json
+123 silly gunzTarPerm extractEntry test/geojson/empty-multipolygon.json
+124 silly gunzTarPerm extractEntry test/geojson/empty-multipolygon2.json
+125 silly gunzTarPerm extractEntry test/geojson/empty-polygon.json
+126 silly gunzTarPerm extractEntry test/geojson/polygon-clockwise.json
+127 silly gunzTarPerm extractEntry test/geojson/polygon-counterclockwise.json
+128 silly gunzTarPerm extractEntry test/geojson/polygon-feature-mercator.json
+129 silly gunzTarPerm extractEntry test/geojson/polygon-feature-rounded.json
+130 silly gunzTarPerm extractEntry test/geojson/polygon-feature.json
+131 silly gunzTarPerm extractEntry Makefile
+132 silly gunzTarPerm extractEntry examples/README.md
+133 silly gunzTarPerm extractEntry examples/us-10m.json
+134 silly gunzTarPerm extractEntry examples/world-110m.json
+135 silly gunzTarPerm extractEntry examples/world-50m.json
+136 silly lockFile 430c0517-71788-0-5722394313197583-package tar:///var/folders/qx/3f81sdvs1bngrv776jdb8pg40000gq/T/npm-42812-DzwYKh3g/1396539071788-0.5722394313197583/package
+137 silly lockFile 430c0517-71788-0-5722394313197583-package tar:///var/folders/qx/3f81sdvs1bngrv776jdb8pg40000gq/T/npm-42812-DzwYKh3g/1396539071788-0.5722394313197583/package
+138 silly lockFile 63bec635-71788-0-5722394313197583-tmp-tgz tar:///var/folders/qx/3f81sdvs1bngrv776jdb8pg40000gq/T/npm-42812-DzwYKh3g/1396539071788-0.5722394313197583/tmp.tgz
+139 silly lockFile 63bec635-71788-0-5722394313197583-tmp-tgz tar:///var/folders/qx/3f81sdvs1bngrv776jdb8pg40000gq/T/npm-42812-DzwYKh3g/1396539071788-0.5722394313197583/tmp.tgz
+140 verbose tar pack [ '/Users/MichaelLai/.npm/topojson/1.6.2/package.tgz',
+140 verbose tar pack   '/var/folders/qx/3f81sdvs1bngrv776jdb8pg40000gq/T/npm-42812-DzwYKh3g/1396539071788-0.5722394313197583/package' ]
+141 verbose tarball /Users/MichaelLai/.npm/topojson/1.6.2/package.tgz
+142 verbose folder /var/folders/qx/3f81sdvs1bngrv776jdb8pg40000gq/T/npm-42812-DzwYKh3g/1396539071788-0.5722394313197583/package
+143 silly lockFile 430c0517-71788-0-5722394313197583-package tar:///var/folders/qx/3f81sdvs1bngrv776jdb8pg40000gq/T/npm-42812-DzwYKh3g/1396539071788-0.5722394313197583/package
+144 verbose lock tar:///var/folders/qx/3f81sdvs1bngrv776jdb8pg40000gq/T/npm-42812-DzwYKh3g/1396539071788-0.5722394313197583/package /Users/MichaelLai/.npm/430c0517-71788-0-5722394313197583-package.lock
+145 silly lockFile 37f27096-i-npm-topojson-1-6-2-package-tgz tar:///Users/MichaelLai/.npm/topojson/1.6.2/package.tgz
+146 verbose lock tar:///Users/MichaelLai/.npm/topojson/1.6.2/package.tgz /Users/MichaelLai/.npm/37f27096-i-npm-topojson-1-6-2-package-tgz.lock
+147 silly lockFile 430c0517-71788-0-5722394313197583-package tar:///var/folders/qx/3f81sdvs1bngrv776jdb8pg40000gq/T/npm-42812-DzwYKh3g/1396539071788-0.5722394313197583/package
+148 silly lockFile 430c0517-71788-0-5722394313197583-package tar:///var/folders/qx/3f81sdvs1bngrv776jdb8pg40000gq/T/npm-42812-DzwYKh3g/1396539071788-0.5722394313197583/package
+149 silly lockFile 37f27096-i-npm-topojson-1-6-2-package-tgz tar:///Users/MichaelLai/.npm/topojson/1.6.2/package.tgz
+150 silly lockFile 37f27096-i-npm-topojson-1-6-2-package-tgz tar:///Users/MichaelLai/.npm/topojson/1.6.2/package.tgz
+151 silly lockFile 70f4260c-elLai-npm-topojson-1-6-2-package /Users/MichaelLai/.npm/topojson/1.6.2/package
+152 verbose lock /Users/MichaelLai/.npm/topojson/1.6.2/package /Users/MichaelLai/.npm/70f4260c-elLai-npm-topojson-1-6-2-package.lock
+153 silly lockFile 70f4260c-elLai-npm-topojson-1-6-2-package /Users/MichaelLai/.npm/topojson/1.6.2/package
+154 silly lockFile 70f4260c-elLai-npm-topojson-1-6-2-package /Users/MichaelLai/.npm/topojson/1.6.2/package
+155 verbose tar unpack /Users/MichaelLai/.npm/topojson/1.6.2/package.tgz
+156 silly lockFile f77182cd-elLai-npm-topojson-1-6-2-package tar:///Users/MichaelLai/.npm/topojson/1.6.2/package
+157 verbose lock tar:///Users/MichaelLai/.npm/topojson/1.6.2/package /Users/MichaelLai/.npm/f77182cd-elLai-npm-topojson-1-6-2-package.lock
+158 silly lockFile 37f27096-i-npm-topojson-1-6-2-package-tgz tar:///Users/MichaelLai/.npm/topojson/1.6.2/package.tgz
+159 verbose lock tar:///Users/MichaelLai/.npm/topojson/1.6.2/package.tgz /Users/MichaelLai/.npm/37f27096-i-npm-topojson-1-6-2-package-tgz.lock
+160 silly gunzTarPerm modes [ '755', '644' ]
+161 silly gunzTarPerm extractEntry package.json
+162 silly gunzTarPerm extractEntry .npmignore
+163 silly gunzTarPerm extractEntry README.md
+164 silly gunzTarPerm extractEntry LICENSE
+165 silly gunzTarPerm extractEntry topojson.js
+166 silly gunzTarPerm extractEntry index.js
+167 silly gunzTarPerm extractEntry topojson.min.js
+168 silly gunzTarPerm extractEntry bower.json
+169 silly gunzTarPerm extractEntry lib/topojson/bind.js
+170 silly gunzTarPerm extractEntry lib/topojson/delta.js
+171 silly gunzTarPerm extractEntry lib/topojson/filter.js
+172 silly gunzTarPerm extractEntry lib/topojson/geomify.js
+173 silly gunzTarPerm extractEntry lib/topojson/post-quantize.js
+174 silly gunzTarPerm extractEntry lib/topojson/coordinate-systems.js
+175 silly gunzTarPerm extractEntry lib/topojson/prune.js
+176 silly gunzTarPerm extractEntry lib/topojson/quantize.js
+177 silly gunzTarPerm extractEntry lib/topojson/scale.js
+178 silly gunzTarPerm extractEntry lib/topojson/simplify.js
+179 silly gunzTarPerm extractEntry lib/topojson/spherical.js
+180 silly gunzTarPerm extractEntry lib/topojson/compute-id.js
+181 silly gunzTarPerm extractEntry lib/topojson/stitch.js
+182 silly gunzTarPerm extractEntry lib/topojson/clockwise.js
+183 silly gunzTarPerm extractEntry lib/topojson/transform-properties.js
+184 silly gunzTarPerm extractEntry lib/topojson/cartesian.js
+185 silly gunzTarPerm extractEntry lib/topojson/topology.js
+186 silly gunzTarPerm extractEntry lib/topojson/bounds.js
+187 silly gunzTarPerm extractEntry lib/topojson/type.js
+188 silly gunzTarPerm extractEntry lib/topojson/pre-quantize.js
+189 silly gunzTarPerm extractEntry lib/topojson/topology/README.md
+190 silly gunzTarPerm extractEntry lib/topojson/topology/cut.js
+191 silly gunzTarPerm extractEntry lib/topojson/topology/dedup.js
+192 silly gunzTarPerm extractEntry lib/topojson/topology/extract.js
+193 silly gunzTarPerm extractEntry lib/topojson/topology/hashmap.js
+194 silly gunzTarPerm extractEntry lib/topojson/topology/hashset.js
+195 silly gunzTarPerm extractEntry lib/topojson/topology/index.js
+196 silly gunzTarPerm extractEntry lib/topojson/topology/join.js
+197 silly gunzTarPerm extractEntry lib/topojson/topology/point-equal.js
+198 silly gunzTarPerm extractEntry lib/topojson/topology/point-hash.js
+199 silly gunzTarPerm extractEntry bin/bower
+200 silly gunzTarPerm extractEntry bin/geojson
+201 silly gunzTarPerm extractEntry bin/package
+202 silly gunzTarPerm extractEntry bin/topojson
+203 silly gunzTarPerm extractEntry bin/topojson-group
+204 silly gunzTarPerm extractEntry bin/topojson-merge
+205 silly gunzTarPerm extractEntry test/assert.js
+206 silly gunzTarPerm extractEntry test/feature-test.js
+207 silly gunzTarPerm extractEntry test/filter-test.js
+208 silly gunzTarPerm extractEntry test/topology-test.js
+209 silly gunzTarPerm extractEntry test/geojson-command-test.js
+210 silly gunzTarPerm extractEntry test/delta-test.js
+211 silly gunzTarPerm extractEntry test/bind-test.js
+212 silly gunzTarPerm extractEntry test/mesh-test.js
+213 silly gunzTarPerm extractEntry test/neighbors-test.js
+214 silly gunzTarPerm extractEntry test/prequantize-test.js
+215 silly gunzTarPerm extractEntry test/prune-test.js
+216 silly gunzTarPerm extractEntry test/compute-id-test.js
+217 silly gunzTarPerm extractEntry test/scale-test.js
+218 silly gunzTarPerm extractEntry test/clockwise-test.js
+219 silly gunzTarPerm extractEntry test/simplify-test.js
+220 silly gunzTarPerm extractEntry test/cartesian-ringArea-test.js
+221 silly gunzTarPerm extractEntry test/spherical-ringArea-test.js
+222 silly gunzTarPerm extractEntry test/bounds-test.js
+223 silly gunzTarPerm extractEntry test/topojson-command-test.js
+224 silly gunzTarPerm extractEntry test/geomify-test.js
+225 silly gunzTarPerm extractEntry test/transform-properties-test.js
+226 silly gunzTarPerm extractEntry test/merge-test.js
+227 silly gunzTarPerm extractEntry test/topojson/empty-allowed.json
+228 silly gunzTarPerm extractEntry test/topojson/empty.json
+229 silly gunzTarPerm extractEntry test/topojson/polygon-counterclockwise.json
+230 silly gunzTarPerm extractEntry test/topojson/polygon-mercator.json
+231 silly gunzTarPerm extractEntry test/topojson/polygon-no-quantization.json
+232 silly gunzTarPerm extractEntry test/topojson/polygon.json
+233 silly gunzTarPerm extractEntry test/topology/cut-test.js
+234 silly gunzTarPerm extractEntry test/topology/dedup-test.js
+235 silly gunzTarPerm extractEntry test/topology/extract-test.js
+236 silly gunzTarPerm extractEntry test/topology/hashmap-test.js
+237 silly gunzTarPerm extractEntry test/topology/hashset-test.js
+238 silly gunzTarPerm extractEntry test/topology/index-test.js
+239 silly gunzTarPerm extractEntry test/topology/join-test.js
+240 silly gunzTarPerm extractEntry test/geojson/empty-multilinestring.json
+241 silly gunzTarPerm extractEntry test/geojson/empty-multipoint.json
+242 silly gunzTarPerm extractEntry test/geojson/empty-multipolygon.json
+243 silly gunzTarPerm extractEntry test/geojson/empty-multipolygon2.json
+244 silly gunzTarPerm extractEntry test/geojson/empty-polygon.json
+245 silly gunzTarPerm extractEntry test/geojson/polygon-clockwise.json
+246 silly gunzTarPerm extractEntry test/geojson/polygon-counterclockwise.json
+247 silly gunzTarPerm extractEntry test/geojson/polygon-feature-mercator.json
+248 silly gunzTarPerm extractEntry test/geojson/polygon-feature-rounded.json
+249 silly gunzTarPerm extractEntry test/geojson/polygon-feature.json
+250 silly gunzTarPerm extractEntry Makefile
+251 silly gunzTarPerm extractEntry examples/README.md
+252 silly gunzTarPerm extractEntry examples/us-10m.json
+253 silly gunzTarPerm extractEntry examples/world-110m.json
+254 silly gunzTarPerm extractEntry examples/world-50m.json
+255 silly lockFile f77182cd-elLai-npm-topojson-1-6-2-package tar:///Users/MichaelLai/.npm/topojson/1.6.2/package
+256 silly lockFile f77182cd-elLai-npm-topojson-1-6-2-package tar:///Users/MichaelLai/.npm/topojson/1.6.2/package
+257 silly lockFile 37f27096-i-npm-topojson-1-6-2-package-tgz tar:///Users/MichaelLai/.npm/topojson/1.6.2/package.tgz
+258 silly lockFile 37f27096-i-npm-topojson-1-6-2-package-tgz tar:///Users/MichaelLai/.npm/topojson/1.6.2/package.tgz
+259 verbose chmod /Users/MichaelLai/.npm/topojson/1.6.2/package.tgz 644
+260 verbose chown /Users/MichaelLai/.npm/topojson/1.6.2/package.tgz [ 503, 20 ]
+261 silly lockFile 0f003dd5--org-topojson-topojson-1-6-2-tgz https://registry.npmjs.org/topojson/-/topojson-1.6.2.tgz
+262 silly lockFile 0f003dd5--org-topojson-topojson-1-6-2-tgz https://registry.npmjs.org/topojson/-/topojson-1.6.2.tgz
+263 silly lockFile 2cf7838f-topojson-1-6-2 topojson@1.6.2
+264 silly lockFile 2cf7838f-topojson-1-6-2 topojson@1.6.2
+265 silly lockFile 7edf76d6-topojson topojson@
+266 silly lockFile 7edf76d6-topojson topojson@
+267 silly resolved [ { name: 'topojson',
+267 silly resolved     version: '1.6.2',
+267 silly resolved     description: 'An extension to GeoJSON that encodes topology.',
+267 silly resolved     keywords: [ 'geojson', 'shapefile' ],
+267 silly resolved     author: { name: 'Mike Bostock', url: 'http://bost.ocks.org/mike' },
+267 silly resolved     repository: { type: 'git', url: 'https://github.com/mbostock/topojson.git' },
+267 silly resolved     main: 'index.js',
+267 silly resolved     dependencies:
+267 silly resolved      { d3: '3',
+267 silly resolved        'd3-geo-projection': '0.2',
+267 silly resolved        optimist: '0.3',
+267 silly resolved        'queue-async': '1.0',
+267 silly resolved        shapefile: '0.3' },
+267 silly resolved     devDependencies:
+267 silly resolved      { vows: '0.7',
+267 silly resolved        'uglify-js': '2',
+267 silly resolved        'us-atlas': '0.0',
+267 silly resolved        'world-atlas': '0.0' },
+267 silly resolved     bin:
+267 silly resolved      { topojson: './bin/topojson',
+267 silly resolved        'topojson-merge': './bin/topojson-merge',
+267 silly resolved        'topojson-group': './bin/topojson-group' },
+267 silly resolved     scripts: { test: 'vows; echo' },
+267 silly resolved     readme: '# TopoJSON\n\n**TopoJSON** is an extension of GeoJSON that encodes topology. Rather than representing geometries discretely, geometries in TopoJSON files are stitched together from shared line segments called *arcs*. TopoJSON eliminates redundancy, offering much more compact representations of geometry than with GeoJSON; typical TopoJSON files are 80% smaller than their GeoJSON equivalents. In addition, TopoJSON facilitates applications that use topology, such as [topology-preserving shape simplification](http://bost.ocks.org/mike/simplify/), [automatic map coloring](http://bl.ocks.org/4188334), and [cartograms](http://prag.ma/code/d3-cartogram/).\n\nWant to learn more? [See the wiki.](https://github.com/mbostock/topojson/wiki)\n',
+267 silly resolved     readmeFilename: 'README.md',
+267 silly resolved     bugs: { url: 'https://github.com/mbostock/topojson/issues' },
+267 silly resolved     homepage: 'https://github.com/mbostock/topojson',
+267 silly resolved     _id: 'topojson@1.6.2',
+267 silly resolved     dist: { shasum: '7e3efa30ab765a8763acc388c0c048147c14fb33' },
+267 silly resolved     _from: 'topojson@',
+267 silly resolved     _resolved: 'https://registry.npmjs.org/topojson/-/topojson-1.6.2.tgz' } ]
+268 info install topojson@1.6.2 into /usr/local/lib
+269 info installOne topojson@1.6.2
+270 info /usr/local/lib/node_modules/topojson unbuild
+271 verbose tar unpack /Users/MichaelLai/.npm/topojson/1.6.2/package.tgz
+272 silly lockFile 48c3cdf9--local-lib-node-modules-topojson tar:///usr/local/lib/node_modules/topojson
+273 verbose lock tar:///usr/local/lib/node_modules/topojson /Users/MichaelLai/.npm/48c3cdf9--local-lib-node-modules-topojson.lock
+274 silly lockFile 37f27096-i-npm-topojson-1-6-2-package-tgz tar:///Users/MichaelLai/.npm/topojson/1.6.2/package.tgz
+275 verbose lock tar:///Users/MichaelLai/.npm/topojson/1.6.2/package.tgz /Users/MichaelLai/.npm/37f27096-i-npm-topojson-1-6-2-package-tgz.lock
+276 silly gunzTarPerm modes [ '755', '644' ]
+277 error Error: EACCES, mkdir '/usr/local/lib/node_modules/topojson'
+277 error  { [Error: EACCES, mkdir '/usr/local/lib/node_modules/topojson']
+277 error   errno: 3,
+277 error   code: 'EACCES',
+277 error   path: '/usr/local/lib/node_modules/topojson',
+277 error   fstream_type: 'Directory',
+277 error   fstream_path: '/usr/local/lib/node_modules/topojson',
+277 error   fstream_class: 'DirWriter',
+277 error   fstream_stack:
+277 error    [ '/usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23',
+277 error      '/usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:37:53',
+277 error      'Object.oncomplete (fs.js:107:15)' ] }
+278 error Please try running this command again as root/Administrator.
+279 error System Darwin 13.1.0
+280 error command "node" "/usr/local/bin/npm" "install" "-g" "topojson"
+281 error cwd /Users/MichaelLai/Dropbox/CS171/final-project
+282 error node -v v0.10.26
+283 error npm -v 1.4.3
+284 error path /usr/local/lib/node_modules/topojson
+285 error fstream_path /usr/local/lib/node_modules/topojson
+286 error fstream_type Directory
+287 error fstream_class DirWriter
+288 error code EACCES
+289 error errno 3
+290 error stack Error: EACCES, mkdir '/usr/local/lib/node_modules/topojson'
+291 error fstream_stack /usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23
+291 error fstream_stack /usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:37:53
+291 error fstream_stack Object.oncomplete (fs.js:107:15)
+292 verbose exit [ 3, true ]
