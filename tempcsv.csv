@@ -1,0 +1,21 @@
+,location,response
+city,Arnstein,
+country,DL,
+country_iso3166,DE,
+country_name,Germany,
+features,,{u'geolookup': 1}
+l,/q/zmw:00000.8.10655,
+lat,50.000000,
+lon,10.000000,
+magic,8,
+nearby_weather_stations,"{u'airport': {u'station': [{u'city': u'Wuerzburg', u'country': u'Germany', u'lon': u'9.95765972', u'icao': u'', u'state': u'', u'lat': u'49.77038956'}, {u'city': u'Niederstetten', u'country': u'DL', u'lon': u'9.96527767', u'icao': u'ETHN', u'state': u'', u'lat': u'49.39916611'}, {u'city': u'Illesheim', u'country': u'DL', u'lon': u'10.38971710', u'icao': u'ETIK', u'state': u'', u'lat': u'49.47499847'}, {u'city': u'Ansbach', u'country': u'DL', u'lon': u'10.63333321', u'icao': u'ETEB', u'state': u'', u'lat': u'49.31666565'}]}, u'pws': {u'station': [{u'city': u'Wirmsthal', u'neighborhood': u'Wirmsthal', u'distance_mi': 10, u'country': u'GERMANY', u'lon': 10.061629, u'state': u'BAYERN', u'distance_km': 17, u'lat': 50.149532, u'id': u'IBAYERNW16'}, {u'city': u'Karlstadt', u'neighborhood': u'', u'distance_mi': 10, u'country': u'GERMANY', u'lon': 9.765661, u'state': u'Bayern', u'distance_km': 17, u'lat': 49.96064, u'id': u'IBAYERNK7'}, {u'city': u'W\xfcrzburg', u'neighborhood': u'', u'distance_mi': 16, u'country': u'GERMANY', u'lon': 9.962377, u'state': u'W\xfcRZBURG', u'distance_km': 28, u'lat': 49.748661, u'id': u'IWRZBURG2'}, {u'city': u'Tiefenthal', u'neighborhood': u'W\xfcrzburg', u'distance_mi': 19, u'country': u'GERMANY', u'lon': 9.656952, u'state': u'BAYERN UNTERFRANKEN', u'distance_km': 32, u'lat': 49.814606, u'id': u'IBAYERNU5'}]}}",
+requesturl,global/stations/10655.html,
+state,,
+termsofService,,http://www.wunderground.com/weather/api/d/terms.html
+type,INTLCITY,
+tz_long,Europe/Berlin,
+tz_short,CEST,
+version,,0.1
+wmo,10655,
+wuiurl,http://www.wunderground.com/global/stations/10655.html,
+zip,00000,
