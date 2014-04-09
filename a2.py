@@ -76,19 +76,18 @@ def getspotdetails(spoturl):
 
 
 #Get all country links and execute spot detail search
-def getcountrylinks():
+def getcountrypages():
 	url = urllib2.urlopen("http://www.wannasurf.com/spot/index.html")
 	content = url.read()
 	soup = BeautifulSoup(content)
 	alllinks = soup.findAll("a")
-	countrylinks=[]
+	countrypages=[]
 	for link in alllinks:
-
 		if str(link).count('/')==5 and "index.html" in str(link):
 			if "/spot/North_America" in str(link) or "/spot/South_America" in str(link) or "/spot/Middle_East" in str(link) or "/spot/Australia_Pacific" in str(link) or "/spot/Central_America" in str(link) or "/spot/Europe" in str(link) or "/spot/Africa" in str(link) or "/spot/Asia" in str(link):
-				countrylinks.append("http://www.wannasurf.com"+str(link["href"]))
+				countrypages.append("http://www.wannasurf.com"+str(link["href"]))
 	print "All country pages collected"
-	return countrylinks
+	return countrypages
 
 #Open output file
 fout=open("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel.csv", "w")
@@ -99,44 +98,67 @@ for variabletext in variabletexts:
 	fout.write(variabletext+",")
 fout.write("\n")
 
-countrylinks=getcountrylinks()#This contains all the links in spots/zones tables first level
-#countrylinks2=[]#This contains all the links in spots/zones tables second level
-
-zonelinks=[]
-subzonelinks=[]
-spotlinks=[]
+countrypages=getcountrypages()
+countrypagewithzonelinks=[]
+countrypagewithspotlinks=[]
 
 countries=0#This is just a counter for the first loop
 
-for countrylink in countrylinks:
-	#If the link contains zones, add to zonelinks list
+for countrypage in countrypages:
+	#If the link contains zones, add to correct list
 	try:
-		url = urllib2.urlopen(countrylink)
+		url = urllib2.urlopen(countrypage)
 		content = url.read()
 		if '<h3 class="wanna-item">Zones</h3>' in str(content):
-			print "The below is a zonelink:"
-			zonelinks.append(countrylink)
+			print "The below is a country page with zone links:"
+			countrypagewithzonelinks.append(countrypage)
 		if '<h3 class="wanna-item">Surf Spots</h3>' in str(content):
-			print "The below is a spotlink:"
-			spotlinks.append(countrylink)			
+			print "The below is a country page with spot links:"
+			countrypagewithspotlinks.append(countrypage)			
 	except:
 		pass
 	countries+=1
-	print str(countries)+": "+countrylink
+	print str(countries)+": "+countrypage
+
+zonepages=[]
+zonepagewithsubzonelinks=[]
+zonepagewithspotlinks=[]
 	
-for zonelink in zonelinks:
+for countrypagewithzonelink in countrypagewithzonelinks:
 	#If the link contains subzones, add to subzonelinks list
 	
 	#GET THE SPOTS
 	try:
-		url = urllib2.urlopen(zonelink)
+		url = urllib2.urlopen(countrypagewithzonelink)
 		content = url.read()
 		soup = BeautifulSoup(content)
 		alllinks = soup.findAll("a")
 		
-		
 		for link in alllinks:
-
+			if str(link).count('/')==6 and "index.html" in str(link):
+				if "/spot/North_America" in str(link) or "/spot/South_America" in str(link) or "/spot/Middle_East" in str(link) or "/spot/Australia_Pacific" in str(link) or "/spot/Central_America" in str(link) or "/spot/Europe" in str(link) or "/spot/Africa" in str(link) or "/spot/Asia" in str(link):
+					zonepages.append("http://www.wannasurf.com"+str(link["href"]))
+	except:
+		pass
+zones=0		
+for zonepage in zonepages:
+	#If the link contains zones, add to correct list
+	try:
+		url = urllib2.urlopen(zonepage)
+		content = url.read()
+		if '<h3 class="wanna-item">Zones</h3>' in str(content):
+			print "The below is a zone page with subzone links:"
+			zonepagewithsubzonelinks.append(zonepage)
+		if '<h3 class="wanna-item">Surf Spots</h3>' in str(content):
+			print "The below is a zone page with spot links:"
+			zonepagewithspotlinks.append(zonepage)			
+	except:
+		pass
+	zones+=1
+	print str(zones)+": "+zonepage
+print zonepagewithsubzonelinks
+	
+"""
 		if str(link).count('/')==6 and "index.html" in str(link):
 			if "/spot/North_America" in str(link) or "/spot/South_America" in str(link) or "/spot/Middle_East" in str(link) or "/spot/Australia_Pacific" in str(link) or "/spot/Central_America" in str(link) or "/spot/Europe" in str(link) or "/spot/Africa" in str(link) or "/spot/Asia" in str(link):
 				#BELOW MUST BE ADJUSTED
@@ -165,6 +187,7 @@ for subzonelink in subzonelinks:
 	#if the link contains spots, add to spots list
 	
 #for subzone in subzonelinks
+"""
 """
 for countrylink in countrylinks:
 	#print countrylink
