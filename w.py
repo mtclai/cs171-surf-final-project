@@ -1,6 +1,3 @@
-#import urllib2
-#import json
-#import simplejson
 import pandas as pd
 
 #Find text between two strings
@@ -12,33 +9,55 @@ def find_between( s, first, last ):
     except ValueError:
         return ""
 
+#Set initial variables
 wundergroundid="593a0a244701479b"
-latitude=50.00
-longitude=10.00
+samplelatitude=30.00
+samplelongitude=-20.00
 
-url="http://api.wunderground.com/api/"+wundergroundid+"/geolookup/q/"+str(latitude)+","+str(longitude)+".json"
-#req = urllib2.Request(url)
-#opener = urllib2.build_opener()
-#f = opener.open(req)
-#simplejson.load(f)
+def findweather(latitude,longitude,day):
+	forecasturl="http://api.wunderground.com/api/593a0a244701479b/forecast/q/"+str(latitude)+","+str(longitude)+".json"
+	forecastjson=pd.read_json(forecasturl)
+	#forecastjson.to_csv("tempcsv.csv")
+	forecast=forecastjson.loc["simpleforecast",0]
+	#forecast=pd.read_json(forecast)
+	forecast=str(forecast).split("'")
+	data=[]
+	for i in range(len(forecast)):
+		if forecast[i]=="weekday":
+			data.append(forecast[i+2])
+		if forecast[i]=="fahrenheit":
+			data.append(forecast[i+2])
+		if "http" in forecast[i]:
+			data.append(forecast[i])
 
-j=pd.read_json(url)
-j.to_csv("tempcsv.csv")
-print j.loc["nearby_weather_stations",0]
-#print j.head(15)
-#print ""
-#print f
+	weekday=data[3+4*day]
+	mintemp=data[2+4*day]
+	maxtemp=data[1+4*day]
+	image=data[0+4*day]
+	
+	return weekday,mintemp,maxtemp,image
 
-#json_data=open(url)
-#data = json.load(json_data)
-#print data
-#json_data.close()
+table=pd.read_csv("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/Site_table_dummy3.csv")	
+#print table.head()
+weather = findweather(30,-20,2)
+def f(x):
+	try:
+		return findweather(x[3],x[4],0)
+	except:
+		return [0,0,0,0]
+table["test"]=table.apply(f, axis=1)
+#table=table.apply(lambda x: table["weather_day1"]=findweather(table["Latitude"],table["Longitude"],1)
+print table.head()
+table.to_csv("temptable.csv")
+#print weather
 
-#page = urllib2.urlopen(url)
-#page = page.read()
-#print page
 
-#Get closest stations
-#http://api.wunderground.com/api/593a0a244701479b/geolookup/q/37.776289,-122.395234.json
-#Get weather based on city
-#http://api.wunderground.com/api/593a0a244701479b/forecast/q/CA/San_Francisco.json
+#Get nearby country and station
+#stationurl="http://api.wunderground.com/api/"+wundergroundid+"/geolookup/q/"+str(latitude)+","+str(longitude)+".json"
+#stationjson=pd.read_json(stationurl)
+#stationjson.to_csv("tempcsv.csv")
+#nearbystations=stationjson.loc["nearby_weather_stations",0]
+#nearbycity=find_between(str(nearbystations), "city': u'", "', u'country" )
+#nearbycountry=find_between(str(nearbystations), "country': u'", "', u'lon" )
+#print nearbycity
+#print nearbycountry
