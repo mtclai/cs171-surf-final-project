@@ -26,6 +26,11 @@ var detailVis = d3.select("#detailVis").append("svg").attr({
     height:300
 })
 
+var detailVis2 = d3.select("#detailVis2").append("svg").attr({
+    width:450,
+    height:300
+})
+
 var bbDetailVis = {
     w: 350,
     h: 200
@@ -62,12 +67,9 @@ var dataSet = {};
 function loadStations() {
     d3.csv("../data/Site_table_dummy3.csv",function(error,data){
 
-    // define dataset with everything there, and then the numbers ones as objects with keyvalue pairs just like in the last pset
-    // dataSet = 
-
-
-
-    // condition for contains "AirTemp", then iterate through and push each to the object.
+    // write a time parser, and sort the data 
+    var timeParser = d3.time.format("%b%b");
+    var monthParser = d3.time.format("%b");
 
     data.forEach(function(d) {
 
@@ -76,13 +78,17 @@ function loadStations() {
         d.TypicalSwell = {};
         d.WaterTemp = {};
 
+        var parsed_air;
+        var parsed_water;
+
         for (property in d){
           var value = d[property];
           if (property.slice(0, 7) == "AirTemp" && typeof value != 'object'){
-            if (typeof d.AirTemp[property.slice(8)] === "undefined") {
-                d.AirTemp[property.slice(8)] = 0;
+            parsed_air = monthParser(timeParser.parse(property.slice(8)));
+            if (typeof d.AirTemp[parsed_air] === "undefined") {
+                d.AirTemp[parsed_air] = 0;
             }
-            d.AirTemp[property.slice(8)] += +value;
+            d.AirTemp[parsed_air] += +value;
           }
           else if (property.slice(0, 11) == "BestSurfing" && typeof value != 'object'){
             if (typeof d.BestSurfing[property.slice(12)] === "undefined") {
@@ -97,40 +103,17 @@ function loadStations() {
             d.TypicalSwell[property.slice(13)] += +value;
           }
           else if (property.slice(0, 9) == "WaterTemp" && typeof value != 'object'){
-            if (typeof d.WaterTemp[property.slice(10)] === "undefined") {
-                d.WaterTemp[property.slice(10)] = 0;
+            parsed_water = monthParser(timeParser.parse(property.slice(10)));
+            if (typeof d.WaterTemp[parsed_water] === "undefined") {
+                d.WaterTemp[parsed_water] = 0;
             }
-            d.WaterTemp[property.slice(10)] += +value;
+            d.WaterTemp[parsed_water] += +value;
           }
         }
     })
 
     console.log(data);
-
-    // data.forEach(function(d, i) {
-    //     d.lat = +d["NSRDB_LAT (dd)"];
-    //     d.lon = +d["NSRDB_LON(dd)"];
-    // });
-
-    // function notNull(element) {
-    //     var coords = projection([element.lon, element.lat]);
-    //     if (element.STATION && element.STATION != 'undefined' && coords && coords[0] != 0 && coords[1] != 0) {
-    //         return element;
-    //     }
-    // }
-
-    // var filtered = data.filter(notNull); 
-
-    // // adding lats and lons to completeDataSet
-    // completeDataSet.forEach(function(id, index){
-    //     filtered.forEach(function(d, i){
-    //         if (Object.keys(id) == d.USAF){
-    //             id[Object.keys(id)].lat = d.lat;
-    //             id[Object.keys(id)].lon = d.lon;
-    //             id[Object.keys(id)].station = d.STATION;
-    //         }
-    //     })
-    // })
+    createDetailVis(data[0], data[0].Spot);
 
 
     // var div = d3.select("body").append("div")   
@@ -199,96 +182,90 @@ function loadStations() {
     //             .duration(500)      
     //             .style("opacity", 0); 
     //     });
-
-    // just an experiment with the fist object in the array
-    createDetailVis(data[0]);
-    });
+    })
 }
-
 loadStations();
 
-// d3.json("../data/world_data.json", function(error, collection) {
-//     d3.select("svg").selectAll("path")
-//         .data(collection.features)
-//       .enter().append("path")
-//         .attr("d", d3.geo.path().projection(
-//           d3.geo.albers()
-//             .parallels([10, 80])
-//             .origin([0,40])
-//             .translate([500,250])
-//             .scale(100)
-//         ));
+var createDetailVis = function(data, name){
 
-//     console.log(collection);
+    updateDetailVis(data, name);
 
-//     d3.json("../data/us_named.json", function(error, usdata) {
-//       console.log(usdata);
-//     })
+        var airData = [];
+        var waterData = [];
 
-    // var worldMap = topojson.feature(data,data.features).features // converts topoJSON to GeoJSON
-    
-    // g.append("g")
-    //   .attr("id", "states")
-    // .selectAll("path")
-    //   .data(worldMap)
-    // .enter().append("path")
-    //   .attr("d", path)
-    //   .on("click", clicked);
+        parse_date = d3.time.format('%b')
 
-    // g.append("path")
-    //   .datum(topojson.mesh(data, data.features, function(a, b) { return a !== b; }))
-    //   .attr("id", "state-borders")
-    //   .attr("d", path);
-
-//     loadStations();
-// });
-
-var createDetailVis = function(this_data, name){
-
-    updateDetailVis(this_data, name);
-
-        var cleanData = [];
+        var this_data = data.AirTemp;
+        var this_data2 = data.WaterTemp;
 
         // make new array of objects to contain the hourly object data
         for (key in this_data) {
             d = {};
-            d.date = key);
+            d.date = parse_date.parse(key);
             d.value = this_data[key];
-            cleanData.push(d);
+            airData.push(d);
         }
 
-        cleanData.sort(function(a,b){
+        airData.sort(function(a,b){
             return d3.ascending(a.date, b.date);
         });
 
+        for (key in this_data2) {
+            d = {};
+            d.date = parse_date.parse(key);
+            d.value = this_data2[key];
+            waterData.push(d);
+        }
+
+        waterData.sort(function(a,b){
+            return d3.ascending(a.date, b.date);
+        });
+
+        console.log(airData);
+        console.log(waterData);
+
         var x = d3.scale.ordinal()
             .rangeRoundBands([0, bbDetailVis.w], .1);
+        var x2 = x;
 
         var y = d3.scale.linear()
             .range([bbDetailVis.h, 0]);
+        var y2 = y;
 
-        // tough part is this domain is not a date. Should we convert it to a date object?
-        x.domain(cleanData.map(function(d) { 
-                return +d.date.getHours(); 
+        x.domain(airData.map(function(d) { 
+                return +d.date.getMonth(); 
+        }));
+        x2.domain(waterData.map(function(d) { 
+                return +d.date.getMonth(); 
         }));
 
-        y.domain([0, d3.max(cleanData, function(d) { 
+        y.domain([0, d3.max(airData, function(d) { 
+                return d.value; 
+        })]);
+        y2.domain([0, d3.max(waterData, function(d) { 
                 return d.value; 
         })]);
 
         var xAxis = d3.svg.axis()
             .scale(x)
             .orient("bottom");
+        var x2Axis = d3.svg.axis()
+            .scale(x2)
+            .orient("bottom");
 
         var yAxis = d3.svg.axis()
             .scale(y)
             .orient("right");
-            
+        var y2Axis = d3.svg.axis()
+            .scale(y2)
+            .orient("right");
+
+        // Air Temperature Visualization
         detailVis.append("text")
-        .attr("class", "label")
-        .attr("x", 0)
-        .attr("y", 10)
-        .text(name);
+            .attr("class", "label")
+            .attr("x", 0)
+            .attr("y", 10)
+            .text("Air Temperature");
 
         detailVis.append("g")
           .attr("class", "x axis")
@@ -301,15 +278,49 @@ var createDetailVis = function(this_data, name){
           .call(yAxis)
 
         detailVis.selectAll(".bar")
-            .data(cleanData)
+            .data(airData)
         .enter().append("rect")
           .attr("class", "bar")
           .attr("x", function(d) { 
-            return x(+d.date.getHours()); })
+            return x(+d.date.getMonth()); })
           .attr("width", x.rangeBand())
           .attr("y", function(d) { 
             return y(d.value); })
-          .attr("height", function(d) { return bbDetailVis.h - y(d.value); });
+          .attr("height", function(d) { return bbDetailVis.h - y(d.value); })
+          .attr("fill", function(d) {
+            return "rgb(" + (d.value * 10) + ", 0, 0)";
+            });
+
+        // Water Temperature Visualization
+        detailVis2.append("text")
+            .attr("class", "label")
+            .attr("x", 0)
+            .attr("y", 10)
+            .text("Water Temperature");
+
+        detailVis2.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + bbDetailVis.h + ")")
+          .call(x2Axis);
+
+        detailVis2.append("g")
+          .attr("class", "y axis")
+          .attr("transform", "translate(" + bbDetailVis.w + ", 0)")
+          .call(y2Axis)
+
+        detailVis2.selectAll(".bar2")
+            .data(waterData)
+        .enter().append("rect")
+          .attr("class", "bar2")
+          .attr("x", function(d) { 
+            return x2(+d.date.getMonth()); })
+          .attr("width", x.rangeBand())
+          .attr("y", function(d) { 
+            return y2(d.value); })
+          .attr("height", function(d) { return bbDetailVis.h - y2(d.value); })
+          .attr("fill", function(d) {
+            return "rgb(0, 0, " + (d.value * 10) + ")";
+            });
 
 }
 
@@ -317,6 +328,7 @@ var createDetailVis = function(this_data, name){
 var updateDetailVis = function(data, name){
     detailVis.selectAll(".axis").data(data).exit().remove();
     detailVis.selectAll(".bar").data(data).exit().remove();
+    detailVis.selectAll(".bar2").data(data).exit().remove();
     detailVis.selectAll(".label").data(data).exit().remove();
 }
 
