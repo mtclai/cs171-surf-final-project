@@ -98,7 +98,10 @@ for variabletext in variabletexts:
 	fout.write(variabletext+",")
 fout.write("\n")
 
+#1A Get all country pages
 countrypages=getcountrypages()
+
+#1B Classify country pages
 countrypagewithzonelinks=[]
 countrypagewithspotlinks=[]
 
@@ -110,24 +113,25 @@ for countrypage in countrypages:
 		url = urllib2.urlopen(countrypage)
 		content = url.read()
 		if '<h3 class="wanna-item">Zones</h3>' in str(content):
-			print "The below is a country page with zone links:"
+			#print "The below is a country page with zone links:"
 			countrypagewithzonelinks.append(countrypage)
 		if '<h3 class="wanna-item">Surf Spots</h3>' in str(content):
-			print "The below is a country page with spot links:"
+			#print "The below is a country page with spot links:"
 			countrypagewithspotlinks.append(countrypage)			
 	except:
 		pass
 	countries+=1
-	print str(countries)+": "+countrypage
+	#print str(countries)+": "+countrypage
+print "All country pages classified"
 
+	
+#2A Get zone pages
 zonepages=[]
 zonepagewithsubzonelinks=[]
 zonepagewithspotlinks=[]
+
 	
 for countrypagewithzonelink in countrypagewithzonelinks:
-	#If the link contains subzones, add to subzonelinks list
-	
-	#GET THE SPOTS
 	try:
 		url = urllib2.urlopen(countrypagewithzonelink)
 		content = url.read()
@@ -140,54 +144,82 @@ for countrypagewithzonelink in countrypagewithzonelinks:
 					zonepages.append("http://www.wannasurf.com"+str(link["href"]))
 	except:
 		pass
-zones=0		
+print "All zone pages collected"
+
+#2B Classify zone pages
+zones=0
 for zonepage in zonepages:
 	#If the link contains zones, add to correct list
 	try:
 		url = urllib2.urlopen(zonepage)
 		content = url.read()
 		if '<h3 class="wanna-item">Zones</h3>' in str(content):
-			print "The below is a zone page with subzone links:"
+			#print "The below is a zone page with subzone links:"
 			zonepagewithsubzonelinks.append(zonepage)
 		if '<h3 class="wanna-item">Surf Spots</h3>' in str(content):
-			print "The below is a zone page with spot links:"
+			#print "The below is a zone page with spot links:"
 			zonepagewithspotlinks.append(zonepage)			
 	except:
 		pass
 	zones+=1
-	print str(zones)+": "+zonepage
-print zonepagewithsubzonelinks
-	
-"""
-		if str(link).count('/')==6 and "index.html" in str(link):
-			if "/spot/North_America" in str(link) or "/spot/South_America" in str(link) or "/spot/Middle_East" in str(link) or "/spot/Australia_Pacific" in str(link) or "/spot/Central_America" in str(link) or "/spot/Europe" in str(link) or "/spot/Africa" in str(link) or "/spot/Asia" in str(link):
-				#BELOW MUST BE ADJUSTED
-				countrylinks2.append("http://www.wannasurf.com"+str(link["href"]))
-				
+	#print str(zones)+": "+zonepage
+print "All zone pages classified"
+
+#3A Get subzone pages
+subzonepages=[]
+subzonepagewithsubsubzonelinks=[]
+subzonepagewithspotlinks=[]
+
+for zonepagewithsubzonelink in zonepagewithsubzonelinks:
+	try:
+		url = urllib2.urlopen(zonepagewithsubzonelink)
+		content = url.read()
+		soup = BeautifulSoup(content)
+		alllinks = soup.findAll("a")
 		
-		
-		if '<h3 class="wanna-item">Zones</h3>' in str(content):
-			print "Subzonelink:"+zonelink
-			subzonelinks.append(zonelink)
-		if '<h3 class="wanna-item">Surf Spots</h3>' in str(content):
-			print "Spotlink:"+zonelink
-			spotlinks.append(zonelink)			
+		for link in alllinks:
+			if str(link).count('/')==6 and "index.html" in str(link):
+				if "/spot/North_America" in str(link) or "/spot/South_America" in str(link) or "/spot/Middle_East" in str(link) or "/spot/Australia_Pacific" in str(link) or "/spot/Central_America" in str(link) or "/spot/Europe" in str(link) or "/spot/Africa" in str(link) or "/spot/Asia" in str(link):
+					subzonepages.append("http://www.wannasurf.com"+str(link["href"]))
 	except:
 		pass
+print "All subzone pages collected"
 
-for subzonelink in subzonelinks:
-	#If the link contains subzones, add to subzonelinks list
-	#GET THE SPOTS
-	pass
+#3B Classify subzone pages
+subzones=0		
+for subzonepage in subzonepages:
+	#If the link contains zones, add to correct list
+	try:
+		url = urllib2.urlopen(subzonepage)
+		content = url.read()
+		if '<h3 class="wanna-item">Zones</h3>' in str(content):
+			#print "The below is a subzone page with subsubzone links:"
+			subzonepagewithsubsubzonelinks.append(subzonepage)
+		if '<h3 class="wanna-item">Surf Spots</h3>' in str(content):
+			#print "The below is a zone page with spot links:"
+			subzonepagewithspotlinks.append(subzonepage)			
+	except:
+		pass
+	subzones+=1
+	#print str(subzones)+": "+subzonepage	
+print "All subzone pages classified"
+print "countrypagewithzonelinks"
+print countrypagewithzonelinks
+print ""
+print "countrypagewithspotlinks"
+print countrypagewithspotlinks
+print ""
+print "countrypagewithzonelinks"
+print countrypagewithzonelinks
+print ""
+print "countrypagewithspotlinks"
+print countrypagewithspotlinks
+print ""
+	
+allwithspotlinks=countrypagewithspotlinks+zonepagewithspotlink+subzonepagewithspotlink
+
+#for spot in allwithspotlinks:
 		
-	#If the link contains spots, add to spots list
-	
-#for zones in zonelinks:
-	#if the link contains subzones, add to subzone list
-	#if the link contains spots, add to spots list
-	
-#for subzone in subzonelinks
-"""
 """
 for countrylink in countrylinks:
 	#print countrylink

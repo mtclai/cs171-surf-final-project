@@ -14,9 +14,15 @@
         /*background: #eeeeee;*/
     }
 
-    /*.bar {
-        fill: black;
-    }*/
+    #detailVis {
+        position: absolute;
+        margin-top: 50px;
+    }
+
+    #detailVis2 {
+        position: absolute;
+        margin-top: 350px;
+    }
 
     .background {
       fill: none;
@@ -58,8 +64,7 @@
     .axis line,
     .axis path {
         fill: none;
-        stroke: #000;
-        shape-rendering: crispEdges;
+        stroke: lightgrey;
     }
 
     .station{
@@ -96,6 +101,12 @@
         font-weight: bold;
     }
 
+    .line {
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 1.5px;
+    }
+
     body {
   font: 10px sans-serif;
 }
@@ -106,11 +117,11 @@
 
 
 <table>
-    <tr><td><div id="vis"></div></td><td><div id="detailVis"></div></td><td><div id="detailVis2"></div></td></tr>
+    <tr><td><div id="vis"></div></td><td><div id="detailVis"></div></td></tr>
 </table>
 
 
-<script src="side_vis.js"></script>
+<script src="side_vis_multiline.js"></script>
 <script src="../underscore.js"></script>
 
 </body>

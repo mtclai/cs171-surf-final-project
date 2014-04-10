@@ -332,41 +332,41 @@ var updateDetailVis = function(data, name){
     detailVis.selectAll(".label").data(data).exit().remove();
 }
 
-// // zoom function taken from click-to-zoom example: http://bl.ocks.org/mbostock/2206590
-// function clicked(d) {
-//   if (active.node() === this) return reset();
-//   active.classed("active", false);
-//   active = d3.select(this).classed("active", true);
+// zoom function taken from click-to-zoom example: http://bl.ocks.org/mbostock/2206590
+function clicked(d) {
+  if (active.node() === this) return reset();
+  active.classed("active", false);
+  active = d3.select(this).classed("active", true);
 
-//   var bounds = path.bounds(d),
-//       dx = bounds[1][0] - bounds[0][0],
-//       dy = bounds[1][1] - bounds[0][1],
-//       x = (bounds[0][0] + bounds[1][0]) / 2,
-//       y = (bounds[0][1] + bounds[1][1]) / 2,
-//       scale = .9 / Math.max(dx / width, dy / height),
-//       translate = [width / 2 - scale * x, height / 2 - scale * y];
+  var bounds = path.bounds(d),
+      dx = bounds[1][0] - bounds[0][0],
+      dy = bounds[1][1] - bounds[0][1],
+      x = (bounds[0][0] + bounds[1][0]) / 2,
+      y = (bounds[0][1] + bounds[1][1]) / 2,
+      scale = .9 / Math.max(dx / width, dy / height),
+      translate = [width / 2 - scale * x, height / 2 - scale * y];
 
-//   svg.transition()
-//       .duration(750)
-//       .style("stroke-width", 1.5 / scale + "px")
-//       .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
-// }
-
-
-// function reset() {
-//   active.classed("active", false);
-//   active = d3.select(null);
-
-//   svg.transition()
-//       .duration(750)
-//       .style("stroke-width", "1.5px")
-//       .attr("transform", "");
-// }
+  svg.transition()
+      .duration(750)
+      .style("stroke-width", 1.5 / scale + "px")
+      .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
+}
 
 
-// function zoom() {
-//   svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-// }
+function reset() {
+  active.classed("active", false);
+  active = d3.select(null);
+
+  svg.transition()
+      .duration(750)
+      .style("stroke-width", "1.5px")
+      .attr("transform", "");
+}
+
+
+function zoom() {
+  svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+}
 
 
 
