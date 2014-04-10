@@ -26,6 +26,7 @@ def conversion(old):
     return (float(new[0])+float(new[1])/60.0+float(new[2])/3600.0) * direction[new_dir]
 
 variabletexts=["Distance","Walk","Easy to find?","Public access?","Special access","Wave quality","Experience","Frequency","Type","Direction","Bottom","Power","Normal length","Good day length","Good swell direction","Good wind direction","Swell size","Best tide position","Best tide movement","Week crowd","Week-end crowd"]
+#variabletexts.sort()
 variables={}
 		
 #Get variables based on a surf spot page
@@ -87,8 +88,9 @@ def getcountrypages():
 		if str(link).count('/')==5 and "index.html" in str(link):
 			if "/spot/North_America" in str(link) or "/spot/South_America" in str(link) or "/spot/Middle_East" in str(link) or "/spot/Australia_Pacific" in str(link) or "/spot/Central_America" in str(link) or "/spot/Europe" in str(link) or "/spot/Africa" in str(link) or "/spot/Asia" in str(link):
 				countrypages.append("http://www.wannasurf.com"+str(link["href"]))
-	duration=(time.time()-starttime)*1.0/60
-	print "All country pages collected in "+str(duration)+" minutes"
+	duration=round((time.time()-starttime)*1.0/60,2)
+	numberofcountries=len(countrypages)
+	print "All "+str(numberofcountries)+" country pages collected in "+str(duration)+" minutes"
 	return countrypages
 
 #Open output file
@@ -128,7 +130,7 @@ for countrypage in countrypages:
 		pass
 	countries+=1
 	#print str(countries)+": "+countrypage
-duration=(time.time()-starttime)*1.0/60
+duration=round((time.time()-starttime)*1.0/60,2)
 print "All country pages classified in "+str(duration)+" minutes"
 
 	
@@ -151,8 +153,9 @@ for countrypagewithzonelink in countrypagewithzonelinks:
 					zonepages.append("http://www.wannasurf.com"+str(link["href"]))
 	except:
 		pass
-duration=(time.time()-starttime)*1.0/60
-print "All zone pages collected in "+str(duration)+" minutes"
+duration=round((time.time()-starttime)*1.0/60,2)
+numberofzones=len(zonepages)
+print "All "+str(numberofzones)+" zone pages collected in "+str(duration)+" minutes"
 
 #2B Classify zone pages
 starttime=time.time()
@@ -172,7 +175,7 @@ for zonepage in zonepages:
 		pass
 	zones+=1
 	#print str(zones)+": "+zonepage
-duration=(time.time()-starttime)*1.0/60
+duration=round((time.time()-starttime)*1.0/60,2)
 print "All zone pages classified in "+str(duration)+" minutes"
 
 #3A Get subzone pages
@@ -194,8 +197,9 @@ for zonepagewithsubzonelink in zonepagewithsubzonelinks:
 					subzonepages.append("http://www.wannasurf.com"+str(link["href"]))
 	except:
 		pass
-duration=(time.time()-starttime)*1.0/60
-print "All subzone pages collected in "+str(duration)+" minutes"
+duration=round((time.time()-starttime)*1.0/60,2)
+numberofsubzones=len(subzonepages)
+print "All "+str(subzonepages)+" subzone pages collected in "+str(duration)+" minutes"
 
 #3B Classify subzone pages
 starttime=time.time()
@@ -215,7 +219,7 @@ for subzonepage in subzonepages:
 		pass
 	subzones+=1
 	#print str(subzones)+": "+subzonepage	
-duration=(time.time()-starttime)*1.0/60
+duration=round((time.time()-starttime)*1.0/60,2)
 print "All subzone pages classified in "+str(duration)+" minutes"
 
 
@@ -237,8 +241,9 @@ for subzonepagewithsubsubzonelink in subzonepagewithsubsubzonelinks:
 					subsubzonepages.append("http://www.wannasurf.com"+str(link["href"]))
 	except:
 		pass
-duration=(time.time()-starttime)*1.0/60
-print "All subsubzone pages collected in "+str(duration)+" minutes"
+duration=round((time.time()-starttime)*1.0/60,2)
+numberofsubsubzones=len(subsubzonepages)
+print "All "+str(numberofsubsubzones)+" subsubzone pages collected in "+str(duration)+" minutes"
 
 #4B Classify subsubzone pages
 starttime=time.time()
@@ -257,7 +262,7 @@ for subsubzonepage in subsubzonepages:
 	except:
 		pass
 	subsubzones+=1
-duration=(time.time()-starttime)*1.0/60
+duration=round((time.time()-starttime)*1.0/60,2)
 print "All subsubzone pages classified in "+str(duration)+" minutes"
 
 
@@ -288,12 +293,12 @@ print subsubzonepagewithspotlinks
 	
 allwithspotlinks=countrypagewithspotlinks+zonepagewithspotlinks+subzonepagewithspotlinks+subsubzonepagewithspotlinks
 
+starttime=time.time()
 for pagewithspotlink in allwithspotlinks:
-
 	spotlinks=[]
 	zonelinks=[]
 	countries+=1
-	country=pagewithspotlink.split('/')[-2]
+	country=pagewithspotlink.split('/')[-2]#THIS ISN'T VALID FOR ZONES, ETC
 	print "Country= "+country
 	try:
 		url = urllib2.urlopen(pagewithspotlink)
@@ -316,10 +321,12 @@ for pagewithspotlink in allwithspotlinks:
 					spotlinks.append(link["href"])
 				if link["class"]=="wanna-tabzonespot-item-title" and '<h3 class="wanna-item">Zones</h3>' in str(content):#AND IF THESE ARE ZONES
 					print "This is actually a zone page"
-					#GET SPOTS< THEN RUN THE ABOVE
+					#GET SPOTS THEN RUN THE ABOVE
 			except:
 				fout.write("\n")
 	except:
 		print "Country issue"
 	print ""
+duration=round((time.time()-starttime)*1.0/60,2)
+print "All spot details gathered into csv in "+str(duration)+" minutes"
 fout.close()
