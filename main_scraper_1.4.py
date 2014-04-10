@@ -323,7 +323,6 @@ for pagewithspotlink in allwithspotlinks:
 		zone=pagewithspotlink.split('/')[-4]
 		subzone=pagewithspotlink.split('/')[-3]
 		subsubzone=pagewithspotlink.split('/')[-2]
-	#print "Country= "+country
 	try:
 		url = urllib2.urlopen(pagewithspotlink)
 		print links
