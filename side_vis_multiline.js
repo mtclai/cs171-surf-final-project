@@ -18,7 +18,7 @@ var bbAirWater = {
     w: 350,
     h: 200,
     x: 0,
-    y: 10
+    y: 0
 }
 
 var bbBest = {
@@ -26,6 +26,13 @@ var bbBest = {
     h: 500,
     x: 0,
     y: 300
+}
+
+var bbSwell = {
+    w: 350,
+    h: 800,
+    x: 0,
+    y: 600
 }
 
 var detailCanvas = d3.select("#detailVis").append("svg").attr({
@@ -120,6 +127,7 @@ var createDetailVis = function(data, name){
 
         var multiObj = []; 
         var bestSurfing = [];
+        var typicalSwell = [];
         var airObj = {};
         var airValue = [];
         var waterObj = {};
@@ -130,6 +138,7 @@ var createDetailVis = function(data, name){
         var air_data = data.AirTemp;
         var water_data = data.WaterTemp;
         var best_data = data.BestSurfing;
+        var swell_data = data.TypicalSwell;
 
         /*
         ** Air Temperature + Water Temperature line graph data wrangling
@@ -189,6 +198,20 @@ var createDetailVis = function(data, name){
         /*
         ** Typical Swell data wrangling
         */
+
+        for (key in swell_data) {
+            s = {};
+            s.date = parse_date.parse(key);
+            s.value = swell_data[key];
+            s.name = 'Typical Swell';
+            typicalSwell.push(s);
+        }
+
+        typicalSwell.sort(function(a,b){
+            return d3.ascending(a.date, b.date);
+        });
+
+        console.log(typicalSwell);
 
         // Water & Air Temperature multiline graph
         var x = d3.time.scale()
@@ -328,11 +351,68 @@ var createDetailVis = function(data, name){
             return "rgb(" + (d.value * 40) + ", 0, 0)";
             });
 
+        // Typical Swell Bar Graph
+        var x3 = d3.time.scale()
+          .domain(d3.extent(typicalSwell, function(d){ return d.date; })) 
+          .range([0, bbSwell.w])
+
+        var y3 = d3.scale.linear()
+            .domain([0, 5]) 
+            .range([bbSwell.h, bbSwell.y]);
+
+        var x3Axis = d3.svg.axis()
+            .scale(x3)
+            .tickFormat(d3.time.format('%b'))
+            .orient("bottom");
+
+        var y3Axis = d3.svg.axis()
+            .scale(y3)
+            .ticks(6)
+            .orient("left");
+
+        detailVis.append("text")
+            .attr("class", "label")
+            .attr("x", 0)
+            .attr("y", 580)
+            .text("Typical Swell Size");
+
+        detailVis.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + bbSwell.h + ")")
+          .call(x3Axis);
+
+        detailVis.append("g")
+          .attr("class", "y axis")
+          .call(y3Axis)
+        .append("text")
+          .attr("transform", "rotate(-90)", "translate(" + (bbSwell.w) + ",0)")
+          .attr("x", -600)
+          .attr("y", 6)
+          .attr("dy", ".71em")
+          .style("text-anchor", "end")
+          .text("Rating");
+
+        detailVis.selectAll(".swell_bar")
+            .data(typicalSwell)
+        .enter().append("rect")
+          .attr("class", "bar swell_bar")
+          .attr("x", function(d) { 
+            return x3(d.date); })
+          .attr("width", 20)
+          .attr("y", function(d) { 
+            return y3(d.value); })
+          .attr("height", function(d) { return bbSwell.h - y3(d.value); })
+          .attr("fill", function(d) {
+            return "rgb(0, 0, " + (d.value * 40) + ")";
+            });
+
 }
 
 var updateDetailVis = function(data, name){
     detailVis.selectAll(".axis").data(data).exit().remove();
     detailVis.selectAll(".dot").data(data).exit().remove();
+    detailVis.selectAll(".bar").data(data).exit().remove();
+    detailVis.selectAll(".swell_bar").data(data).exit().remove();
     detailVis.selectAll(".label").data(data).exit().remove();
 }
 
