@@ -6,6 +6,7 @@ import time
 samplespot1="http://www.wannasurf.com/spot/Asia/Bangladesh/Cox_s_Bazar/index.html"
 samplespot2="http://www.wannasurf.com/spot/Australia_Pacific/New_Caledonia/Nera_Rivermouth/index.html"
 samplespot3="http://www.wannasurf.com/spot/North_America/USA/Hawaii/Kauai/index.html"
+samplespot4="http://www.wannasurf.com/spot/Asia/Russia/Far_East/Sakhalin/Sakhalin/index.html"
 
 #Find text between two strings
 def find_between( s, first, last ):
@@ -36,13 +37,17 @@ def getspotdetails(spoturl):
 	soup = BeautifulSoup(content)
 	allp = soup.findAll("p")
 	alla = soup.findAll("a")
+	"""
 	for a in alla:
 		try:
 			if a["class"]=="wanna-item-title-subtitle":
 				print a.contents.split(",")[0]#country
-				print a.contents.split(",")[1]#region
+				print a.contents.split(",")[1]#zone
+				print a.contents.split(",")[2]#subzone
+				print a.contents.split(",")[3]#subsubzone
 		except:
 			pass
+	"""
 	for p in allp:
 		if "Latitude:</span>" in str(p):
 			Latitude=find_between(str(p),"Latitude:</span>","<br />")
@@ -65,7 +70,7 @@ def getspotdetails(spoturl):
 		fout.write(Longitude+",")
 	except:
 		fout.write(",")
-	for key in variables:
+	for key in variabletexts:
 		#print key
 		#print variables[key]
 		try:
@@ -73,8 +78,15 @@ def getspotdetails(spoturl):
 		except:
 			fout.write(",")
 			print "Couldn't write variable"
-		#print variable.key
-		#print variable.value
+
+#Open output file
+fout=open("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel.csv", "w")
+
+#Write header for file
+fout.write("Spot,Country,Zone,Subzone,Subsubzone,Latitude,Longitude,")
+for variabletext in variabletexts: 
+	fout.write(variabletext+",")
+fout.write("\n")
 
 
 #Get all country links and execute spot detail search
@@ -93,14 +105,6 @@ def getcountrypages():
 	print "All "+str(numberofcountries)+" country pages collected in "+str(duration)+" minutes"
 	return countrypages
 
-#Open output file
-fout=open("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel.csv", "w")
-
-#Write header for file
-fout.write("Spot,Country,Latitude,Longitude,")
-for variabletext in variabletexts: 
-	fout.write(variabletext+",")
-fout.write("\n")
 
 
 #1A Get all country pages
@@ -199,7 +203,7 @@ for zonepagewithsubzonelink in zonepagewithsubzonelinks:
 		pass
 duration=round((time.time()-starttime)*1.0/60,2)
 numberofsubzones=len(subzonepages)
-print "All "+str(subzonepages)+" subzone pages collected in "+str(duration)+" minutes"
+print "All "+str(numberofsubzones)+" subzone pages collected in "+str(duration)+" minutes"
 
 #3B Classify subzone pages
 starttime=time.time()
@@ -293,16 +297,36 @@ print subsubzonepagewithspotlinks
 	
 allwithspotlinks=countrypagewithspotlinks+zonepagewithspotlinks+subzonepagewithspotlinks+subsubzonepagewithspotlinks
 
+links=0
 starttime=time.time()
 for pagewithspotlink in allwithspotlinks:
 	spotlinks=[]
 	zonelinks=[]
-	countries+=1
-	country=pagewithspotlink.split('/')[-2]#THIS ISN'T VALID FOR ZONES, ETC
-	print "Country= "+country
+	links+=1
+	if pagewithspotlink in countrypagewithspotlinks:
+		country=pagewithspotlink.split('/')[-2]
+		zone=''
+		subzone=''
+		subsubzone=''
+	if pagewithspotlink in zonepagewithspotlinks:
+		country=pagewithspotlink.split('/')[-3]
+		zone=pagewithspotlink.split('/')[-2]
+		subzone=''
+		subsubzone=''
+	if pagewithspotlink in subzonepagewithspotlinks:
+		country=pagewithspotlink.split('/')[-4]
+		zone=pagewithspotlink.split('/')[-3]
+		subzone=pagewithspotlink.split('/')[-2]
+		subsubzone=''
+	if pagewithspotlink in subsubzonepagewithspotlinks:
+		country=pagewithspotlink.split('/')[-5]
+		zone=pagewithspotlink.split('/')[-4]
+		subzone=pagewithspotlink.split('/')[-3]
+		subsubzone=pagewithspotlink.split('/')[-2]
+	#print "Country= "+country
 	try:
 		url = urllib2.urlopen(pagewithspotlink)
-		print countries
+		print links
 		content = url.read()
 		soup = BeautifulSoup(content)
 		alllinks = soup.findAll("a")
@@ -314,7 +338,7 @@ for pagewithspotlink in allwithspotlinks:
 					spotlink="http://www.wannasurf.com"+str(link["href"])
 					#print spotlink
 					spot=spotlink.split('/')[-2]
-					fout.write(spot+","+country+",")
+					fout.write(spot+","+country+","+zone+","+subzone+","+subsubzone+",")
 					getspotdetails(spotlink)
 					fout.write("\n")
 					print "Spot= "+spot
@@ -323,10 +347,12 @@ for pagewithspotlink in allwithspotlinks:
 					print "This is actually a zone page"
 					#GET SPOTS THEN RUN THE ABOVE
 			except:
-				fout.write("\n")
+				pass
+				#fout.write("\n")
 	except:
 		print "Country issue"
 	print ""
 duration=round((time.time()-starttime)*1.0/60,2)
 print "All spot details gathered into csv in "+str(duration)+" minutes"
+
 fout.close()
