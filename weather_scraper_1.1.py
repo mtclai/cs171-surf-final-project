@@ -1,4 +1,5 @@
 import pandas as pd
+import time
 
 #Find text between two strings
 def find_between( s, first, last ):
@@ -13,6 +14,7 @@ def find_between( s, first, last ):
 wundergroundid="593a0a244701479b"
 samplelatitude=30.00
 samplelongitude=-20.00
+
 
 def findweather(latitude,longitude,day):
 	forecasturl="http://api.wunderground.com/api/593a0a244701479b/forecast/q/"+str(latitude)+","+str(longitude)+".json"
@@ -34,18 +36,20 @@ def findweather(latitude,longitude,day):
 	mintemp=data[2+4*day]
 	maxtemp=data[1+4*day]
 	image=data[0+4*day]
-	
+	time.sleep(7)#This is to avoid API limit
+	print "One forecast fetched: "
+	print weekday,mintemp,maxtemp,image
 	return weekday,mintemp,maxtemp,image
 
-table=pd.read_csv("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/Site_table_dummy3.csv")	
-#print table.head()
+table=pd.read_csv("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/Site_table_dummy4.csv")	
+print table.head()
 weather = findweather(30,-20,2)
 def f(x):
 	try:
-		return findweather(x[3],x[4],0)
+		return findweather(x[5],x[6],0)
 	except:
 		return [0,0,0,0]
-table["test"]=table.apply(f, axis=1)
+table["weather_day0"]=table.apply(f, axis=1)
 #table=table.apply(lambda x: table["weather_day1"]=findweather(table["Latitude"],table["Longitude"],1)
 print table.head()
 table.to_csv("temptable.csv")
