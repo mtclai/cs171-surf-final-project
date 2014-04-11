@@ -1,10 +1,12 @@
 from BeautifulSoup import BeautifulSoup
 import urllib2
+import time
 
 #Sample surf spots for testing of getspotdetails function
-samplespot="http://www.wannasurf.com/spot/Asia/Bangladesh/Cox_s_Bazar/index.html"
-samplespot="http://www.wannasurf.com/spot/Australia_Pacific/New_Caledonia/Nera_Rivermouth/index.html"
-samplespot="http://www.wannasurf.com/spot/North_America/USA/Hawaii/Kauai/index.html"
+samplespot1="http://www.wannasurf.com/spot/Asia/Bangladesh/Cox_s_Bazar/index.html"
+samplespot2="http://www.wannasurf.com/spot/Australia_Pacific/New_Caledonia/Nera_Rivermouth/index.html"
+samplespot3="http://www.wannasurf.com/spot/North_America/USA/Hawaii/Kauai/index.html"
+samplespot4="http://www.wannasurf.com/spot/Asia/Russia/Far_East/Sakhalin/Sakhalin/index.html"
 
 #Find text between two strings
 def find_between( s, first, last ):
@@ -25,6 +27,7 @@ def conversion(old):
     return (float(new[0])+float(new[1])/60.0+float(new[2])/3600.0) * direction[new_dir]
 
 variabletexts=["Distance","Walk","Easy to find?","Public access?","Special access","Wave quality","Experience","Frequency","Type","Direction","Bottom","Power","Normal length","Good day length","Good swell direction","Good wind direction","Swell size","Best tide position","Best tide movement","Week crowd","Week-end crowd"]
+#variabletexts.sort()
 variables={}
 		
 #Get variables based on a surf spot page
@@ -34,13 +37,17 @@ def getspotdetails(spoturl):
 	soup = BeautifulSoup(content)
 	allp = soup.findAll("p")
 	alla = soup.findAll("a")
+	"""
 	for a in alla:
 		try:
 			if a["class"]=="wanna-item-title-subtitle":
 				print a.contents.split(",")[0]#country
-				print a.contents.split(",")[1]#region
+				print a.contents.split(",")[1]#zone
+				print a.contents.split(",")[2]#subzone
+				print a.contents.split(",")[3]#subsubzone
 		except:
 			pass
+	"""
 	for p in allp:
 		if "Latitude:</span>" in str(p):
 			Latitude=find_between(str(p),"Latitude:</span>","<br />")
@@ -63,7 +70,7 @@ def getspotdetails(spoturl):
 		fout.write(Longitude+",")
 	except:
 		fout.write(",")
-	for key in variables:
+	for key in variabletexts:
 		#print key
 		#print variables[key]
 		try:
@@ -71,8 +78,15 @@ def getspotdetails(spoturl):
 		except:
 			fout.write(",")
 			print "Couldn't write variable"
-		#print variable.key
-		#print variable.value
+
+#Open output file
+fout=open("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel.csv", "w")
+
+#Write header for file
+fout.write("Spot,Country,Zone,Subzone,Subsubzone,Latitude,Longitude,")
+for variabletext in variabletexts: 
+	fout.write(variabletext+",")
+fout.write("\n")
 
 
 #Get all country links and execute spot detail search
@@ -86,22 +100,20 @@ def getcountrypages():
 		if str(link).count('/')==5 and "index.html" in str(link):
 			if "/spot/North_America" in str(link) or "/spot/South_America" in str(link) or "/spot/Middle_East" in str(link) or "/spot/Australia_Pacific" in str(link) or "/spot/Central_America" in str(link) or "/spot/Europe" in str(link) or "/spot/Africa" in str(link) or "/spot/Asia" in str(link):
 				countrypages.append("http://www.wannasurf.com"+str(link["href"]))
-	print "All country pages collected"
+	duration=round((time.time()-starttime)*1.0/60,2)
+	numberofcountries=len(countrypages)
+	print "All "+str(numberofcountries)+" country pages collected in "+str(duration)+" minutes"
 	return countrypages
 
-#Open output file
-fout=open("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel.csv", "w")
 
-#Write header for file
-fout.write("Spot,Country,Latitude,Longitude,")
-for variabletext in variabletexts: 
-	fout.write(variabletext+",")
-fout.write("\n")
 
 #1A Get all country pages
+starttime=time.time()
 countrypages=getcountrypages()
 
+
 #1B Classify country pages
+starttime=time.time()
 countrypagewithzonelinks=[]
 countrypagewithspotlinks=[]
 
@@ -122,10 +134,12 @@ for countrypage in countrypages:
 		pass
 	countries+=1
 	#print str(countries)+": "+countrypage
-print "All country pages classified"
+duration=round((time.time()-starttime)*1.0/60,2)
+print "All country pages classified in "+str(duration)+" minutes"
 
 	
 #2A Get zone pages
+starttime=time.time()
 zonepages=[]
 zonepagewithsubzonelinks=[]
 zonepagewithspotlinks=[]
@@ -137,16 +151,18 @@ for countrypagewithzonelink in countrypagewithzonelinks:
 		content = url.read()
 		soup = BeautifulSoup(content)
 		alllinks = soup.findAll("a")
-		
 		for link in alllinks:
 			if str(link).count('/')==6 and "index.html" in str(link):
 				if "/spot/North_America" in str(link) or "/spot/South_America" in str(link) or "/spot/Middle_East" in str(link) or "/spot/Australia_Pacific" in str(link) or "/spot/Central_America" in str(link) or "/spot/Europe" in str(link) or "/spot/Africa" in str(link) or "/spot/Asia" in str(link):
 					zonepages.append("http://www.wannasurf.com"+str(link["href"]))
 	except:
 		pass
-print "All zone pages collected"
+duration=round((time.time()-starttime)*1.0/60,2)
+numberofzones=len(zonepages)
+print "All "+str(numberofzones)+" zone pages collected in "+str(duration)+" minutes"
 
 #2B Classify zone pages
+starttime=time.time()
 zones=0
 for zonepage in zonepages:
 	#If the link contains zones, add to correct list
@@ -163,9 +179,11 @@ for zonepage in zonepages:
 		pass
 	zones+=1
 	#print str(zones)+": "+zonepage
-print "All zone pages classified"
+duration=round((time.time()-starttime)*1.0/60,2)
+print "All zone pages classified in "+str(duration)+" minutes"
 
 #3A Get subzone pages
+starttime=time.time()
 subzonepages=[]
 subzonepagewithsubsubzonelinks=[]
 subzonepagewithspotlinks=[]
@@ -178,14 +196,17 @@ for zonepagewithsubzonelink in zonepagewithsubzonelinks:
 		alllinks = soup.findAll("a")
 		
 		for link in alllinks:
-			if str(link).count('/')==6 and "index.html" in str(link):
+			if str(link).count('/')==7 and "index.html" in str(link):
 				if "/spot/North_America" in str(link) or "/spot/South_America" in str(link) or "/spot/Middle_East" in str(link) or "/spot/Australia_Pacific" in str(link) or "/spot/Central_America" in str(link) or "/spot/Europe" in str(link) or "/spot/Africa" in str(link) or "/spot/Asia" in str(link):
 					subzonepages.append("http://www.wannasurf.com"+str(link["href"]))
 	except:
 		pass
-print "All subzone pages collected"
+duration=round((time.time()-starttime)*1.0/60,2)
+numberofsubzones=len(subzonepages)
+print "All "+str(numberofsubzones)+" subzone pages collected in "+str(duration)+" minutes"
 
 #3B Classify subzone pages
+starttime=time.time()
 subzones=0		
 for subzonepage in subzonepages:
 	#If the link contains zones, add to correct list
@@ -202,35 +223,109 @@ for subzonepage in subzonepages:
 		pass
 	subzones+=1
 	#print str(subzones)+": "+subzonepage	
-print "All subzone pages classified"
-print "countrypagewithzonelinks"
-print countrypagewithzonelinks
-print ""
-print "countrypagewithspotlinks"
-print countrypagewithspotlinks
-print ""
-print "countrypagewithzonelinks"
-print countrypagewithzonelinks
-print ""
-print "countrypagewithspotlinks"
-print countrypagewithspotlinks
-print ""
-	
-allwithspotlinks=countrypagewithspotlinks+zonepagewithspotlink+subzonepagewithspotlink
+duration=round((time.time()-starttime)*1.0/60,2)
+print "All subzone pages classified in "+str(duration)+" minutes"
 
-#for spot in allwithspotlinks:
-		
-"""
-for countrylink in countrylinks:
-	#print countrylink
+
+#4A Get subsubzone pages
+starttime=time.time()
+subsubzonepages=[]
+subsubzonepagewithsubsubsubzonelinks=[]
+subsubzonepagewithspotlinks=[]
+
+for subzonepagewithsubsubzonelink in subzonepagewithsubsubzonelinks:
+	try:
+		url = urllib2.urlopen(subzonepagewithsubsubzonelink)
+		content = url.read()
+		soup = BeautifulSoup(content)
+		alllinks = soup.findAll("a")
+		for link in alllinks:
+			if str(link).count('/')==8 and "index.html" in str(link):
+				if "/spot/North_America" in str(link) or "/spot/South_America" in str(link) or "/spot/Middle_East" in str(link) or "/spot/Australia_Pacific" in str(link) or "/spot/Central_America" in str(link) or "/spot/Europe" in str(link) or "/spot/Africa" in str(link) or "/spot/Asia" in str(link):
+					subsubzonepages.append("http://www.wannasurf.com"+str(link["href"]))
+	except:
+		pass
+duration=round((time.time()-starttime)*1.0/60,2)
+numberofsubsubzones=len(subsubzonepages)
+print "All "+str(numberofsubsubzones)+" subsubzone pages collected in "+str(duration)+" minutes"
+
+#4B Classify subsubzone pages
+starttime=time.time()
+subsubzones=0		
+for subsubzonepage in subsubzonepages:
+	#If the link contains zones, add to correct list
+	try:
+		url = urllib2.urlopen(subsubzonepage)
+		content = url.read()
+		if '<h3 class="wanna-item">Zones</h3>' in str(content):
+			#print "The below is a subsubzone page with subsubsubzone links:"
+			subsubzonepagewithsubsubsubzonelinks.append(subsubzonepage)
+		if '<h3 class="wanna-item">Surf Spots</h3>' in str(content):
+			#print "The below is a zone page with spot links:"
+			subsubzonepagewithspotlinks.append(subsubzonepage)			
+	except:
+		pass
+	subsubzones+=1
+duration=round((time.time()-starttime)*1.0/60,2)
+print "All subsubzone pages classified in "+str(duration)+" minutes"
+
+
+print "countrypagewithzonelinks"
+print countrypagewithzonelinks
+print ""
+print "countrypagewithspotlinks"
+print countrypagewithspotlinks
+print ""
+print "zonepagewithsubzonelinks"
+print zonepagewithsubzonelinks
+print ""
+print "zonepagewithspotlinks"
+print zonepagewithspotlinks
+print ""
+print "subzonepagewithsubsubzonelinks"
+print subzonepagewithsubsubzonelinks
+print ""
+print "subzonepagewithspotlinks"
+print subzonepagewithspotlinks
+print ""
+print "subsubzonepagewithsubsubsubzonelinks"
+print subsubzonepagewithsubsubsubzonelinks
+print ""
+print "subsubzonepagewithspotlinks"
+print subsubzonepagewithspotlinks
+
+	
+allwithspotlinks=countrypagewithspotlinks+zonepagewithspotlinks+subzonepagewithspotlinks+subsubzonepagewithspotlinks
+
+links=0
+starttime=time.time()
+for pagewithspotlink in allwithspotlinks:
 	spotlinks=[]
 	zonelinks=[]
-	countries+=1
-	country=countrylink.split('/')[-2]
-	print "Country= "+country
+	links+=1
+	if pagewithspotlink in countrypagewithspotlinks:
+		country=pagewithspotlink.split('/')[-2]
+		zone=''
+		subzone=''
+		subsubzone=''
+	if pagewithspotlink in zonepagewithspotlinks:
+		country=pagewithspotlink.split('/')[-3]
+		zone=pagewithspotlink.split('/')[-2]
+		subzone=''
+		subsubzone=''
+	if pagewithspotlink in subzonepagewithspotlinks:
+		country=pagewithspotlink.split('/')[-4]
+		zone=pagewithspotlink.split('/')[-3]
+		subzone=pagewithspotlink.split('/')[-2]
+		subsubzone=''
+	if pagewithspotlink in subsubzonepagewithspotlinks:
+		country=pagewithspotlink.split('/')[-5]
+		zone=pagewithspotlink.split('/')[-4]
+		subzone=pagewithspotlink.split('/')[-3]
+		subsubzone=pagewithspotlink.split('/')[-2]
 	try:
-		url = urllib2.urlopen(countrylink)
-		print countries
+		url = urllib2.urlopen(pagewithspotlink)
+		print links
 		content = url.read()
 		soup = BeautifulSoup(content)
 		alllinks = soup.findAll("a")
@@ -242,18 +337,21 @@ for countrylink in countrylinks:
 					spotlink="http://www.wannasurf.com"+str(link["href"])
 					#print spotlink
 					spot=spotlink.split('/')[-2]
-					fout.write(spot+","+country+",")
+					fout.write(spot+","+country+","+zone+","+subzone+","+subsubzone+",")
 					getspotdetails(spotlink)
 					fout.write("\n")
 					print "Spot= "+spot
 					spotlinks.append(link["href"])
 				if link["class"]=="wanna-tabzonespot-item-title" and '<h3 class="wanna-item">Zones</h3>' in str(content):#AND IF THESE ARE ZONES
 					print "This is actually a zone page"
-					#GET SPOTS< THEN RUN THE ABOVE
+					#GET SPOTS THEN RUN THE ABOVE
 			except:
-				fout.write("\n")
+				pass
+				#fout.write("\n")
 	except:
 		print "Country issue"
 	print ""
+duration=round((time.time()-starttime)*1.0/60,2)
+print "All spot details gathered into csv in "+str(duration)+" minutes"
+
 fout.close()
-"""

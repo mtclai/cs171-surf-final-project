@@ -51,7 +51,7 @@ var canvas = d3.select("#vis").append("svg").attr({
 var svg = canvas.append("g").attr({
         transform: "translate(" + margin.left + "," + margin.top + ")"
     })
-    // .call(d3.behavior.zoom().scaleExtent([1, 8]).on("zoom", zoom))
+    .call(d3.behavior.zoom().scaleExtent([1, 8]).on("zoom", zoom))
     .append("g");
 
 svg.append("rect")
@@ -69,7 +69,7 @@ var g = svg.append("g");
 var centered;
 
 var projection = d3.geo.mercator()
-    .center([0, 5 ])
+    .center([0, 50 ])
     .scale(150)
     .rotate([0,0]);
 
@@ -163,7 +163,7 @@ svg.selectAll("circle")
                    return projection([d.Longitude, d.Latitude])[1];
            })
     .attr("r", 2)
-    .style("fill", "red")
+    .style("fill", "orange")
     .attr("display", display)
   .on("click", function(d) {
           createDetailVis(d, d.Spot);   
@@ -497,17 +497,6 @@ var updateDetailVis = function(data, name){
 **
 */
 
-// zoom and pan
-//var zoom = d3.behavior.zoom()
-  //  .on("zoom",function() {
-    //    g.attr("transform","translate("+ 
-      //      d3.event.translate.join(",")+")scale("+d3.event.scale+")");
-        //g.selectAll("path")  
-          //  .attr("d", path.projection(projection)); 
-  //});
-
-//svg.call(zoom)
-
 function clicked(d) {
   var x, y, k;
   if (d && centered !== d) {
@@ -530,6 +519,21 @@ function clicked(d) {
       .style("stroke-width", 1.5 / k + "px");
  }
 
+
+function reset() {
+  active.classed("active", false);
+  active = d3.select(null);
+
+  svg.transition()
+      .duration(750)
+      .style("stroke-width", "1.5px")
+      .attr("transform", "");
+}
+
+
+function zoom() {
+  svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+}
 
 
 //references
