@@ -1,4 +1,4 @@
-design_studio_feedback.md
+#Design Studio 3 
 
 In the design studio, we got feedback from Vlad Bok and Tarik Moon. They gave some fair and useful feedback. First, they were concerned that the scope might be a little small. We agree, because there's not a huge amount of quantitative data in our dataset. 
 
@@ -8,4 +8,4 @@ Along these lines, one feature suggestion was a feed to the right of the map tha
 
 Finally, a suggestion was to utilize iconography to represent some of our qualitative data. For example, one of our qualitative dimensions is the type of surfsuit suggested for the spot. Given that there are only a few different types of surfsuits, we could consider replacing the dots with an icon of the right suit.  
 
-In terms of addressing the feedback in our future revisions, we will certainly add functionality that allows resizing surf spots based on various dimensions. 
+In terms of addressing the feedback in our future revisions, we will certainly add functionality that allows resizing surf spots based on various dimensions, and considering additional ways we can increase scope, such as adding a ranked feed. This resonates with some of our previous ideas to add tourism data as well.   

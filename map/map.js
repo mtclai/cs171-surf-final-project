@@ -88,7 +88,7 @@ d3.json("world-110m2.json", function(error, topology) {
       .attr("d", path)
 	  .on("click", clicked)
 	  
-d3.csv("Site_table_dummy3.csv", function(error, data) {
+d3.csv("../data/Site_table_dummy5.csv", function(error, data) {
     dataSet = data;
         g.selectAll("circle")
           .data(data)
