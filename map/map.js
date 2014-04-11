@@ -164,11 +164,15 @@ svg.selectAll("circle")
            })
     .attr("r", 2)
     .style("fill", "orange")
+    .style("opacity", .7)
     .attr("display", display)
   .on("click", function(d) {
           createDetailVis(d, d.Spot);   
        })
-	.on("mouseover", function(d) {      
+	.on("mouseover", function(d) { 
+      d3.select(this)
+                .style("fill", "blue")
+
             div.transition()        
                 .duration(200)      
                 .style("opacity", .9);      
@@ -176,7 +180,10 @@ svg.selectAll("circle")
                 .style("left", (d3.event.pageX) + "px")     
                 .style("top", (d3.event.pageY - 28) + "px");    
             })                  
-        .on("mouseout", function(d) {       
+        .on("mouseout", function(d) {    
+          d3.select(this)   
+            .style("fill", "orange")
+
             div.transition()        
                 .duration(500)      
                 .style("opacity", 0);   
