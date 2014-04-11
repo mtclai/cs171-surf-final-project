@@ -155,7 +155,7 @@ d3.selectAll(".filter_button").on("change", function() {
   display = this.checked ? "inline" : "none";
 
 svg.selectAll("circle")
-    .filter(function(d) { return d.Country === type })
+    .filter(function(d) { return d.Experience === type })
 	.attr("cx", function(d) {
                    return projection([d.Longitude, d.Latitude])[0];
            })
