@@ -1,6 +1,6 @@
 The repository contains superceded versions of files for archiving
 
-The latest versions of these files are are:
+The latest versions of these files are:
 
 Code:
 Main web scraper:		...\main_scraper_1.4.py
