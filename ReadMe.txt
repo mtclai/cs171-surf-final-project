@@ -11,3 +11,4 @@ Data:
 The latest data file containing surf spot information is \data\spotlevel_v2.csv
 
 Process book:
+...\Process_book_v1.docx
