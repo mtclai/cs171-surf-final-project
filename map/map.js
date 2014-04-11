@@ -69,7 +69,7 @@ var g = svg.append("g");
 var centered;
 
 var projection = d3.geo.mercator()
-    .center([0, 50 ])
+    .center([0, 60 ])
     .scale(150)
     .rotate([0,0]);
 
