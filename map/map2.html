@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+path {
+  stroke: white;
+  stroke-width: 0.25px;
+  fill: grey;
+}
+
+div.tooltip {   
+		  position: absolute;           
+		  text-align: center;           
+		  width: 220px;                  
+		  height: 30px;                 
+		  padding: 2px;             
+		  font: 12px sans-serif;        
+		  background: #a1d99b;   
+		  border: 0px;      
+		  border-radius: 8px;           
+		  pointer-events: none;         
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+
+<script src="map2.js"></script>
+
+<div class="filter_options">
+<input class="filter_button" id="a_button" type="checkbox" value="Algeria">Algeria</input><br>
+<input class="filter_button" id="a_button" type="checkbox" value="Madagascar">Madagascar</input><br>
+</div>
+
+<form>
+<p> What type of break you lookin' for, man? </p>
+<input class="direction_button" name="direction_button" id="Left" type="checkbox" value="Left">Left-hand break</input><br>
+<input class="direction_button" name="direction_button" id="Right" type="checkbox" value="Right">Right-hand break</input><br>
+<input class="direction_button" name="direction_button" id="Right and Left" type="checkbox" value="Right and left">Right and left</input><br>
+<input type="button" value="Get Values" onclick="getMultipleCheckbox(this.form.direction_button);"/>
+</form>
+
+</div>
+
+<div class="experience_options">
+<p> You sure you can handle that, man? </p>
+<input class="filter_button" id="f_button" type="checkbox" value="Beginners wave">You're right, I'm a grom</input><br>
+<input class="filter_button" id="g_button" type="checkbox" value="All surfers">All surfers</input><br>
+<input class="filter_button" id="h_button" type="checkbox" value="Experienced surfers">Experienced surfers</input><br>
+<input class="filter_button" id="i_button" type="checkbox" value="Pros or kamikaze only...">I'm a pro!</input><br>
+</div>
+
+
+</body>
+</html>
