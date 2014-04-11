@@ -373,7 +373,7 @@ var createDetailVis = function(data, name){
         detailVis.append("text")
             .attr("class", "label")
             .attr("x", 0)
-            .attr("y", 580)
+            .attr("y", 590)
             .text("Typical Swell Size");
 
         detailVis.append("g")
