@@ -42,7 +42,7 @@ def findweather(latitude,longitude,day):
 	return weekday,mintemp,maxtemp,image
 
 input_filename="K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/Site_table_dummy4.csv"
-output_filename=open("C:/Users/Alexis/Documents/GitHub/cs171-surf-final-project/spotlevel_withforecast.csv", "w")
+output_filename=open("C:/Users/Alexis/Documents/GitHub/cs171-surf-final-project/data/spotlevel_withforecast.csv", "w")
 
 linenumber=0
 print "test"
