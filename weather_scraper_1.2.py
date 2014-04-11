@@ -41,7 +41,7 @@ def findweather(latitude,longitude,day):
 	print weekday,mintemp,maxtemp,image
 	return weekday,mintemp,maxtemp,image
 
-input_filename="K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/Site_table_dummy4.csv"
+input_filename="C:/Users/Alexis/Documents/GitHub/cs171-surf-final-project/data/spotlevel_v1.csv"
 output_filename=open("C:/Users/Alexis/Documents/GitHub/cs171-surf-final-project/data/spotlevel_withforecast.csv", "w")
 
 linenumber=0
@@ -49,76 +49,27 @@ print "test"
 for line in open(input_filename):
 	print "line "+str(linenumber)
 	if linenumber==0:
+		output_filename.write(str(line).replace("\n","")+"forecast_day0_day,forecast_day0_mintemp,forecast_day0_maxtemp,forecast_day0_image,forecast_day1_day,forecast_day1_mintemp,forecast_day1_maxtemp,forecast_day1_image,forecast_day2_day,forecast_day2_mintemp,forecast_day2_maxtemp,forecast_day2_image,forecast_day3_day,forecast_day3_mintemp,forecast_day3_maxtemp,forecast_day3_image\n")
 		pass
 	else:
 		line = line.rstrip().split(",")
 		lat=line[5]
 		lon=line[6]
-		forecast_day0_day=findweather(lat,lon,0)[0]
-		forecast_day0_mintemp=findweather(lat,lon,0)[1]
-		forecast_day0_maxtemp=findweather(lat,lon,0)[2]
-		forecast_day0_image=findweather(lat,lon,0)[3]
-		forecast_day1_day=findweather(lat,lon,1)[0]
-		forecast_day1_mintemp=findweather(lat,lon,1)[1]
-		forecast_day1_maxtemp=findweather(lat,lon,1)[2]
-		forecast_day1_image=findweather(lat,lon,1)[3]
-		forecast_day2_day=findweather(lat,lon,2)[0]
-		forecast_day2_mintemp=findweather(lat,lon,2)[1]
-		forecast_day2_maxtemp=findweather(lat,lon,2)[2]
-		forecast_day2_image=findweather(lat,lon,2)[3]
-		forecast_day3_day=findweather(lat,lon,3)[0]
-		forecast_day3_mintemp=findweather(lat,lon,3)[1]
-		forecast_day3_maxtemp=findweather(lat,lon,3)[2]
-		forecast_day3_image=findweather(lat,lon,3)[3]
+		try:
+			forecast_day0=findweather(lat,lon,0)
+			forecast_day1=findweather(lat,lon,1)
+			forecast_day2=findweather(lat,lon,2)
+			forecast_day3=findweather(lat,lon,3)
+		except:
+			forecast_day0=['','','','']
+			forecast_day1=['','','','']
+			forecast_day2=['','','','']
+			forecast_day3=['','','','']
 		for element in line:
 			output_filename.write(element+",")
-		output_filename.write(forecast_day0_day+","+forecast_day0_mintemp+","+forecast_day0_maxtemp+","+forecast_day0_image+","+forecast_day1_day+","+forecast_day1_mintemp+","+forecast_day1_maxtemp+","+forecast_day1_image+","+forecast_day2_day+","+forecast_day2_mintemp+","+forecast_day2_maxtemp+","+forecast_day2_image+","+forecast_day3_day+","+forecast_day3_mintemp+","+forecast_day3_maxtemp+","+forecast_day3_image)
+		output_filename.write(forecast_day0[0]+","+forecast_day0[1]+","+forecast_day0[2]+","+forecast_day0[3]+","+forecast_day1[0]+","+forecast_day1[1]+","+forecast_day1[2]+","+forecast_day1[3]+","+forecast_day2[0]+","+forecast_day2[1]+","+forecast_day2[2]+","+forecast_day2[3]+","+forecast_day3[0]+","+forecast_day3[1]+","+forecast_day3[2]+","+forecast_day3[3])
 		output_filename.write("\n")
 		
 	linenumber+=1
 	
 output_filename.close()
-	
-"""
-	table=pd.read_csv("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/Site_table_dummy4.csv")	
-
-def f(x):
-	try:
-		return findweather(x[5],x[6],0)
-	except:
-		return [0,0,0,0]
-def g(x):
-	try:
-		return findweather(x[5],x[6],1)
-	except:
-		return [0,0,0,0]
-def h(x):
-	try:
-		return findweather(x[5],x[6],2)
-	except:
-		return [0,0,0,0]
-def i(x):
-	try:
-		return findweather(x[5],x[6],3)
-	except:
-		return [0,0,0,0]
-table["weather_day0"]=table.apply(f, axis=1)
-table["weather_day1"]=table.apply(g, axis=1)
-table["weather_day2"]=table.apply(h, axis=1)
-table["weather_day3"]=table.apply(i, axis=1)
-
-#table=table.apply(lambda x: table["weather_day1"]=findweather(table["Latitude"],table["Longitude"],1)
-table.to_csv("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/temptable.csv")
-#print weather
-
-
-#Get nearby country and station
-#stationurl="http://api.wunderground.com/api/"+wundergroundid+"/geolookup/q/"+str(latitude)+","+str(longitude)+".json"
-#stationjson=pd.read_json(stationurl)
-#stationjson.to_csv("tempcsv.csv")
-#nearbystations=stationjson.loc["nearby_weather_stations",0]
-#nearbycity=find_between(str(nearbystations), "city': u'", "', u'country" )
-#nearbycountry=find_between(str(nearbystations), "country': u'", "', u'lon" )
-#print nearbycity
-#print nearbycountry
-"""
