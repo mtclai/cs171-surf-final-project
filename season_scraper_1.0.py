@@ -7,6 +7,36 @@ import time
 
 zonesample="http://www.wannasurf.com/spot/Australia_Pacific/Australia/QLD/Far_North_West/index.html"
 
+#Find all zones
+input_filename="C:/Users/Alexis/Documents/GitHub/cs171-surf-final-project/data/spotlevel_v1.csv"
+linenumber=0
+urls=[]
+for line in open(input_filename):
+	#print "line "+str(linenumber)
+	if linenumber==0:
+		#output_filename.write(str(line).replace("\n",",")+"forecast_day0_day,forecast_day0_mintemp,forecast_day0_maxtemp,forecast_day0_image,forecast_day1_day,forecast_day1_mintemp,forecast_day1_maxtemp,forecast_day1_image,forecast_day2_day,forecast_day2_mintemp,forecast_day2_maxtemp,forecast_day2_image,forecast_day3_day,forecast_day3_mintemp,forecast_day3_maxtemp,forecast_day3_image\n")
+		pass
+	else:
+		line = line.rstrip().split(",")
+		if line[2]=="":
+			url="http://www.wannasurf.com/spot/"+str(line[1])+"/index.html"
+			#print url
+		elif line[3]==0:
+			url="http://www.wannasurf.com/spot/"+str(line[1])+"/"+str(line[2])+"/index.html"
+			#print url
+		elif line[4]==0:
+			url="http://www.wannasurf.com/spot/"+str(line[1])+"/"+str(line[2])+"/"+str(line[3])+"/index.html"
+			#print url
+		else:
+			url="http://www.wannasurf.com/spot/"+str(line[1])+"/"+str(line[2])+"/"+str(line[3])+"/"+str(line[4])+"/index.html"
+			#print url
+	try:
+		urls.append(url)
+	except:
+		pass
+	linenumber+=1			
+
+			
 #Find text between two strings
 def find_between( s, first, last ):
     try:
@@ -222,37 +252,33 @@ def getzonedetails(zoneurl):
 
 		
 	watertemp_janfeb=find_between(str(watertemp[1]), "br />", "°" )
-	watertemp_janfeb=find_between(str(watertemp[2]), "br />", "°" )
-	watertemp_janfeb=find_between(str(watertemp[3]), "br />", "°" )
-	watertemp_janfeb=find_between(str(watertemp[4]), "br />", "°" )
-	watertemp_janfeb=find_between(str(watertemp[5]), "br />", "°" )
-	watertemp_janfeb=find_between(str(watertemp[6]), "br />", "°" )
+	watertemp_marapr=find_between(str(watertemp[2]), "br />", "°" )
+	watertemp_mayjun=find_between(str(watertemp[3]), "br />", "°" )
+	watertemp_julaug=find_between(str(watertemp[4]), "br />", "°" )
+	watertemp_septoct=find_between(str(watertemp[5]), "br />", "°" )
+	watertemp_novdec=find_between(str(watertemp[6]), "br />", "°" )
 
 	
 	
 	airtemp_janfeb=find_between(str(airtemp[1]), "br />", "°" )
-	airtemp_janfeb=find_between(str(airtemp[2]), "br />", "°" )
-	airtemp_janfeb=find_between(str(airtemp[3]), "br />", "°" )
-	airtemp_janfeb=find_between(str(airtemp[4]), "br />", "°" )
-	airtemp_janfeb=find_between(str(airtemp[5]), "br />", "°" )
-	airtemp_janfeb=find_between(str(airtemp[6]), "br />", "°" )
+	airtemp_marapr=find_between(str(airtemp[2]), "br />", "°" )
+	airtemp_mayjun=find_between(str(airtemp[3]), "br />", "°" )
+	airtemp_julaug=find_between(str(airtemp[4]), "br />", "°" )
+	airtemp_septoct=find_between(str(airtemp[5]), "br />", "°" )
+	airtemp_novdec=find_between(str(airtemp[6]), "br />", "°" )
 
 	
 	
 	climate_janfeb=find_between(str(climate[1]), "weather-", ".gif" )
-	climate_janfeb=find_between(str(climate[2]), "weather-", ".gif" )
-	climate_janfeb=find_between(str(climate[3]), "weather-", ".gif" )	
-	climate_janfeb=find_between(str(climate[4]), "weather-", ".gif" )
-	climate_janfeb=find_between(str(climate[5]), "weather-", ".gif" )
-	climate_janfeb=find_between(str(climate[6]), "weather-", ".gif" )
+	climate_marapr=find_between(str(climate[2]), "weather-", ".gif" )
+	climate_mayjun=find_between(str(climate[3]), "weather-", ".gif" )	
+	climate_julaug=find_between(str(climate[4]), "weather-", ".gif" )
+	climate_septoct=find_between(str(climate[5]), "weather-", ".gif" )
+	climate_novdec=find_between(str(climate[6]), "weather-", ".gif" )
 	
-	return bestsurfingseason_janfeb, bestsurfingseason_marapr, bestsurfingseason_mayjun, bestsurfingseason_julaug, bestsurfingseason_septoct, bestsurfingseason_novdec, typicalswellsize_janfeb, typicalswellsize_marapr, typicalswellsize_mayjun, typicalswellsize_julaug, typicalswellsize_septoct, typicalswellsize_novdec, surfequipment_janfeb, surfequipment_marapr, surfequipment_mayjun, surfequipment_julaug, surfequipment_septoct, surfequipment_novdec, watertemp_janfeb, watertemp_marapr, watertemp_mayjun, watertemp_julaug, watertemp_septoct, watertemp_novdec, surfequipment_janfeb, surfequipment_marapr, surfequipment_mayjun, surfequipment_julaug, surfequipment_septoct, surfequipment_novdec, watertemp_janfeb, watertemp_marapr, watertemp_mayjun, watertemp_julaug, watertemp_septoct, watertemp_novdec, 
-
-	print typicalswellsize_janfeb
-	print surfequipment_janfeb
-	print watertemp_janfeb
-	print airtemp_janfeb
-	print climate_janfeb
+	return bestsurfingseason_janfeb, bestsurfingseason_marapr, bestsurfingseason_mayjun, bestsurfingseason_julaug, bestsurfingseason_septoct, bestsurfingseason_novdec, typicalswellsize_janfeb, typicalswellsize_marapr, typicalswellsize_mayjun, typicalswellsize_julaug, typicalswellsize_septoct, typicalswellsize_novdec, surfequipment_janfeb, surfequipment_marapr, surfequipment_mayjun, surfequipment_julaug, surfequipment_septoct, surfequipment_novdec, watertemp_janfeb, watertemp_marapr, watertemp_mayjun, watertemp_julaug, watertemp_septoct, watertemp_novdec, airtemp_janfeb, airtemp_marapr, airtemp_mayjun, airtemp_julaug, airtemp_septoct, airtemp_novdec, climate_janfeb, climate_marapr, climate_mayjun, climate_julaug, climate_septoct, climate_novdec
 				
-				
-getzonedetails(zonesample)
+for url in urls:
+	print url
+	seasonalinfo=getzonedetails(url)
+	print seasonalinfo
