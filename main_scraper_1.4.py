@@ -1,3 +1,6 @@
+#cd C:\Users\Alexis\Documents\GitHub\cs171-surf-final-project
+#ipython main_scraper_1.4.py
+
 from BeautifulSoup import BeautifulSoup
 import urllib2
 import time
@@ -83,7 +86,7 @@ def getspotdetails(spoturl):
 fout=open("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel.csv", "w")
 
 #Write header for file
-fout.write("Spot,Country,Zone,Subzone,Subsubzone,Latitude,Longitude,")
+fout.write("Spot,Continent,Country,Zone,Subzone,Subsubzone,Latitude,Longitude,")
 for variabletext in variabletexts: 
 	fout.write(variabletext+",")
 fout.write("\n")
@@ -304,21 +307,25 @@ for pagewithspotlink in allwithspotlinks:
 	zonelinks=[]
 	links+=1
 	if pagewithspotlink in countrypagewithspotlinks:
+		continent=pagewithspotlink.split('/')[-3]####
 		country=pagewithspotlink.split('/')[-2]
 		zone=''
 		subzone=''
 		subsubzone=''
 	if pagewithspotlink in zonepagewithspotlinks:
+		continent=pagewithspotlink.split('/')[-4]####
 		country=pagewithspotlink.split('/')[-3]
 		zone=pagewithspotlink.split('/')[-2]
 		subzone=''
 		subsubzone=''
 	if pagewithspotlink in subzonepagewithspotlinks:
+		continent=pagewithspotlink.split('/')[-5]####
 		country=pagewithspotlink.split('/')[-4]
 		zone=pagewithspotlink.split('/')[-3]
 		subzone=pagewithspotlink.split('/')[-2]
 		subsubzone=''
 	if pagewithspotlink in subsubzonepagewithspotlinks:
+		continent=pagewithspotlink.split('/')[-6]####
 		country=pagewithspotlink.split('/')[-5]
 		zone=pagewithspotlink.split('/')[-4]
 		subzone=pagewithspotlink.split('/')[-3]
@@ -337,7 +344,7 @@ for pagewithspotlink in allwithspotlinks:
 					spotlink="http://www.wannasurf.com"+str(link["href"])
 					#print spotlink
 					spot=spotlink.split('/')[-2]
-					fout.write(spot+","+country+","+zone+","+subzone+","+subsubzone+",")
+					fout.write(spot+","+continent+","+country+","+zone+","+subzone+","+subsubzone+",")
 					getspotdetails(spotlink)
 					fout.write("\n")
 					print "Spot= "+spot
