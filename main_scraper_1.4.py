@@ -40,17 +40,7 @@ def getspotdetails(spoturl):
 	soup = BeautifulSoup(content)
 	allp = soup.findAll("p")
 	alla = soup.findAll("a")
-	"""
-	for a in alla:
-		try:
-			if a["class"]=="wanna-item-title-subtitle":
-				print a.contents.split(",")[0]#country
-				print a.contents.split(",")[1]#zone
-				print a.contents.split(",")[2]#subzone
-				print a.contents.split(",")[3]#subsubzone
-		except:
-			pass
-	"""
+
 	for p in allp:
 		if "Latitude:</span>" in str(p):
 			Latitude=find_between(str(p),"Latitude:</span>","<br />")

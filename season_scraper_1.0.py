@@ -5,10 +5,12 @@ from BeautifulSoup import BeautifulSoup
 import urllib2
 import time
 
+starttime=time.time()
+
 zonesample="http://www.wannasurf.com/spot/Australia_Pacific/Australia/QLD/Far_North_West/index.html"
 
 #Find all zones
-input_filename="C:/Users/Alexis/Documents/GitHub/cs171-surf-final-project/data/spotlevel_v1.csv"
+input_filename="K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel.csv"
 linenumber=0
 urls=[]
 for line in open(input_filename):
@@ -18,23 +20,23 @@ for line in open(input_filename):
 		pass
 	else:
 		line = line.rstrip().split(",")
-		if line[2]=="":
-			url="http://www.wannasurf.com/spot/"+str(line[1])+"/index.html"
-			#print url
-		elif line[3]==0:
+		if line[3]=="":
 			url="http://www.wannasurf.com/spot/"+str(line[1])+"/"+str(line[2])+"/index.html"
 			#print url
-		elif line[4]==0:
+		elif line[4]=="":
 			url="http://www.wannasurf.com/spot/"+str(line[1])+"/"+str(line[2])+"/"+str(line[3])+"/index.html"
 			#print url
-		else:
+		elif line[5]=="":
 			url="http://www.wannasurf.com/spot/"+str(line[1])+"/"+str(line[2])+"/"+str(line[3])+"/"+str(line[4])+"/index.html"
+			#print url
+		else:
+			url="http://www.wannasurf.com/spot/"+str(line[1])+"/"+str(line[2])+"/"+str(line[3])+"/"+str(line[4])+"/"+str(line[5])+"/index.html"
 			#print url
 	try:
 		urls.append(url)
 	except:
 		pass
-	linenumber+=1			
+	linenumber+=1
 
 			
 #Find text between two strings
@@ -155,9 +157,9 @@ def getzonedetails(zoneurl):
 		typicalswellsize_janfeb=4
 	if "5" in str(typicalswellsize_janfeb):
 		typicalswellsize_janfeb=5
-	if "4" in str(typicalswellsize_janfeb):
+	if "6" in str(typicalswellsize_janfeb):
 		typicalswellsize_janfeb=6
-	if "5" in str(typicalswellsize_janfeb):
+	if "7" in str(typicalswellsize_janfeb):
 		typicalswellsize_janfeb=7
 		
 	typicalswellsize_marapr=typicalswellsize[2]
@@ -171,9 +173,9 @@ def getzonedetails(zoneurl):
 		typicalswellsize_marapr=4
 	if "5" in str(typicalswellsize_marapr):
 		typicalswellsize_marapr=5
-	if "4" in str(typicalswellsize_marapr):
+	if "6" in str(typicalswellsize_marapr):
 		typicalswellsize_marapr=6
-	if "5" in str(typicalswellsize_marapr):
+	if "7" in str(typicalswellsize_marapr):
 		typicalswellsize_marapr=7
 		
 	typicalswellsize_mayjun=typicalswellsize[3]
@@ -187,9 +189,9 @@ def getzonedetails(zoneurl):
 		typicalswellsize_mayjun=4
 	if "5" in str(typicalswellsize_mayjun):
 		typicalswellsize_mayjun=5
-	if "4" in str(typicalswellsize_mayjun):
+	if "6" in str(typicalswellsize_mayjun):
 		typicalswellsize_mayjun=6
-	if "5" in str(typicalswellsize_mayjun):
+	if "7" in str(typicalswellsize_mayjun):
 		typicalswellsize_mayjun=7
 		
 	typicalswellsize_julaug=typicalswellsize[4]
@@ -203,9 +205,9 @@ def getzonedetails(zoneurl):
 		typicalswellsize_julaug=4
 	if "5" in str(typicalswellsize_julaug):
 		typicalswellsize_julaug=5
-	if "4" in str(typicalswellsize_julaug):
+	if "6" in str(typicalswellsize_julaug):
 		typicalswellsize_julaug=6
-	if "5" in str(typicalswellsize_julaug):
+	if "7" in str(typicalswellsize_julaug):
 		typicalswellsize_julaug=7
 
 	typicalswellsize_septoct=typicalswellsize[5]
@@ -219,9 +221,9 @@ def getzonedetails(zoneurl):
 		typicalswellsize_septoct=4
 	if "5" in str(typicalswellsize_septoct):
 		typicalswellsize_septoct=5
-	if "4" in str(typicalswellsize_septoct):
+	if "6" in str(typicalswellsize_septoct):
 		typicalswellsize_septoct=6
-	if "5" in str(typicalswellsize_septoct):
+	if "7" in str(typicalswellsize_septoct):
 		typicalswellsize_septoct=7
 		
 	typicalswellsize_novdec=typicalswellsize[6]
@@ -235,9 +237,9 @@ def getzonedetails(zoneurl):
 		typicalswellsize_novdec=4
 	if "5" in str(typicalswellsize_novdec):
 		typicalswellsize_novdec=5
-	if "4" in str(typicalswellsize_novdec):
+	if "6" in str(typicalswellsize_novdec):
 		typicalswellsize_novdec=6
-	if "5" in str(typicalswellsize_novdec):
+	if "7" in str(typicalswellsize_novdec):
 		typicalswellsize_novdec=7	
 
 		
@@ -277,8 +279,29 @@ def getzonedetails(zoneurl):
 	climate_novdec=find_between(str(climate[6]), "weather-", ".gif" )
 	
 	return bestsurfingseason_janfeb, bestsurfingseason_marapr, bestsurfingseason_mayjun, bestsurfingseason_julaug, bestsurfingseason_septoct, bestsurfingseason_novdec, typicalswellsize_janfeb, typicalswellsize_marapr, typicalswellsize_mayjun, typicalswellsize_julaug, typicalswellsize_septoct, typicalswellsize_novdec, surfequipment_janfeb, surfequipment_marapr, surfequipment_mayjun, surfequipment_julaug, surfequipment_septoct, surfequipment_novdec, watertemp_janfeb, watertemp_marapr, watertemp_mayjun, watertemp_julaug, watertemp_septoct, watertemp_novdec, airtemp_janfeb, airtemp_marapr, airtemp_mayjun, airtemp_julaug, airtemp_septoct, airtemp_novdec, climate_janfeb, climate_marapr, climate_mayjun, climate_julaug, climate_septoct, climate_novdec
-				
+
+#Open output file
+fout=open("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel_seasons.csv", "w")
+fout.write("Zone url,BestSurfing_JanFeb, BestSurfing_MarApr, BestSurfing_MayJun, BestSurfing_JulAug, BestSurfing_SepOct, BestSurfing_NovDec, TypicalSwell_JanFeb, TypicalSwell_MarApr, TypicalSwell_MayJun, TypicalSwell_JulAug, TypicalSwell_SepOct, TypicalSwell_NovDec, SurfEquipment_JanFeb, SurfEquipment_MarApr, SurfEquipment_MayJun, SurfEquipment_JulAug, SurfEquipment_SepOct, SurfEquipment_NovDec, WaterTemp_JanFeb, WaterTemp_MarApr, WaterTemp_MayJun, WaterTemp_JulAug, WaterTemp_SepOct, WaterTemp_NovDec, AirTemp_JanFeb, AirTemp_MarApr, AirTemp_MayJun, AirTemp_JulAug, AirTemp_SepOct, AirTemp_NovDec, climate_janfeb, climate_marapr, climate_mayjun, climate_julaug, climate_septoct, climate_novdec\n")	
+nburls=0
+errors=0
+errorlist=[]
 for url in urls:
-	print url
-	seasonalinfo=getzonedetails(url)
-	print seasonalinfo
+	print nburls
+	try:
+		print url
+		seasonalinfo=getzonedetails(url)
+		fout.write(str(url)+",") 
+		for variable in seasonalinfo:
+			fout.write(str(variable)+",") 
+		fout.write("\n")
+	except:
+		errors+=1
+		errorlist.append(url)
+		pass
+	nburls+=1
+fout.close()
+print str(errors)+" errors recorded"
+print errorlist
+duration = round(((time.time()-starttime)/60),1)
+print str(duration)+" minutes"
