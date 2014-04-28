@@ -4,6 +4,7 @@
 from BeautifulSoup import BeautifulSoup
 import urllib2
 import time
+import datetime
 
 starttime=time.time()
 
@@ -282,14 +283,18 @@ def getzonedetails(zoneurl):
 
 #Open output file
 fout=open("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel_seasons.csv", "w")
+log=open("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/log.txt", "w")
+log.write(str(datetime.datetime.now())+"\n")
 fout.write("Zone url,BestSurfing_JanFeb, BestSurfing_MarApr, BestSurfing_MayJun, BestSurfing_JulAug, BestSurfing_SepOct, BestSurfing_NovDec, TypicalSwell_JanFeb, TypicalSwell_MarApr, TypicalSwell_MayJun, TypicalSwell_JulAug, TypicalSwell_SepOct, TypicalSwell_NovDec, SurfEquipment_JanFeb, SurfEquipment_MarApr, SurfEquipment_MayJun, SurfEquipment_JulAug, SurfEquipment_SepOct, SurfEquipment_NovDec, WaterTemp_JanFeb, WaterTemp_MarApr, WaterTemp_MayJun, WaterTemp_JulAug, WaterTemp_SepOct, WaterTemp_NovDec, AirTemp_JanFeb, AirTemp_MarApr, AirTemp_MayJun, AirTemp_JulAug, AirTemp_SepOct, AirTemp_NovDec, climate_janfeb, climate_marapr, climate_mayjun, climate_julaug, climate_septoct, climate_novdec\n")	
 nburls=0
 errors=0
 errorlist=[]
 for url in urls:
 	print nburls
+	log.write(str(nburls)+"\n")
 	try:
 		print url
+		log.write(url+"\n")
 		seasonalinfo=getzonedetails(url)
 		fout.write(str(url)+",") 
 		for variable in seasonalinfo:
@@ -298,10 +303,15 @@ for url in urls:
 	except:
 		errors+=1
 		errorlist.append(url)
+		log.write("ERROR")
 		pass
 	nburls+=1
 fout.close()
 print str(errors)+" errors recorded"
+log.write(str(errors)+" errors recorded"+"\n")
 print errorlist
+log.write(str(errorlist)+"\n")
 duration = round(((time.time()-starttime)/60),1)
 print str(duration)+" minutes"
+log.write(str(duration)+" minutes")
+log.close
