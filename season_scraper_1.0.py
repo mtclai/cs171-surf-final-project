@@ -6,6 +6,7 @@ import urllib2
 import time
 import datetime
 
+"""
 starttime=time.time()
 
 zonesample="http://www.wannasurf.com/spot/Australia_Pacific/Australia/QLD/Far_North_West/index.html"
@@ -289,7 +290,9 @@ fout.write("Zone url,BestSurfing_JanFeb, BestSurfing_MarApr, BestSurfing_MayJun,
 nburls=0
 errors=0
 errorlist=[]
+#urls=(set(urls)) #this makes it run faster, but requires mapping to the rest of the dataset
 for url in urls:
+	looptime=time.time()
 	print nburls
 	log.write(str(nburls)+"\n")
 	try:
@@ -303,8 +306,11 @@ for url in urls:
 	except:
 		errors+=1
 		errorlist.append(url)
-		log.write("ERROR")
+		log.write("ERROR\n")
 		pass
+	instanceduration=time.time()-looptime
+	print instanceduration
+	log.write(str(instanceduration)+" seconds\n")
 	nburls+=1
 fout.close()
 print str(errors)+" errors recorded"
@@ -315,3 +321,15 @@ duration = round(((time.time()-starttime)/60),1)
 print str(duration)+" minutes"
 log.write(str(duration)+" minutes")
 log.close
+
+"""
+
+#Join 
+
+import pandas as pd
+firstpart = pd.read_csv("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel.csv")
+#secondpart = pd.read_csv("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel_seasons.csv")
+
+#firstpart["test"]=1
+
+#print firstpart["test"]

@@ -289,6 +289,8 @@ print subsubzonepagewithspotlinks
 
 	
 allwithspotlinks=countrypagewithspotlinks+zonepagewithspotlinks+subzonepagewithspotlinks+subsubzonepagewithspotlinks
+print allwithspotlinks
+
 
 links=0
 starttime=time.time()
@@ -329,19 +331,19 @@ for pagewithspotlink in allwithspotlinks:
 		for link in alllinks:
 			try:
 				#print link
-				if link["class"]=="wanna-tabzonespot-item-title":#AND IF THESE ARE SPOTS
+				if link["class"]=="wanna-tabzonespot-item-title":
 					#print "FOUND A SPOT"
 					spotlink="http://www.wannasurf.com"+str(link["href"])
 					#print spotlink
 					spot=spotlink.split('/')[-2]
 					fout.write(spot+","+continent+","+country+","+zone+","+subzone+","+subsubzone+",")
-					getspotdetails(spotlink)
+					if spotlink !=("http://wannasurf.com/spot/Middle_East/Turkey/provo_cut/index.html"):#this spot page is completely empty
+						getspotdetails(spotlink)
 					fout.write("\n")
 					print "Spot= "+spot
 					spotlinks.append(link["href"])
-				if link["class"]=="wanna-tabzonespot-item-title" and '<h3 class="wanna-item">Zones</h3>' in str(content):#AND IF THESE ARE ZONES
+				if link["class"]=="wanna-tabzonespot-item-title" and '<h3 class="wanna-item">Zones</h3>' in str(content):
 					print "This is actually a zone page"
-					#GET SPOTS THEN RUN THE ABOVE
 			except:
 				pass
 				#fout.write("\n")
