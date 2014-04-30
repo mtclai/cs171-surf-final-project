@@ -6,7 +6,6 @@ import urllib2
 import time
 import datetime
 
-"""
 starttime=time.time()
 
 zonesample="http://www.wannasurf.com/spot/Australia_Pacific/Australia/QLD/Far_North_West/index.html"
@@ -322,14 +321,18 @@ print str(duration)+" minutes"
 log.write(str(duration)+" minutes")
 log.close
 
+
+#Part below ensures join between spot data and seasonal data, however for simplicity this was done in Excel (since this is a visualization exercise)
 """
-
 #Join 
-
 import pandas as pd
-firstpart = pd.read_csv("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel.csv")
-#secondpart = pd.read_csv("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel_seasons.csv")
+firstpart = pd.read_csv("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel_v2.csv")
+secondpart = pd.read_csv("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel_seasons.csv")
 
+firstpart["Key"]=firstpart["Spot"]
+print firstpart["Spot"].head(1)
 #firstpart["test"]=1
 
 #print firstpart["test"]
+
+"""

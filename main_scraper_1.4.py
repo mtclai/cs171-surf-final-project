@@ -337,7 +337,7 @@ for pagewithspotlink in allwithspotlinks:
 					#print spotlink
 					spot=spotlink.split('/')[-2]
 					fout.write(spot+","+continent+","+country+","+zone+","+subzone+","+subsubzone+",")
-					if spotlink !=("http://wannasurf.com/spot/Middle_East/Turkey/provo_cut/index.html"):#this spot page is completely empty
+					if "provo_cut" not in spotlink: #!=("http://wannasurf.com/spot/Middle_East/Turkey/provo_cut/index.html"):#this spot page is completely empty
 						getspotdetails(spotlink)
 					fout.write("\n")
 					print "Spot= "+spot
