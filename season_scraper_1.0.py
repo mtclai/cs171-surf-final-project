@@ -11,7 +11,7 @@ starttime=time.time()
 zonesample="http://www.wannasurf.com/spot/Australia_Pacific/Australia/QLD/Far_North_West/index.html"
 
 #Find all zones
-input_filename="K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel.csv"
+input_filename="K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel_v2.csv"
 linenumber=0
 urls=[]
 for line in open(input_filename):
@@ -289,7 +289,9 @@ fout.write("Zone url,BestSurfing_JanFeb, BestSurfing_MarApr, BestSurfing_MayJun,
 nburls=0
 errors=0
 errorlist=[]
-#urls=(set(urls)) #this makes it run faster, but requires mapping to the rest of the dataset
+print "LENURL"+str(len(urls))#
+urls=(set(urls)) #this makes it run faster, but requires mapping to the rest of the dataset
+print "LENURL"+str(len(urls))#
 for url in urls:
 	looptime=time.time()
 	print nburls
@@ -320,19 +322,3 @@ duration = round(((time.time()-starttime)/60),1)
 print str(duration)+" minutes"
 log.write(str(duration)+" minutes")
 log.close
-
-
-#Part below ensures join between spot data and seasonal data, however for simplicity this was done in Excel (since this is a visualization exercise)
-"""
-#Join 
-import pandas as pd
-firstpart = pd.read_csv("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel_v2.csv")
-secondpart = pd.read_csv("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel_seasons.csv")
-
-firstpart["Key"]=firstpart["Spot"]
-print firstpart["Spot"].head(1)
-#firstpart["test"]=1
-
-#print firstpart["test"]
-
-"""
