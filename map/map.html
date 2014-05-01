@@ -7,25 +7,6 @@
         /*background: #eeeeee;*/
     }
 
-    .background path {
-  fill: none;
-  stroke: #ccc;
-  stroke-opacity: .4;
-  shape-rendering: crispEdges;
-}
-
-.foreground path {
-  fill: none;
-  stroke: steelblue;
-  stroke-opacity: .7;
-}
-
-.brush .extent {
-  fill-opacity: .3;
-  stroke: #fff;
-  shape-rendering: crispEdges;
-}
-
 	.name {
 		font-size: 20px;
 	}
@@ -79,24 +60,10 @@
 
     .axis line,
     .axis path {
-        fill: none;
-        stroke: lightgrey;
+    	fill: none;
+        stroke: #000;
+  		shape-rendering: crispEdges;
     }
-
-    .station{
-        fill:lightgrey;
-        opacity: .7;
-    }
-    .station.hasData{
-        fill:blue;
-        opacity: 1;
-    }
-    .hourLine{
-        fill:none;
-        stroke:steelblue;
-
-    }
-
 
 /*    div.tooltip {   
       position: absolute;           
@@ -144,10 +111,65 @@ div.tooltip {
 		  pointer-events: none;         
 }
 
+/* Parallel Coordinates CSS */
+
+/*.brush .extent {
+  fill-opacity: .3;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}*/
+
+/* .background path {
+  fill: none;
+  stroke: #ccc;
+  stroke-opacity: .4;
+  shape-rendering: crispEdges;
+}
+
+.foreground path {
+  fill: none;
+  stroke: steelblue;
+  stroke-opacity: .7;
+}*/
+
+.background path {
+  fill: none;
+  stroke: none;
+  stroke-width: 20px;
+  pointer-events: stroke;
+}
+
+.foreground path {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.active .parallellabel:not(.inactive) {
+  font-weight: bold;
+}
+
+.parallellabel {
+  -webkit-transition: fill 125ms linear;
+}
+
+.parallellabel.inactive {
+  fill: #ccc;
+}
+
+.foreground path.inactive {
+  stroke: #ccc;
+  stroke-opacity: .5;
+  stroke-width: 1px;
+}
+
+
+
 </style>
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="../libs/underscore.js"></script>
 <table>
     <tr><td><div id="vis"></div></td>
     <td><img id="logo" src="../sketches/logo.png"><div id="detailVis"></div></td></tr>
