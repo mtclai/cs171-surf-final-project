@@ -7,9 +7,28 @@
         /*background: #eeeeee;*/
     }
 
+    .background path {
+  fill: none;
+  stroke: #ccc;
+  stroke-opacity: .4;
+  shape-rendering: crispEdges;
+}
+
+.foreground path {
+  fill: none;
+  stroke: steelblue;
+  stroke-opacity: .7;
+}
+
+.brush .extent {
+  fill-opacity: .3;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
     #detailVis {
         position: absolute;
-        margin-top: -250px;
+        margin-top: -175px;
     }
 
     #logo {
@@ -73,10 +92,7 @@
         stroke:steelblue;
 
     }
-    .brush .extent{
-        fill:gray;
-        opacity: .3;
-    }
+
 
 /*    div.tooltip {   
       position: absolute;           
@@ -129,8 +145,9 @@ div.tooltip {
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 <table>
-    <tr><td><div id="vis"></div></td><td>
-<img id="logo" src="../sketches/logo.png"><div id="detailVis"></div></td></tr>
+    <tr><td><div id="vis"></div></td>
+    <td><img id="logo" src="../sketches/logo.png"><div id="detailVis"></div></td></tr>
+    <tr><td><div id="parallelVis"></td></tr>
 </table>
 
 
