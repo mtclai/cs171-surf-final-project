@@ -164,7 +164,7 @@ d3.json("world-110m2.json", function(error, topology) {
       .attr("d", path)
 	  .on("click", clicked)
 	  
-d3.csv("../data/spotlevel_withseason_filtered_ordinal.csv", function(error, data) {
+d3.csv("../data/spotlevel_withseason_filtered_ordinal_v4.csv", function(error, data) {
     dataSet = data;
         g.selectAll("circle")
           .data(data)
@@ -302,20 +302,20 @@ d3.csv("../data/spotlevel_withseason_filtered_ordinal.csv", function(error, data
             .attr("class", "parallellabel")
             .data(filterData, function(d) { return d.name || d; });
 
-        var projection = parallelVis.selectAll(".axis text,.background path,.foreground path")
+        var taken = parallelVis.selectAll(".axis text,.background path,.foreground path")
             .on("mouseover", mouseover)
             .on("mouseout", mouseout);
 
         function mouseover(d) {
           svg.classed("active", true);
-          projection.classed("inactive", function(p) { return p !== d; });
-          projection.filter(function(p) { return p === d; }).each(moveToFront);
+          taken.classed("inactive", function(p) { return p !== d; });
+          taken.filter(function(p) { return p === d; }).each(moveToFront);
         }
 >>>>>>> a31ab45a6eecc529a5ae747c3d5b3fe0403628ac
 
         function mouseout(d) {
           svg.classed("active", false);
-          projection.classed("inactive", false);
+          taken.classed("inactive", false);
         }
 
         function moveToFront() {
@@ -433,7 +433,6 @@ d3.csv("../data/spotlevel_withseason_filtered_ordinal.csv", function(error, data
   //       });
   //     }
 
-
     /*
     ** Data wrangling for DetailVis graphs
     */
@@ -486,36 +485,8 @@ d3.csv("../data/spotlevel_withseason_filtered_ordinal.csv", function(error, data
           }
         }
     })
-
-    console.log(data);
-
-
-		   
-d3.selectAll(".filter_button").on("change", function() {
-  createDots(data);
    
-});		     
-	
-var div = d3.select("body").append("div")   
-    .attr("class", "tooltip")               
-    .style("opacity", 0);	  
-
-});
-
-})
-
-      function draw(d) {
-        return parallelline(dimensions.map(function(dimension) {
-          return [parallelx(dimension.name), dimension.scale(d[dimension.name])];
-        }));
-      }
-
-/*
-**
-*/
-
-var createDots = function(data, name) {
-
+d3.selectAll(".filter_button").on("change", function() {
     var type = this.value, 
   // I *think* "inline" is the default.
   display = this.checked ? "inline" : "none";
@@ -553,9 +524,27 @@ svg.selectAll("circle")
             div.transition()        
                 .duration(500)      
                 .style("opacity", 0);   
-        }); 
+        });
+   
+});		     
+	
+var div = d3.select("body").append("div")   
+    .attr("class", "tooltip")               
+    .style("opacity", 0);	  
 
-} 
+});
+
+})
+
+      function draw(d) {
+        return parallelline(dimensions.map(function(dimension) {
+          return [parallelx(dimension.name), dimension.scale(d[dimension.name])];
+        }));
+      }
+
+/*
+**
+*/
 
 var createDetailVis = function(data, name){
 
