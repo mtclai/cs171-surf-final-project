@@ -16,6 +16,8 @@ firstpart.ix[firstpart.Zone.isnull(),"Key"] = "http://www.wannasurf.com/spot/"+f
 firstpart=firstpart.set_index("Key", drop=True)
 secondpart=secondpart.set_index("Zone url", drop=True)
 
+firstpart = firstpart.drop(['Unnamed: 29','Unnamed: 30','Unnamed: 31','Unnamed: 32','Unnamed: 33','Unnamed: 34'],1)
+print firstpart.columns
 #print firstpart.shape
 #print secondpart.shape
 
@@ -64,6 +66,8 @@ merged.ix[merged["Good day length"]=="Long (150 to 300 m)","Good day length_num"
 merged.ix[merged["Good day length"]=="Very Long (300 to 500 m)","Good day length_num"] = 4
 merged.ix[merged["Good day length"]=="Exceptional (&gt;500m)","Good day length_num"] = 5
 
+
+
 #Filter out null values
 merged = merged[np.isfinite(merged['Good day length_num'])]
 merged = merged[np.isfinite(merged['Normal length_num'])]
@@ -80,7 +84,9 @@ merged = merged[merged.TypicalSwell_MarApr != "nan"]
 merged = merged[merged.TypicalSwell_MarApr != ""]
 merged = merged[merged.Latitude != "nan"]
 
-merged.to_csv("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel_withseason_filtered_ordinal.csv")
+
+
+merged.to_csv("K:/03. Academic/03. HKS/07. Year 2 Semester 2/03 - CS-171 - Data Visualization/Final project/spotlevel_withseason_filtered_ordinal.csv",index_label="Zone url")
 
 
 
