@@ -77,7 +77,9 @@ merged = merged[np.isfinite(merged['Distance_num'])]
 
 merged['Latitude'] = merged['Latitude'].astype(str)
 merged['Longitude'] = merged['Longitude'].astype(str)
+merged['AirTemp_JanFeb'] = merged['AirTemp_JanFeb'].astype(str)
 merged['TypicalSwell_MarApr'] = merged['TypicalSwell_MarApr'].astype(str)
+merged = merged[merged.AirTemp_JanFeb != "nan"]
 merged = merged[merged.Longitude != "nan"]
 merged = merged[merged.TypicalSwell_MarApr != "nan"]
 merged = merged[merged.TypicalSwell_MarApr != ""]
