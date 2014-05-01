@@ -35,10 +35,10 @@ var bbSwell = {
 }
 
 var bbParallel = {
-  w: 1060,
-  h: 250,
+  w: 800,
+  h: 350,
   x: 0,
-  y: 350
+  y: 500
 }
 
 var canvas = d3.select("#vis").append("svg").attr({
@@ -63,7 +63,7 @@ var detailVis = detailCanvas.append("g").attr({
 
 var parallelCanvas = d3.select("#parallelVis").append("svg").attr({
   width: bbParallel.w + margin.left + margin.right,
-  height: 400 + margin.top + margin.bottom
+  height: 800 + margin.top + margin.bottom
 })
 
 var parallelVis = parallelCanvas.append("g").attr({
@@ -82,6 +82,10 @@ svg.append("rect")
     // .on("click", clicked);
 
 var g = svg.append("g");
+
+/*
+**
+*/
 
 var centered;
 
@@ -118,15 +122,15 @@ d3.csv("../data/spotlevel_withseason_filtered_ordinal.csv", function(error, data
 		  .filter(function(d) { return d.Country != null ? this : null; })
 
     /*
-    ** Parallel Coordinates Graph
+    ** Parallel Coordinates Code
     */
 
     // filtering only for the data we want for the parallel coordinates graph
     parallelx.domain(dimensions = d3.keys(data[0]).filter(function(d) {
       // if (d === "WaterTemp_JanFeb" || d === "WaterTemp_MarApr" || d === "WaterTemp_MayJun")
-      if (d === "Distance_num" || d === "Frequency_num" || d === "Good day length_num" || d === "Normal length_num" || d === "Wave quality_num")
+      if (d === "best tide movement" || d === "Good day length") //|| d === "Frequency" || d === "Power" || d === "Type")
       {
-        return d && (parallely[d] = d3.scale.linear()
+        return d["best tide movement"] != null ? this : null && d["Good day length"] != null ? this : null && (parallely[d] = d3.scale.linear()
             .domain(d3.extent(data, function(p) { return +p[d]; }))
             .range([bbParallel.h, 0]));
       }
@@ -187,13 +191,7 @@ d3.csv("../data/spotlevel_withseason_filtered_ordinal.csv", function(error, data
           .append("svg:text")
             .attr("text-anchor", "middle")
             .attr("y", -9)
-            .text(function(d) {
-              if (d == "Distance_num") { return "Distance"; }
-              else if (d == "Wave quality_num") { return "Wave quality"; }
-              else if (d == "Frequency_num") { return "Wave frequency"; }
-              else if (d == "Normal length_num") { return "Normal day wave length"; }
-              else if (d == "Good day length_num") { return "Good day wave length"; }  
-            })  
+            .text(String);
 
         // Add and store a brush for each axis.
         eachOne.append("svg:g")
@@ -483,7 +481,7 @@ var createDetailVis = function(data, name){
             .attr("y", 6)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
-            .text("Temperature \xB0F");
+            .text("Temperature \xB0C");
 
         var multiline = detailVis.selectAll(".multiline")
             .data(multiObj)
@@ -569,27 +567,10 @@ var createDetailVis = function(data, name){
           .attr("height", function(d) { return bbBest.h - y2(d.value); })
           .attr("fill", "#FF7F0E")
 
-        var y3 = d3.scale.linear()
-            .domain([0, 5]) 
-            .range([bbSwell.h, bbSwell.y]);
-
-        detailVis.selectAll(".swell_bar")
-            .data(typicalSwell)
-        .enter().append("rect")
-          .attr("class", "bar swell_bar")
-          .attr("x", function(d) { 
-            return x2(d.date) + 20; })
-          .attr("width", 20)
-          .attr("y", function(d) { 
-            return y2(d.value); })
-          .attr("height", function(d) { return bbSwell.h - y3(d.value); })
-          .attr("fill", "#5396C5")
-
-      // add legend to 2nd graph
-
-      var color2 =  [ ["Best Surfing", "#5396C5"],
+        var color2 =  [ ["Best Surfing", "#5396C5"],
           ["Typical Swell Size", "#FF7F0E"] ];
 
+      // add legend   
       var legend = detailVis.append("g")
           .attr("class", "legend")
           // .attr("x", width - 65)
@@ -606,7 +587,7 @@ var createDetailVis = function(data, name){
           .attr("width", 10)
           .attr("height", 10)
           .attr("y", function(d, i) {
-              return i * 20 + 290;
+              return i * 20 + 590;
           })
           .style("fill", function(d) {
               return d[1];
@@ -618,15 +599,94 @@ var createDetailVis = function(data, name){
           .append("text")
           .attr("x", width - 52)
           .attr("y", function(d, i) {
-              return i * 20 + 299;
+              return i * 20 + 599;
           })
           .text(function(d) {
               return d[0];
           });
 
+        // var legend = detailVis.selectAll(".legend")
+        //   .data(color2)
+        // .enter().append("g")
+        //   .attr("class", "legend")
+        //   .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+        // legend.append("rect")
+        //     .attr("x", width - 65)
+        //     .attr("y", function(d, i) {
+        //       return i * 20 + 590;
+        //     }
+        //     .attr("width", 10)
+        //     .attr("height", 10)
+        //     .style("fill", function(d) {
+        //       return d[1];
+        //     });
+
+        // legend.append("text")
+        //     .attr("x", width - 52)
+        //     .attr("y", function(d, i) {
+        //       return i * 20 + 599;
+        //     })
+        //     .attr("dy", ".35em")
+        //     .style("text-anchor", "end")
+        //     .text(function(d) { return d[0]; });
+
+        // Typical Swell Bar Graph
+        // var x3 = d3.time.scale()
+        //   .domain(d3.extent(typicalSwell, function(d){ return d.date; })) 
+        //   .range([0, bbSwell.w])
+
+        var y3 = d3.scale.linear()
+            .domain([0, 5]) 
+            .range([bbSwell.h, bbSwell.y]);
+
+        // var x3Axis = d3.svg.axis()
+        //     .scale(x3)
+        //     .tickFormat(d3.time.format('%b'))
+        //     .orient("bottom");
+
+        // var y3Axis = d3.svg.axis()
+        //     .scale(y3)
+        //     .ticks(6)
+        //     .orient("left");
+
+        // detailVis.append("text")
+        //     .attr("class", "label")
+        //     .attr("x", 0)
+        //     .attr("y", 590)
+        //     .text("Typical Swell Size");
+
+        // detailVis.append("g")
+        //   .attr("class", "x axis")
+        //   .attr("transform", "translate(0," + bbSwell.h + ")")
+        //   .call(x3Axis);
+
+        // detailVis.append("g")
+        //   .attr("class", "y axis")
+        //   .call(y3Axis)
+        // .append("text")
+        //   .attr("transform", "rotate(-90)", "translate(" + (bbSwell.w) + ",0)")
+        //   .attr("x", -600)
+        //   .attr("y", 6)
+        //   .attr("dy", ".71em")
+        //   .style("text-anchor", "end")
+        //   .text("Rating");
+
+        detailVis.selectAll(".swell_bar")
+            .data(typicalSwell)
+        .enter().append("rect")
+          .attr("class", "bar swell_bar")
+          .attr("x", function(d) { 
+            return x2(d.date) + 20; })
+          .attr("width", 20)
+          .attr("y", function(d) { 
+            return y2(d.value); })
+          .attr("height", function(d) { return bbSwell.h - y3(d.value); })
+          .attr("fill", "#5396C5")
+
 }
 
-var updateDetailVis = function(data, name) {
+var updateDetailVis = function(data, name){
     detailVis.selectAll(".axis").data(data).exit().remove();
     detailVis.selectAll(".dot").data(data).exit().remove();
     detailVis.selectAll(".multiline").data(data).exit().remove();
@@ -634,7 +694,6 @@ var updateDetailVis = function(data, name) {
     detailVis.selectAll(".swell_bar").data(data).exit().remove();
     detailVis.selectAll(".label").data(data).exit().remove();
     detailVis.selectAll(".name").data(data).exit().remove();
-    detailVis.selectAll(".legend").data(data).exit().remove();
 }
 
 /*
