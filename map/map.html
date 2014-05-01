@@ -65,24 +65,10 @@
 
     .axis line,
     .axis path {
-        fill: none;
-        stroke: lightgrey;
+    	fill: none;
+        stroke: #000;
+  		shape-rendering: crispEdges;
     }
-
-    .station{
-        fill:lightgrey;
-        opacity: .7;
-    }
-    .station.hasData{
-        fill:blue;
-        opacity: 1;
-    }
-    .hourLine{
-        fill:none;
-        stroke:steelblue;
-
-    }
-
 
 /*    div.tooltip {   
       position: absolute;           
@@ -138,7 +124,7 @@ div.tooltip {
   shape-rendering: crispEdges;
 }*/
 
- .background path {
+/* .background path {
   fill: none;
   stroke: #ccc;
   stroke-opacity: .4;
@@ -149,6 +135,19 @@ div.tooltip {
   fill: none;
   stroke: steelblue;
   stroke-opacity: .7;
+}*/
+
+.background path {
+  fill: none;
+  stroke: none;
+  stroke-width: 20px;
+  pointer-events: stroke;
+}
+
+.foreground path {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
 }
 
 .active .parallellabel:not(.inactive) {

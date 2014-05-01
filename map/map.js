@@ -70,10 +70,17 @@ var parallelVis = parallelCanvas.append("g").attr({
   transform: "translate(" + margin.left + "," + margin.top + ")"
 })
 
+// parallel coords #1
 // var parallelline = d3.svg.line(),
 //     axis = d3.svg.axis().orient("left"),
 //     background,
 //     foreground;
+
+// var parallelx = d3.scale.ordinal().rangePoints([0, bbParallel.w], 1)
+//     parallely = {},
+//     dragging = {};
+
+// parallel coords #1 
 
 svg.append("rect")
     .attr("class", "background")
@@ -95,10 +102,6 @@ var path = d3.geo.path()
 
 var dataSet = {};
 
-// var parallelx = d3.scale.ordinal().rangePoints([0, bbParallel.w], 1)
-//     parallely = {},
-//     dragging = {};
-
 /*
 ** Parallel Coordinates #2
 **/
@@ -111,7 +114,7 @@ var dataSet = {};
     },
     {
       name: "Wave quality_num",
-      scale: d3.scale.linear().range([0, bbParallel.h]),
+      scale: d3.scale.linear().range([bbParallel.h, 0]),
       type: Number
     },
     {
@@ -218,25 +221,19 @@ d3.csv("../data/spotlevel_withseason_filtered_ordinal.csv", function(error, data
             .on("mouseout", mouseout);
 
         function mouseover(d) {
-          parallelVis.classed("active", true);
+          svg.classed("active", true);
           projection.classed("inactive", function(p) { return p !== d; });
           projection.filter(function(p) { return p === d; }).each(moveToFront);
         }
 
         function mouseout(d) {
-          parallelVis.classed("active", false);
+          svg.classed("active", false);
           projection.classed("inactive", false);
         }
 
         function moveToFront() {
           this.parentNode.appendChild(this);
         }
-
-      function draw(d) {
-        return parallelline(dimensions.map(function(dimension) {
-          return [parallelx(dimension.name), dimension.scale(d[dimension.name])];
-        }));
-      }
 
     /*
     ** Parallel Coordinates Graph #1
@@ -323,32 +320,31 @@ d3.csv("../data/spotlevel_withseason_filtered_ordinal.csv", function(error, data
   //         .selectAll("rect")
   //           .attr("x", -8)
   //           .attr("width", 16);
-      // });
 
-      function position(d) {
-        var v = dragging[d];
-        return v == null ? parallelx(d) : v;
-      }
+  //     function position(d) {
+  //       var v = dragging[d];
+  //       return v == null ? parallelx(d) : v;
+  //     }
 
-      function transition(g) {
-        return eachOne.transition().duration(500);
-      }
+  //     function transition(g) {
+  //       return eachOne.transition().duration(500);
+  //     }
 
-      // Returns the path for a given data point.
-      function path(d) {
-        return parallelline(dimensions.map(function(p) { return [position(p), parallely[p](d[p])]; }));
-      }
+  //     // Returns the path for a given data point.
+  //     function path(d) {
+  //       return parallelline(dimensions.map(function(p) { return [position(p), parallely[p](d[p])]; }));
+  //     }
 
-      // Handles a brush event, toggling the display of foreground lines.
-      function brush() {
-        var actives = dimensions.filter(function(p) { return ! parallely[p].brush.empty(); }),
-            extents = actives.map(function(p) { return parallely[p].brush.extent(); });
-        foreground.style("display", function(d) {
-          return actives.every(function(p, i) {
-            return extents[i][0] <= d[p] && d[p] <= extents[i][1];
-          }) ? null : "none";
-        });
-      }
+  //     // Handles a brush event, toggling the display of foreground lines.
+  //     function brush() {
+  //       var actives = dimensions.filter(function(p) { return ! parallely[p].brush.empty(); }),
+  //           extents = actives.map(function(p) { return parallely[p].brush.extent(); });
+  //       foreground.style("display", function(d) {
+  //         return actives.every(function(p, i) {
+  //           return extents[i][0] <= d[p] && d[p] <= extents[i][1];
+  //         }) ? null : "none";
+  //       });
+  //     }
 
 
     /*
@@ -405,15 +401,41 @@ d3.csv("../data/spotlevel_withseason_filtered_ordinal.csv", function(error, data
     })
 
     console.log(data);
+
+
 		   
 d3.selectAll(".filter_button").on("change", function() {
-  var type = this.value, 
+  createDots(data);
+   
+});		     
+	
+var div = d3.select("body").append("div")   
+    .attr("class", "tooltip")               
+    .style("opacity", 0);	  
+
+});
+
+})
+
+      function draw(d) {
+        return parallelline(dimensions.map(function(dimension) {
+          return [parallelx(dimension.name), dimension.scale(d[dimension.name])];
+        }));
+      }
+
+/*
+**
+*/
+
+var createDots = function(data, name) {
+
+    var type = this.value, 
   // I *think* "inline" is the default.
   display = this.checked ? "inline" : "none";
 
 svg.selectAll("circle")
     .filter(function(d) { return d.Experience === type })
-	.attr("cx", function(d) {
+  .attr("cx", function(d) {
                    return projection([d.Longitude, d.Latitude])[0];
            })
     .attr("cy", function(d) {
@@ -426,7 +448,7 @@ svg.selectAll("circle")
   .on("click", function(d) {
           createDetailVis(d, d.Spot); 
        })
-	.on("mouseover", function(d) { 
+  .on("mouseover", function(d) { 
       d3.select(this)
                 .style("fill", "blue")
 
@@ -444,20 +466,9 @@ svg.selectAll("circle")
             div.transition()        
                 .duration(500)      
                 .style("opacity", 0);   
-        });	   
-});		     
-	
-var div = d3.select("body").append("div")   
-    .attr("class", "tooltip")               
-    .style("opacity", 0);	  
+        }); 
 
-});
-
-})
-
-/*
-**
-*/
+} 
 
 var createDetailVis = function(data, name){
 
