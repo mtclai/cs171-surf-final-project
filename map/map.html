@@ -11,6 +11,11 @@
 		font-size: 20px;
 	}
 
+	.filter_options {
+		position: absolute;
+		margin-top: -250px;
+	}
+
     #detailVis {
         position: absolute;
         margin-top: -175px;
@@ -172,19 +177,21 @@ div.tooltip {
 <script src="../libs/underscore.js"></script>
 <table>
     <tr><td><div id="vis"></div></td>
-    <td><img id="logo" src="../sketches/logo.png"><div id="detailVis"></div></td></tr>
+    <td><img id="logo" src="../sketches/logo.png">
+
+    	<div class="filter_options">
+			<input class="filter_button" id="a_button" type="checkbox" value="All surfers">All Surfers</input><br>
+			<input class="filter_button" id="a_button" type="checkbox" value="Beginners wave">Beginners</input><br>
+			<input class="filter_button" id="a_button" type="checkbox" value="Experienced surfers">Experienced Surfers</input><br>
+			<input class="filter_button" id="a_button" type="checkbox" value="Pros or kamikaze only...">Pros</input><br>
+		</div>
+
+    <div id="detailVis"></div></td></tr>
     <tr><td><div id="parallelVis"></td></tr>
 </table>
 
 
 <script src="map.js"></script>
-
-<div class="filter_options">
-<input class="filter_button" id="a_button" type="checkbox" value="All surfers">All Surfers</input><br>
-<input class="filter_button" id="a_button" type="checkbox" value="Beginners wave">Beginners</input><br>
-<input class="filter_button" id="a_button" type="checkbox" value="Experienced surfers">Experienced Surfers</input><br>
-<input class="filter_button" id="a_button" type="checkbox" value="Pros or kamikaze only...">Pros</input><br>
-</div>
 
 
 </body>
