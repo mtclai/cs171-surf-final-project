@@ -89,54 +89,6 @@ var path = d3.geo.path()
 
 var dataSet = {};
 
-/*
-** Parallel Coordinates #2
-**/
-
-  var dimensions = [
-    {
-      name: "Spot",
-      scale: d3.scale.ordinal().rangePoints([0, bbParallel.h]),
-      type: String
-    },
-    {
-      name: "Wave quality_num",
-      scale: d3.scale.linear().range([bbParallel.h, 0]),
-      type: Number
-    },
-    {
-      name: "Frequency_num",
-      scale: d3.scale.linear().range([bbParallel.h, 0]),
-      type: Number
-    },
-    {
-      name: "Normal length_num",
-      scale: d3.scale.linear().range([bbParallel.h, 0]),
-      type: Number
-    },
-    {
-      name: "Good day length_num",
-      scale: d3.scale.linear().range([bbParallel.h, 0]),
-      type: Number
-    }
-  ];
-
-  var parallelx = d3.scale.ordinal()
-      .domain(dimensions.map(function(d) { return d.name; }))
-      .rangePoints([0, width]);
-
-  var parallelline = d3.svg.line()
-      .defined(function(d) { return !isNaN(d[1]); });
-
-  var parallelyAxis = d3.svg.axis()
-      .orient("left");
-
-  var dimension = parallelVis.selectAll(".dimension")
-      .data(dimensions)
-    .enter().append("g")
-      .attr("class", "dimension")
-      .attr("transform", function(d) { return "translate(" + parallelx(d.name) + ")"; });
-
 // load and display the World
 d3.json("world-110m2.json", function(error, topology) {
     g.selectAll("path")
@@ -147,80 +99,13 @@ d3.json("world-110m2.json", function(error, topology) {
       .attr("d", path)
     .on("click", clicked)
 
-d3.csv("../data/spotlevel_withseason_filtered_ordinal.csv", function(error, data) {
+d3.csv("../data/spotlevel_withseason_filtered_ordinal_v4.csv", function(error, data) {
     dataSet = data;
         g.selectAll("circle")
           .data(data)
           .enter()
       .append("circle")
       .filter(function(d) { return d.Country != null ? this : null; })
-
-  /*
-    ** Parallel Coordinats Graph 
-    */ 
-
-    filterData = _.filter(data, function(d, i) { return i < 20; });
-    console.log(filterData);
-
-          dimensions.forEach(function(dimension) {
-          dimension.scale.domain(dimension.type === Number
-              ? d3.extent(filterData, function(d) { return +d[dimension.name]; })
-              : filterData.map(function(d) { return d[dimension.name]; }).sort());
-        });
-
-        parallelVis.append("g")
-            .attr("class", "background")
-          .selectAll("path")
-            .data(filterData)
-          .enter().append("path")
-            .attr("d", draw);
-
-        parallelVis.append("g")
-            .attr("class", "foreground")
-          .selectAll("path")
-            .data(filterData)
-          .enter().append("path")
-            .attr("d", draw);
-
-        dimension.append("g")
-            .attr("class", "axis")
-            .each(function(d) { d3.select(this).call(parallelyAxis.scale(d.scale)); })
-          .append("text")
-            .attr("class", "title")
-            .attr("text-anchor", "middle")
-            .attr("y", -9)
-            // .text(function(d) { return d.name; })
-            .text(function(d) { 
-              if (d.name == "Wave quality_num") { return "Wave quality"; }
-              else if (d.name == "Frequency_num") { return "Wave frequency"; }
-              else if (d.name == "Normal length_num") { return "Normal day wave length"; }
-              else if (d.name == "Good day length_num") { return "Good day wave length"; }
-              else { return d.name; }
-            })
-
-        // Rebind the axis data to simplify mouseover.
-        parallelVis.select(".axis").selectAll("text:not(.title)")
-            .attr("class", "parallellabel")
-            .data(filterData, function(d) { return d.name || d; });
-
-        var taken = parallelVis.selectAll(".axis text,.background path,.foreground path")
-            .on("mouseover", mouseover)
-            .on("mouseout", mouseout);
-
-        function mouseover(d) {
-          svg.classed("active", true);
-          taken.classed("inactive", function(p) { return p !== d; });
-          taken.filter(function(p) { return p === d; }).each(moveToFront);
-        }
-
-        function mouseout(d) {
-          svg.classed("active", false);
-          taken.classed("inactive", false);
-        }
-
-        function moveToFront() {
-          this.parentNode.appendChild(this);
-        }
 
     /*
     ** Data wrangling for DetailVis graphs
@@ -275,10 +160,6 @@ d3.csv("../data/spotlevel_withseason_filtered_ordinal.csv", function(error, data
         }
     })
 
-    console.log(data);
-
-
-
 d3.selectAll(".filter_button").on("change", function() {
    var type = this.value, 
   // I *think* "inline" is the default.
@@ -297,7 +178,8 @@ svg.selectAll("circle")
     .style("opacity", .7)
     .attr("display", display)
   .on("click", function(d) {
-          createDetailVis(d, d.Spot); 
+          createDetailVis(d, d.Spot);
+          createParallelVis(d, data, d.Spot); 
        })
   .on("mouseover", function(d) { 
       d3.select(this)
@@ -328,15 +210,141 @@ var div = d3.select("body").append("div")
 
 })
 
-      function draw(d) {
+/*
+** Create ParallelVis code
+*/
+
+var filterData;
+
+var createParallelVis = function(spot, data, name){
+
+    if (filterData != null) {updateParallelVis(filterData, name);}
+    else { updateParallelVis(data, name); }
+
+    var dimensions = [
+      {
+        name: "Spot",
+        scale: d3.scale.ordinal().rangePoints([0, bbParallel.h]),
+        type: String
+      },
+      {
+        name: "Wave quality_num",
+        scale: d3.scale.linear().range([bbParallel.h, 0]),
+        type: Number
+      },
+      {
+        name: "Frequency_num",
+        scale: d3.scale.linear().range([bbParallel.h, 0]),
+        type: Number
+      },
+      {
+        name: "Normal length_num",
+        scale: d3.scale.linear().range([bbParallel.h, 0]),
+        type: Number
+      },
+      {
+        name: "Good day length_num",
+        scale: d3.scale.linear().range([bbParallel.h, 0]),
+        type: Number
+      }
+    ];
+
+    var parallelx = d3.scale.ordinal()
+        .domain(dimensions.map(function(d) { return d.name; }))
+        .rangePoints([0, width]);
+
+    var parallelline = d3.svg.line()
+        .defined(function(d) { return !isNaN(d[1]); })
+
+    var parallelyAxis = d3.svg.axis()
+        .orient("left");
+        
+    var dimension = parallelVis.selectAll(".dimension")
+        .data(dimensions)
+      .enter().append("g")
+        .attr("class", "dimension")
+        .attr("transform", function(d) { return "translate(" + parallelx(d.name) + ")"; });
+
+    var typeZone = findZone(spot).type; 
+    var valueZone = findZone(spot).value; 
+    filterData = _.filter(data, function(d, i) { return d[typeZone] == valueZone ; });
+    // console.log(filterData);
+
+        dimensions.forEach(function(dimension) {
+        dimension.scale.domain(dimension.type === Number
+            ? d3.extent(filterData, function(d) { return +d[dimension.name]; })
+            : filterData.map(function(d) { return d[dimension.name]; }).sort());
+      });
+
+        parallelVis.append("g")
+            .attr("class", "background")
+          .selectAll("path")
+            .data(filterData)
+          .enter().append("path")
+            .attr("d", draw);
+
+        parallelVis.append("g")
+            .attr("class", "foreground")
+          .selectAll("path")
+            .data(filterData)
+          .enter().append("path")
+            .attr("d", draw);
+
+        dimension.append("g")
+            .attr("class", "axis")
+            .each(function(d) { d3.select(this).call(parallelyAxis.scale(d.scale)); })
+          .append("text")
+            .attr("class", "title")
+            .attr("text-anchor", "middle")
+            .attr("y", -9)
+            .text(function(d) { 
+              if (d.name == "Wave quality_num") { return "Wave quality"; }
+              else if (d.name == "Frequency_num") { return "Wave frequency"; }
+              else if (d.name == "Normal length_num") { return "Normal day wave length"; }
+              else if (d.name == "Good day length_num") { return "Good day wave length"; }
+              else { return d.name; }
+            })
+
+        // Rebind the axis data to simplify mouseover.
+        parallelVis.select(".axis").selectAll("text:not(.title)")
+            .attr("class", "parallellabel")
+            .data(filterData, function(d) { return d.name || d; });
+
+        var taken = parallelVis.selectAll(".axis text,.background path,.foreground path")
+            .on("mouseover", mouseover)
+            .on("mouseout", mouseout);
+
+        function mouseover(d) {
+          svg.classed("active", true);
+          taken.classed("inactive", function(p) { return p !== d; });
+          taken.filter(function(p) { return p === d; }).each(moveToFront);
+        }
+
+        function mouseout(d) {
+          svg.classed("active", false);
+          taken.classed("inactive", false);
+        }
+
+        function moveToFront() {
+          this.parentNode.appendChild(this);
+        }
+
+        function draw(d) {
         return parallelline(dimensions.map(function(dimension) {
           return [parallelx(dimension.name), dimension.scale(d[dimension.name])];
         }));
       }
 
-/*
-**
-*/
+}
+
+var findZone = function(spot, name){
+  for (var property in spot) {
+    if (spot.Subsubzone != "") { return {type: "Subsubzone", value: spot.Subsubzone}; }
+    else if (spot.Subzone != "") { return {type: "Subzone", value: spot.Subzone}; }
+    else if (spot.Zone != "") { return {type: "Zone", value: spot.Zone}; }
+    else if (spot.Country != "") { return {type: "Country", value: spot.Country}; }
+  }
+}
 
 
 var createDetailVis = function(data, name){
@@ -623,9 +631,16 @@ var updateDetailVis = function(data, name) {
     detailVis.selectAll(".legend").data(data).exit().remove();
 }
 
-/*
-**
-*/
+var updateParallelVis = function(data, name) {
+
+    // this is sending the right data to remove, but for some reason isn't working.
+    console.log(data);
+    parallelVis.selectAll(".dimension").data(data).exit().remove();
+    parallelVis.selectAll(".background").data(data).exit().remove();
+    parallelVis.selectAll(".foreground").data(data).exit().remove();
+    parallelVis.selectAll(".axis").data(data).exit().remove();
+    parallelVis.selectAll(".parallellabel").data(data).exit().remove();
+}
 
 function clicked(d) {
   var x, y, k;
@@ -659,7 +674,6 @@ function reset() {
       .style("stroke-width", "1.5px")
       .attr("transform", "");
 }
-
 
 function zoom() {
   svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");

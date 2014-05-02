@@ -4,6 +4,7 @@
 
 /**/
     svg{
+    	font:10px sans-serif;
         /*background: #eeeeee;*/
     }
 
@@ -70,18 +71,6 @@
   		shape-rendering: crispEdges;
     }
 
-/*    div.tooltip {   
-      position: absolute;           
-      text-align: center;           
-      width: 60px;                  
-      height: 28px;                 
-      padding: 2px;             
-      font: 15px sans-serif bold;        
-      border: 0px;      
-      border-radius: 8px;           
-      pointer-events: none;         
-    }*/
-
     .label {
         font-weight: bold;
     }
@@ -118,25 +107,6 @@ div.tooltip {
 
 /* Parallel Coordinates CSS */
 
-/*.brush .extent {
-  fill-opacity: .3;
-  stroke: #fff;
-  shape-rendering: crispEdges;
-}*/
-
-/* .background path {
-  fill: none;
-  stroke: #ccc;
-  stroke-opacity: .4;
-  shape-rendering: crispEdges;
-}
-
-.foreground path {
-  fill: none;
-  stroke: steelblue;
-  stroke-opacity: .7;
-}*/
-
 .background path {
   fill: none;
   stroke: none;
@@ -150,12 +120,12 @@ div.tooltip {
   stroke-width: 1.5px;
 }
 
-.active .parallellabel:not(.inactive) {
-  font-weight: bold;
-}
-
 .parallellabel {
   -webkit-transition: fill 125ms linear;
+}
+
+.active .parallellabel:not(.inactive) {
+  font-weight: bold;
 }
 
 .parallellabel.inactive {
