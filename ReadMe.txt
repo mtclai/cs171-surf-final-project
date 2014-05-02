@@ -16,3 +16,6 @@ The latest data file containing surf spot information (including weather data) i
 Process book:
 ...\CS171FinalProjectProcessBook.docx
 
+Screencast:
+http://www.youtube.com/watch?v=uxTgnqaThig
+
