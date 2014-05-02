@@ -17,6 +17,10 @@
 		margin-top: -250px;
 	}
 
+	#parallelVis {
+		margin-top: 10px;
+	}
+
     #detailVis {
         position: absolute;
         margin-top: -175px;
@@ -138,6 +142,42 @@ div.tooltip {
   stroke-width: 1px;
 }
 
+/* Slider */
+.grid-background {
+  fill: #ddd;
+}
+
+.grid line,
+.grid path {
+  fill: none;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.grid .minor.tick line {
+  stroke-opacity: .5;
+}
+
+.brush .extent {
+  stroke: #000;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+
+div.tooltip {   
+		  position: absolute;           
+		  text-align: left;           
+		  width: 240px;                  
+		  height: 120px;                 
+		  padding: 2px;             
+		  font: 12px sans-serif;        
+		  background: #a1d99b;   
+		  border: 0px;      
+		  border-radius: 8px;           
+		  pointer-events: none;         
+}
+
 
 
 </style>
@@ -156,10 +196,12 @@ div.tooltip {
 			<input class="filter_button" id="a_button" type="checkbox" value="Pros or kamikaze only...">Pros</input><br>
 		</div>
 
+
+
     <div id="detailVis"></div></td></tr>
+    <tr><td> <div id ="slider"></div></td></tr> 
     <tr><td><div id="parallelVis"></td></tr>
 </table>
-
 
 <script src="map.js"></script>
 

@@ -1,3 +1,4 @@
+
 var margin = {
     top: 50,
     right: 50,
@@ -7,6 +8,7 @@ var margin = {
 
 var width = 1060 - margin.left - margin.right;
 var height = 800 - margin.bottom - margin.top;
+
 
 /**
 ** Intro code for merge
@@ -33,49 +35,15 @@ var bbSwell = {
     y: 600
 }
 
-var bbParallel = {
-  w: 1060,
-  h: 250,
-  x: 0,
-  y: 350
-}
+var color2 = d3.scale.category20();
 
 function capitaliseFirstLetter(string)
 {
-   return string.charAt(0).toUpperCase() + string.slice(1);
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-var canvas = d3.select("#vis").append("svg").attr({
-    width: width + margin.left + margin.right,
-    height: height + margin.top + margin.bottom
-    })
-
-var svg = canvas.append("g").attr({
-        transform: "translate(" + margin.left + "," + margin.top + ")"
-    })
-    .call(d3.behavior.zoom().scaleExtent([1, 8]).on("zoom", zoom))
-    .append("g");
-
-var detailCanvas = d3.select("#detailVis").append("svg").attr({
-  width: 450 + margin.left + margin.right,
-  height: 800 + margin.top + margin.bottom
-})
-
-var detailVis = detailCanvas.append("g").attr({
-  transform: "translate(" + margin.left + "," + margin.top + ")"
-})
-
-var parallelCanvas = d3.select("#parallelVis").append("svg").attr({
-  width: bbParallel.w + margin.left + margin.right,
-  height: bbParallel.h + margin.top + margin.bottom
-})
-
-var parallelVis = parallelCanvas.append("g").attr({
-  transform: "translate(" + margin.left + "," + margin.top + ")"
-})
-
 var sliderCanvas = d3.select("#slider").append("svg").attr({ //created slider svg
-  width: 1060,
+  width: 600 ,
   height: 20,
   })
   
@@ -103,6 +71,30 @@ var month_name = [];
 var string1 = [];
 var string2 = [];
 
+//var color_temp = d3.scale.ordinal()
+	//.domain(range[, 30)
+	//.range(
+
+var detailCanvas = d3.select("#detailVis").append("svg").attr({
+  width: 450 + margin.left + margin.right,
+  height: 800 + margin.top + margin.bottom
+})
+
+var detailVis = detailCanvas.append("g").attr({
+  transform: "translate(" + margin.left + "," + margin.top + ")"
+})
+
+var canvas = d3.select("#vis").append("svg").attr({
+    width: width + margin.left + margin.right,
+    height: height + margin.top + margin.bottom
+    })
+
+var svg = canvas.append("g").attr({
+        transform: "translate(" + margin.left + "," + margin.top + ")"
+    })
+    .call(d3.behavior.zoom().scaleExtent([1, 8]).on("zoom", zoom))
+    .append("g");
+
 svg.append("rect")
     .attr("class", "background")
     .attr("width", width)
@@ -110,6 +102,10 @@ svg.append("rect")
     // .on("click", clicked);
 
 var g = svg.append("g");
+
+/*
+**
+*/
 
 var centered;
 
@@ -131,18 +127,91 @@ d3.json("world-110m2.json", function(error, topology) {
     .enter()
       .append("path")
       .attr("d", path)
-    .on("click", clicked)
-
-d3.csv("../data/spotlevel_withseason_filtered_ordinal_v4.csv", function(error, data) {
+	  .on("click", clicked)
+	  
+d3.csv("Site_table_dummy3.csv", function(error, data) {
     dataSet = data;
         g.selectAll("circle")
           .data(data)
           .enter()
-      .append("circle")
-      .filter(function(d) { return d.Country != null ? this : null; })
+		  .append("circle")
+		  .filter(function(d) { return d.Country != null ? this : null; })
 
+				
+		// slider
+
+	var x = d3.time.scale()
+    .domain([new Date(2012, 12), new Date(2013, 12)])
+    .range([0, 600]);
+
+var brush = d3.svg.brush()
+    .x(x)
+    .extent([new Date(2013, 2), new Date(2013, 3)])
+    .on("brushend", brushended);
+
+sliderVis.append("rect")
+    .attr("class", "grid-background")
+    .attr("width", 600)
+    .attr("height", 10);
+
+sliderVis.append("g")
+    .attr("class", "x grid")
+    //.attr("transform", "translate(0," + 100 + ")")
+    .call(d3.svg.axis()
+        .scale(x)
+        .orient("bottom")
+        .ticks(d3.time.month, 2)
+        .tickSize(10)
+        .tickFormat(""))
+  .selectAll(".tick")
+   // .classed("minor", function(d) { return d.getHours(); });
+
+sliderVis.append("g")
+    .attr("class", "x axis")
+    //.attr("transform", "translate(0," + 2 + ")")
+    .call(d3.svg.axis()
+      .scale(x)
+      .orient("bottom")
+      .ticks(d3.time.month)
+      .tickPadding(0))
+  .selectAll("text")
+    .attr("x", 6)
+    .style("text-anchor", null);
+
+var gBrush =sliderVis.append("g")
+    .attr("class", "brush")
+    .call(brush)
+    .call(brush.event)
+
+gBrush.selectAll("rect")
+    .attr("height", 10);
+
+function brushended() {
+  if (!d3.event.sourceEvent) return; // only transition after input
+  var extent0 = brush.extent(),
+      extent1 = extent0.map(d3.time.month.round)
+	  month = extent1[0].getMonth()
+	  month_name = months[month]
+	  string1 = "WaterTemp_"+month_name
+	  string2 = "TypicalSwell_"+month_name
+	  
+	  
+	  
+  // if empty when rounded, use floor & ceil instead
+  //if (extent1[0] >= extent1[1]) {
+    //extent1[0] = d3.time.month.floor(extent0[0]);
+    //extent1[1] = d3.time.month.ceil(extent0[1]);
+  //}
+
+  d3.select(this).transition()
+      .call(brush.extent(extent1))
+      .call(brush.event)
+	  
+}	  
+
+	
     /*
-    ** Data wrangling for DetailVis graphs
+    ** Data wrangling
     */
 
     // write a time parser, and sort the data 
@@ -193,112 +262,37 @@ d3.csv("../data/spotlevel_withseason_filtered_ordinal_v4.csv", function(error, d
           }
         }
     })
-
-/*
-** Slider code
-*/
-
-var sliderx = d3.time.scale()
-    .domain([new Date(2013, 12), new Date(2014, 12)])
-    .range([0, 1060]);
-
-var brush = d3.svg.brush()
-    .x(sliderx)
-    .extent([new Date(2014, 2), new Date(2014, 3)])
-    .on("brushend", brushended);
-
-sliderVis.append("rect")
-    .attr("class", "grid-background")
-    .attr("width", 1060)
-    .attr("height", 10);
-
-sliderVis.append("g")
-    .attr("class", "x grid")
-    //.attr("transform", "translate(0," + 100 + ")")
-    .call(d3.svg.axis()
-        .scale(sliderx)
-        .orient("bottom")
-        .ticks(d3.time.month, 2)
-        .tickSize(10)
-        .tickFormat(""))
-  .selectAll(".tick")
-   // .classed("minor", function(d) { return d.getHours(); });
-
-sliderVis.append("g")
-    .attr("class", "x axis")
-    //.attr("transform", "translate(0," + 2 + ")")
-    .call(d3.svg.axis()
-      .scale(sliderx)
-      .orient("bottom")
-      .ticks(d3.time.month)
-      .tickPadding(0))
-  .selectAll("text")
-    .attr("x", 6)
-    .style("text-anchor", null);
-
-var gBrush =sliderVis.append("g")
-    .attr("class", "brush")
-    .call(brush)
-    .call(brush.event)
-
-gBrush.selectAll("rect")
-    .attr("height", 10);
-
-function brushended() {
-  if (!d3.event.sourceEvent) return; // only transition after input
-  var extent0 = brush.extent(),
-      extent1 = extent0.map(d3.time.month.round)
-    month = extent1[0].getMonth()
-    month_name = months[month]
-    string1 = "WaterTemp_"+month_name
-    string2 = "TypicalSwell_"+month_name
-
-  updateCircles(data);
-    
-  // if empty when rounded, use floor & ceil instead
-  if (extent1[0] >= extent1[1]) {
-    extent1[0] = d3.time.month.floor(extent0[0]);
-    extent1[1] = d3.time.month.ceil(extent0[1]);
-  }
-
-  d3.select(this).transition()
-      .call(brush.extent(extent1))
-      .call(brush.event)
-    
-}
-
+		   
 d3.selectAll(".filter_button").on("change", function() {
-   var type = this.value, 
+  var type = this.value, 
   // I *think* "inline" is the default.
   display = this.checked ? "inline" : "none";
 
 svg.selectAll("circle")
     .filter(function(d) { return d.Experience === type })
-  .attr("cx", function(d) {
+	.attr("cx", function(d) {
                    return projection([d.Longitude, d.Latitude])[0];
            })
     .attr("cy", function(d) {
                    return projection([d.Longitude, d.Latitude])[1];
            })
-    .attr("r", function(d){
-      return d["TypicalSwell_MarApr"] * 2;
-    })
-    // .attr("r", 2)
-    .style("fill", "orange")
+    .attr("r", function(d){;
+		return d[string2]*2})
+    .style("fill", function(d){
+		return color2(d[string1])})
     .style("opacity", .7)
     .attr("display", display)
   .on("click", function(d) {
-          createDetailVis(d, d.Spot);
-          createParallelVis(d, data, d.Spot); 
+          createDetailVis(d, d.Spot);   
        })
-  .on("mouseover", function(d) { 
+	.on("mouseover", function(d) { 
       d3.select(this)
                 .style("fill", "blue")
 
             div.transition()        
                 .duration(200)      
                 .style("opacity", .9);      
-            div .html("Surfspot: ".bold() + capitaliseFirstLetter(d.Spot).replace(/[\._ ,:-]+/g, " ") + "</br>" + "Country: ".bold() + capitaliseFirstLetter(d.Country).replace(/[\._ ,:-]+/g, " ") + "</br>" + "Wave quality: ".bold() + d["Wave quality"] + "</br>" + "Type: ".bold() + d["Type"]  + "</br>" + "Direction: ".bold() + d["Direction"]  + "</br>" + "Bottom: ".bold() + d["Bottom"]  + "</br>" + "Power: ".bold() + d["Power"]  + "</br>" + "Normal length: ".bold() + d["Normal length"])
+            div .html("Typical Swell size: " + d[string2] + "</br>" + "Water temp: " + d[string1] + "</br>" + "Surfspot: " + capitaliseFirstLetter(d.Spot).replace(/[\._ ,:-]+/g, " ") + "</br>" + "Country: " + capitaliseFirstLetter(d.Country).replace(/[\._ ,:-]+/g, " "))
                 .style("left", (d3.event.pageX) + "px")     
                 .style("top", (d3.event.pageY - 28) + "px");    
             })                  
@@ -309,167 +303,22 @@ svg.selectAll("circle")
             div.transition()        
                 .duration(500)      
                 .style("opacity", 0);   
-        }); 
-});        
-
+        });	   
+});		     
+	
 var div = d3.select("body").append("div")   
     .attr("class", "tooltip")               
-    .style("opacity", 0);   
+    .style("opacity", 0);	  
 
+
+	
 });
 
-})   
-
-var updateCircles = function(data, name) {
-  d3.selectAll("circle")
-    .transition()
-    .attr("r", function(d){
-    return d[string2]*2; })
-}
-
+})
 
 /*
-** Create ParallelVis code
+**
 */
-
-var filterData;
-
-var createParallelVis = function(spot, data, name){
-
-    if (filterData != null) {updateParallelVis(filterData, name);}
-    else { updateParallelVis(data, name); }
-
-    var dimensions = [
-      {
-        name: "Spot",
-        scale: d3.scale.ordinal().rangePoints([0, bbParallel.h]),
-        type: String
-      },
-      {
-        name: "Wave quality_num",
-        scale: d3.scale.linear().range([bbParallel.h, 0]),
-        type: Number
-      },
-      {
-        name: "Frequency_num",
-        scale: d3.scale.linear().range([bbParallel.h, 0]),
-        type: Number
-      },
-      {
-        name: "Normal length_num",
-        scale: d3.scale.linear().range([bbParallel.h, 0]),
-        type: Number
-      },
-      {
-        name: "Good day length_num",
-        scale: d3.scale.linear().range([bbParallel.h, 0]),
-        type: Number
-      }
-    ];
-
-    var parallelx = d3.scale.ordinal()
-        .domain(dimensions.map(function(d) { return d.name; }))
-        .rangePoints([0, width]);
-
-    var parallelline = d3.svg.line()
-        .defined(function(d) { return !isNaN(d[1]); })
-
-    var parallelyAxis = d3.svg.axis()
-        .orient("left");
-        
-    var dimension = parallelVis.selectAll(".dimension")
-        .data(dimensions)
-      .enter().append("g")
-        .attr("class", "dimension")
-        .attr("transform", function(d) { return "translate(" + parallelx(d.name) + ")"; });
-
-    var typeZone = findZone(spot).type; 
-    var valueZone = findZone(spot).value; 
-    filterData = _.filter(data, function(d, i) { return d[typeZone] == valueZone ; });
-    // console.log(filterData);
-
-        dimensions.forEach(function(dimension) {
-        dimension.scale.domain(dimension.type === Number
-            ? d3.extent(filterData, function(d) { return +d[dimension.name]; })
-            : filterData.map(function(d) { return d[dimension.name]; }).sort());
-      });
-
-        parallelVis.append("g")
-            .attr("class", "background")
-          .selectAll("path")
-            .data(filterData)
-          .enter().append("path")
-            .attr("d", draw);
-
-        parallelVis.append("g")
-            .attr("class", "foreground")
-          .selectAll("path")
-            .data(filterData)
-          .enter().append("path")
-            .attr("d", draw);
-
-        parallelVis.append("text")
-            .attr("class", "label")
-            .attr("x", 0)
-            .attr("y", -35)
-            .text("Neighboring Surf Spots");
-
-        dimension.append("g")
-            .attr("class", "axis")
-            .each(function(d) { d3.select(this).call(parallelyAxis.scale(d.scale)); })
-          .append("text")
-            .attr("class", "title")
-            .attr("text-anchor", "middle")
-            .attr("y", -9)
-            .text(function(d) { 
-              if (d.name == "Wave quality_num") { return "Wave quality"; }
-              else if (d.name == "Frequency_num") { return "Wave frequency"; }
-              else if (d.name == "Normal length_num") { return "Normal day wave length"; }
-              else if (d.name == "Good day length_num") { return "Good day wave length"; }
-              else { return d.name; }
-            })
-
-        // Rebind the axis data to simplify mouseover.
-        parallelVis.select(".axis").selectAll("text:not(.title)")
-            .attr("class", "parallellabel")
-            .data(filterData, function(d) { return d.name || d; });
-
-        var taken = parallelVis.selectAll(".axis text,.background path,.foreground path")
-            .on("mouseover", mouseover)
-            .on("mouseout", mouseout);
-
-        function mouseover(d) {
-          svg.classed("active", true);
-          taken.classed("inactive", function(p) { return p !== d; });
-          taken.filter(function(p) { return p === d; }).each(moveToFront);
-        }
-
-        function mouseout(d) {
-          svg.classed("active", false);
-          taken.classed("inactive", false);
-        }
-
-        function moveToFront() {
-          this.parentNode.appendChild(this);
-        }
-
-        function draw(d) {
-        return parallelline(dimensions.map(function(dimension) {
-          return [parallelx(dimension.name), dimension.scale(d[dimension.name])];
-        }));
-      }
-
-}
-
-var findZone = function(spot, name){
-  for (var property in spot) {
-    if (spot.Subsubzone != "") { return {type: "Subsubzone", value: spot.Subsubzone}; }
-    else if (spot.Subzone != "") { return {type: "Subzone", value: spot.Subzone}; }
-    else if (spot.Zone != "") { return {type: "Zone", value: spot.Zone}; }
-    else if (spot.Country != "") { return {type: "Country", value: spot.Country}; }
-  }
-}
-
 
 var createDetailVis = function(data, name){
 
@@ -542,6 +391,9 @@ var createDetailVis = function(data, name){
             return d3.ascending(a.date, b.date);
         });
 
+        console.log(bestSurfing);
+        console.log(multiObj);
+
         /*
         ** Typical Swell data wrangling
         */
@@ -557,6 +409,8 @@ var createDetailVis = function(data, name){
         typicalSwell.sort(function(a,b){
             return d3.ascending(a.date, b.date);
         });
+
+        console.log(typicalSwell);
 
         // Water & Air Temperature multiline graph
         var x = d3.time.scale()
@@ -589,13 +443,6 @@ var createDetailVis = function(data, name){
             .x(function(d) { return x(d.date); })
             .y(function(d) { return y(d.temp); });
 
-        // Surf Spot title
-        detailVis.append("text")
-            .attr("class", "name")
-            .attr("x", 0)
-            .attr("y", -25)
-            .text(capitaliseFirstLetter(name).replace(/[\._ ,:-]+/g, " "));
-
         detailVis.append("text")
             .attr("class", "label")
             .attr("x", 0)
@@ -615,7 +462,7 @@ var createDetailVis = function(data, name){
             .attr("y", 6)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
-            .text("Temperature \xB0F");
+            .text("Temperature \xB0C");
 
         var multiline = detailVis.selectAll(".multiline")
             .data(multiObj)
@@ -699,72 +546,85 @@ var createDetailVis = function(data, name){
           .attr("y", function(d) { 
             return y2(d.value); })
           .attr("height", function(d) { return bbBest.h - y2(d.value); })
-          .attr("fill", "#FF7F0E")
+          .attr("fill", function(d) {
+            return "rgb(" + (d.value * 40) + ", 0, 0)";
+            });
+
+        // Typical Swell Bar Graph
+        var x3 = d3.time.scale()
+          .domain(d3.extent(typicalSwell, function(d){ return d.date; })) 
+          .range([0, bbSwell.w])
 
         var y3 = d3.scale.linear()
             .domain([0, 5]) 
             .range([bbSwell.h, bbSwell.y]);
+
+        var x3Axis = d3.svg.axis()
+            .scale(x3)
+            .tickFormat(d3.time.format('%b'))
+            .orient("bottom");
+
+        var y3Axis = d3.svg.axis()
+            .scale(y3)
+            .ticks(6)
+            .orient("left");
+
+        detailVis.append("text")
+            .attr("class", "label")
+            .attr("x", 0)
+            .attr("y", 590)
+            .text("Typical Swell Size");
+
+        detailVis.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + bbSwell.h + ")")
+          .call(x3Axis);
+
+        detailVis.append("g")
+          .attr("class", "y axis")
+          .call(y3Axis)
+        .append("text")
+          .attr("transform", "rotate(-90)", "translate(" + (bbSwell.w) + ",0)")
+          .attr("x", -600)
+          .attr("y", 6)
+          .attr("dy", ".71em")
+          .style("text-anchor", "end")
+          .text("Rating");
 
         detailVis.selectAll(".swell_bar")
             .data(typicalSwell)
         .enter().append("rect")
           .attr("class", "bar swell_bar")
           .attr("x", function(d) { 
-            return x2(d.date) + 20; })
+            return x3(d.date); })
           .attr("width", 20)
           .attr("y", function(d) { 
-            return y2(d.value); })
+            return y3(d.value); })
           .attr("height", function(d) { return bbSwell.h - y3(d.value); })
-          .attr("fill", "#5396C5")
-
-      // add legend to 2nd graph
-
-      var color2 =  [ ["Best Surfing", "#FF7F0E"],
-          ["Typical Swell Size", "#5396C5"] ]; 
-
-      var legend = detailVis.selectAll(".legend")
-      .data(color2)
-    .enter().append("g")
-      .attr("class", "legend")
-      .attr("transform", function(d, i) { return "translate(0)"; });
-
-  legend.append("rect")
-      .attr("x", function(d, i) { return i * 130; })
-      .attr("y", 533.5)
-      .attr("width", 15)
-      .attr("height", 15)
-      .style("fill", function(d) { return d[1]; });
-
-  legend.append("text")
-      .attr("x", function(d, i) { return i * 153 + 80; })
-      .attr("y", 540)
-      .attr("dy", ".35em")
-      .style("text-anchor", "end")
-      .text(function(d) { return d[0]; });
+          .attr("fill", function(d) {
+            return "rgb(0, 0, " + (d.value * 40) + ")";
+            });
 
 }
 
-var updateDetailVis = function(data, name) {
+
+var updateDetailVis = function(data, name){
     detailVis.selectAll(".axis").data(data).exit().remove();
     detailVis.selectAll(".dot").data(data).exit().remove();
     detailVis.selectAll(".multiline").data(data).exit().remove();
     detailVis.selectAll(".bar").data(data).exit().remove();
     detailVis.selectAll(".swell_bar").data(data).exit().remove();
     detailVis.selectAll(".label").data(data).exit().remove();
-    detailVis.selectAll(".name").data(data).exit().remove();
-    detailVis.selectAll(".legend").data(data).exit().remove();
+	detailVis.selectAll(".circle").data(data).exit().remove();
 }
 
-var updateParallelVis = function(data, name) {
+var updatesliderVis = function(data, name){
+ svg.selectAll(".circles").data(data).exit().remove();
+ }
 
-    // this is sending the right data to remove, but for some reason isn't working.
-    console.log(data);
-    parallelVis.selectAll(".dimension").data(data).exit().remove();
-    parallelVis.selectAll(".background").data(data).exit().remove();
-    parallelVis.selectAll(".foreground").data(data).exit().remove();
-    parallelVis.selectAll(".axis").data(data).exit().remove();
-    parallelVis.selectAll(".parallellabel").data(data).exit().remove();
-}
+/*
+**
+*/
 
 function clicked(d) {
   var x, y, k;
@@ -799,6 +659,7 @@ function reset() {
       .attr("transform", "");
 }
 
+
 function zoom() {
   svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 }
@@ -807,4 +668,5 @@ function zoom() {
 //references
 //http://bl.ocks.org/d3noob/5189284
 //
+
 
